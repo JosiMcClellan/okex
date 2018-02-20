@@ -1,0 +1,21 @@
+deploy:
+  provider: heroku
+  app: okex-mvp
+  api_key:
+    secure: PkqQ9SwEC+12gpPZh1E7QjDkiLD4AP0rTJq4Q0Z8niHVpC0Q9d2Rbqhwd+UZAXTuZuCXl90mI4ZISfvs9P5IL65OC7Ssw7VA7I/5uYW4cyHcaVJVeaXk1Jjyxqyk9aSe4g51nyQaYfQGvcB6/tCtujXz22J1KSfz+gzfB4Z6AAr7/zSkCX1nEaWFXRGeqJQT+3/0DUCiWGJwQKLpee65/xcvL6YNr7YOBG3uPSYUkhvV8m3QjPdUlCNKbemN6AjGtDcS6PdR38AbRzk+tPDQXxE2QjgGN+JXJsTqbIkFbT9qkYRaOnBBKMvoe7SorIXagEEA0vnvU95Mxkj+LDk9AwmmYsg80wAUiIQpcUy9+Voa9gHATO/OQsB3NBP8LAEnLE/cLZAurodgddqV7cX34IQcrDapv5l2TTnt53KQIGiWBcJKNVz3zqw6ddqPb9Vu6xMbn3DI8inEoQTiFcubNzP3J4vlVqgkW0x5hds6I61SjYurqLuQiS9ycgQbjp3uKqwpkvxKJh5dCy7Q3sZtjH0kI+LUOzN+0VccXVfgnsquDkTwjTxaq+XkCV+6dKkhk1g82dAgBkwE5EDUymXzR/ugX2RRS8llPVC2ARJZQkpQtMTzMASqX/j9y2j91axQORibpnURwX8KZlyfaWFeb04JWQh6QZLkPziC4eowUhs=
+notifications:
+  email: false
+
+
+matrix:
+  include:
+
+    - language: ruby
+      env: NAME=RAILS
+      rvm: 2.5.0
+      cache: bundler
+      services: postgresql
+      before_script:
+        - bundle exec rake db:create db:migrate
+      script:
+        - bundle exec rspec
