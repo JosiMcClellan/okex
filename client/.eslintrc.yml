@@ -1,0 +1,33 @@
+---
+  parser: babel-eslint
+  parserOptions:
+    experimentalObjectRestSpread: true
+  plugins:
+    - react
+  env:
+    es6: true
+    browser: true
+  extends:
+    - plugin:react/recommended
+    - airbnb
+  rules:
+    space-before-function-paren:
+      - error
+      - never
+
+  overrides:
+    - files:
+        - src/*.test.js
+        - src/*.test.jsx
+        - src/testUtil/*.js
+        - src/setupTests.js
+      env:
+        mocha: true
+      globals:
+        expect: true
+      rules:
+        prefer-arrow-callback: off
+        func-names: off
+        import/no-extraneous-dependencies:
+          - error
+          - devDependencies: true

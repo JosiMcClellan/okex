@@ -19,3 +19,14 @@ matrix:
         - bundle exec rake db:create db:migrate
       script:
         - bundle exec rspec
+
+    - language: node_js
+      env: NAME=REACT
+      node_js: lts/*
+      cache:
+        directories:
+          - node_modules
+          - packages/create-react-app/node_modules
+          - packages/react-scripts/node_modules
+      before_install:
+        - cd client
