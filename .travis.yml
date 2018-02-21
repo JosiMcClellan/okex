@@ -1,0 +1,42 @@
+notifications:
+  email: false
+matrix:
+  include:
+
+    - language: ruby
+      env: NAME=RAILS
+      rvm: 2.5.0
+      services: postgresql
+      cache: bundler
+      before_script:
+        - bundle exec rake db:create db:migrate
+      script:
+        - bundle exec rspec
+
+    - language: node_js
+      env: NAME=REACT
+      node_js: lts/*
+      cache:
+        directories:
+          - client/node_modules
+          - client/packages/create-react-app/node_modules
+          - client/packages/react-scripts/node_modules
+      before_install:
+        - cd client
+
+    - language: node_js
+      env: NAME=CYPRESS
+      node_js: lts/*
+      services: postgresql
+      cache:
+        bundler: true
+        directories:
+          - node_modules
+          - client/node_modules
+          - client/packages/create-react-app/node_modules
+          - client/packages/react-scripts/node_modules
+      before_script:
+        - bundle exec rake db:create db:migrate
+        - rake start &
+        - wait-on http://localhost:3000
+        - wait-on http://localhost:3001/api/v1/ping

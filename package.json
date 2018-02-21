@@ -1,0 +1,15 @@
+{
+  "name": "OKX",
+  "private": true,
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "test": "$(npm bin)/cypress run",
+    "test:client": "cd client && yarn test",
+    "install": "bundle install && cd client && yarn install"
+  },
+  "devDependencies": {
+    "cypress": "^2.0.2",
+    "wait-on": "^2.1.0"
+  }
+}
