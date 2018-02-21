@@ -5,15 +5,14 @@
   "private": true,
   "proxy": {
     "/api": {
-      "target": "http://localhost:3001/",
-      "ws": true
+      "target": "http://localhost:3001"
     }
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts dont_do_this_by_accident eject"
   },
   "dependencies": {
     "react": "^16.2.0",

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "$(npm bin)/cypress run",
     "test:client": "cd client && yarn test",
-    "install": "bundle install && cd client && yarn install"
+    "build": "cd client && yarn && yarn build && cp -a build/. ../public/",
+    "heroku-postbuild": "rm -rf client node_modules",
+    "install:all": "bundle && yarn && cd client && yarn"
   },
   "devDependencies": {
     "cypress": "^2.0.2",
