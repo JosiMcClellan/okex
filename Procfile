@@ -1,2 +1,1 @@
-web: sh -c 'cd ./client/ && yarn start'
-api: bundle exec rails s -p 3001
+app: rails s

@@ -16,7 +16,6 @@ gem 'puma', '~> 3.7'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem "foreman", "~> 0.64.0"
 gem "active_model_serializers", "~> 0.10.7"
 
 group :development, :production do
@@ -25,6 +24,7 @@ end
 
 group :development, :test do
   # gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem "foreman", "~> 0.64.0"
   gem "pry", "~> 0.11.3"
   gem "database_cleaner", "~> 1.6"
   gem "factory_bot_rails", "~> 4.8"
