@@ -7,7 +7,7 @@
     "test": "$(npm bin)/cypress run",
     "test:client": "cd client && yarn test",
     "build": "cd client && yarn && yarn build && cp -a build/. ../public/",
-    "heroku-postbuild": "rm -rf client node_modules",
+    "heroku-postbuild": "yarn build && rm -rf client node_modules",
     "install:all": "bundle && yarn && cd client && yarn"
   },
   "devDependencies": {
