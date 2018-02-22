@@ -8,6 +8,7 @@ describe('Hello World', function() {
 
     function() {
       cy.visit('/')
+      cy.visit('/hello_world')
       cy.get('header a.brand[href="/"]')
       cy.get('header a[href="/c"]')
     }

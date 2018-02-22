@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
       get :ping, to: 'pongs#show'
       get 'hello_world', to: 'hello_world#hello_world'
+      resources :communities, only: :index
 
     end
   end
