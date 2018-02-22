@@ -17,8 +17,8 @@
 
   overrides:
     - files:
-        - src/*.test.js
-        - src/*.test.jsx
+        - src/**/*.test.js
+        - src/**/*.test.jsx
         - src/testUtil/*.js
         - src/setupTests.js
       env:

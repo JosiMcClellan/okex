@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "test": "$(npm bin)/cypress run",
+    "test": "$(npm bin)/cypress run --record",
     "test:client": "cd client && yarn test",
     "build": "cd client && yarn && yarn build && cp -a build/. ../public/",
     "heroku-postbuild": "yarn build && rm -rf client node_modules",

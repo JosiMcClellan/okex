@@ -1,16 +1,21 @@
 import React from 'react';
-import HelloWorld from './HelloWorld';
-import logo from './logo.svg';
-import './App.css';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import Public from './App/Public';
 
 const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <h1 className="App-title">Welcome to React</h1>
-    </header>
-    <HelloWorld />
-  </div>
+  <MuiThemeProvider>
+    <Router>
+      <Switch>
+        <Route path="/admin" component={() => 'Admin NYI'} />
+        <Route component={Public} />
+      </Switch>
+    </Router>
+  </MuiThemeProvider>
 );
 
 export default App;
