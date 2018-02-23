@@ -34,7 +34,7 @@ matrix:
         - bundle exec rake db:create db:migrate
         - yarn build
         - rails s &
-        - wait-on http://localhost:3000/api/v1/ping
+        - wait-on http://localhost:3000
       cache:
         bundler: true
         directories:
