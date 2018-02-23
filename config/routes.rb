@@ -8,4 +8,7 @@ Rails.application.routes.draw do
 
     end
   end
+
+  match 'api', anchor: false, via: :all, to: 'application#not_found'
+  get '*', to: 'react#index'
 end
