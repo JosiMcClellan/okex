@@ -1,21 +1,23 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Reboot from 'material-ui/Reboot';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom';
 import Public from './App/Public';
+import HelloWorld from './App/HelloWorld';
 
 const App = () => (
-  <MuiThemeProvider>
+  <Reboot>
     <Router>
       <Switch>
-        <Route path="/admin" component={() => 'Admin NYI'} />
+        <Route path="/admin" component={() => 'Admin'} />
+        <Route exact path="/hello_world" component={HelloWorld} />
         <Route component={Public} />
       </Switch>
     </Router>
-  </MuiThemeProvider>
+  </Reboot>
 );
 
 export default App;

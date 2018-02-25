@@ -11,6 +11,21 @@
     - plugin:react/recommended
     - airbnb
   rules:
+    react/prop-types:
+      - error
+      - ignore:
+        - children
+        - location
+        - history
+        - match
+    react/jsx-filename-extension:
+      - error
+      - extensions:
+        - .js
+    jsx-a11y/anchor-is-valid:
+      - error
+      - specialLink:
+        - to
     space-before-function-paren:
       - error
       - never
@@ -19,7 +34,6 @@
     - files:
         - src/**/*.test.js
         - src/**/*.test.jsx
-        - src/testUtil/*.js
         - src/setupTests.js
       env:
         mocha: true

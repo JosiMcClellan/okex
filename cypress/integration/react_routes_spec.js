@@ -12,8 +12,7 @@ describe('Client/API Routes', function() {
     I receive JSON`,
   function() {
     cy.request('/api/not/even/a/real/route')
-    .then(res => expect(res.body).to.be({ error: 'bad url' }));
-
-})
+      .then(res => expect(res.body).to.have.property('error', 'bad url'))
   });
+
 });
