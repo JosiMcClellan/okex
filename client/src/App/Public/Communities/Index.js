@@ -19,7 +19,7 @@ class Index extends React.Component {
     return (
       <GridList cols={3} padding={10}>
         {communities.map(preview => (
-          <LinkContainer key={preview.id} to={{ state: preview, pathname: `c/${preview.id}` }}>
+          <LinkContainer key={preview.slug} to={{ state: preview, pathname: `c/${preview.slug}` }}>
             <GridListTile
               rows={3}
             >

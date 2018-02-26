@@ -10,9 +10,11 @@ import IconButton from 'material-ui/IconButton';
 // Local
 import PublicThemeProvider from './Public/PublicThemeProvider';
 import GoogleLoginButton from './Public/GoogleLoginButton';
+import AccountMenu from './Public/AccountMenu';
 import CommunityIndex from './Public/Communities/Index';
 import Community from './Public/Communities/Community';
 import fetchAccount from '../fetchers/accounts/create';
+import PropsRoute from './PropsRoute';
 
 class Public extends React.Component {
   constructor(props) {
@@ -20,8 +22,8 @@ class Public extends React.Component {
     this.state = { account: null };
   }
 
-  handleLogin = (code) => {
-    this.setState({ account: 'pending' });
+  handleLogin = ({ code }) => {
+    // this.setState({ account: 'pending' });
     fetchAccount(code).then(account => this.setState({ account }));
   }
 
@@ -46,9 +48,9 @@ class Public extends React.Component {
           <Toolbar>
             <NavLink to="/c">Communities</NavLink>
             {
-              account ?
-                <p>logged in</p>
-                : <GoogleLoginButton handleLogin={handleLogin} />
+              account
+              ? <AccountMenu account={account} />
+              : <GoogleLoginButton handleLogin={handleLogin} />
             }
           </Toolbar>
         </AppBar>
@@ -59,7 +61,7 @@ class Public extends React.Component {
           <Route exact path="/about" render={() => 'About'} />
           <Route exact path="/josi" render={() => 'Josi'} />
           <Route exact path="/c" component={CommunityIndex} />
-          <Route path="/c/:id" component={Community} />
+          <PropsRoute path="/c/:slug" Component={Community} props={{ account }} />
           <Route render={() => 'Not Found'} />
         </Switch>
 

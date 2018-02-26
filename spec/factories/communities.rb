@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :community do
     name { Faker::Hipster.unique.words(2).join(' ').titleize + ' Awareness' }
+    slug { name.parameterize }
     description { Faker::Hipster.sentence }
     image_url do
       type = ['', 'c/', 'g/'].sample

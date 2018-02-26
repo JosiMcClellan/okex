@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 20180224183017) do
   create_table "accounts", force: :cascade do |t|
     t.string "uid", null: false
     t.string "email", null: false
+    t.boolean "email_verified", null: false
     t.string "token", null: false
-    t.string "refresh", null: false
     t.integer "role", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

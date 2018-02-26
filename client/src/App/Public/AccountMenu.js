@@ -1,9 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import Menu from 'material-ui/Menu';
-import GoogleLoginButton from './AccountMenu/GoogleLoginButton';
+import { Link } from 'react-router-dom';
 
 class AccountMenu extends React.Component {
+  static propTypes = {
+    account: PropTypes.shape({
+      email: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+    }).isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = { anchorEl: null };
@@ -17,10 +25,6 @@ class AccountMenu extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
-
-  // handleGoogleSuccess = () => {
-  //   this.
-  // }
 
   render() {
     const {
@@ -37,7 +41,7 @@ class AccountMenu extends React.Component {
           aria-owns={anchorEl && 'login-dropdown'}
           aria-haspopup="true"
         >
-          Login
+          {account.email}
         </Button>
         <Menu
           id="login-dropdown"
@@ -45,7 +49,9 @@ class AccountMenu extends React.Component {
           open={!!anchorEl}
           onClose={handleClose}
         >
-          <GoogleLoginButton />
+          <Link to="/settings">Settings</Link>
+          <Link to="/profiles">My Profiles</Link>
+          <Button>???logout???</Button>
         </Menu>
       </div>
     );

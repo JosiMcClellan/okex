@@ -5,10 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.1.5'
-gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 3.7'
-
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Capistrano for deployment
@@ -16,10 +12,15 @@ gem 'puma', '~> 3.7'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+gem 'rails', '~> 5.1.5'
+gem 'pg', '>= 0.18', '< 2.0'
+gem 'puma', '~> 3.7'
+
 gem "active_model_serializers", "~> 0.10.7"
 
 group :development, :production do
   gem "faraday", "~> 0.14.0"
+  gem "jwt", "~> 2.1"
 end
 
 group :development, :test do

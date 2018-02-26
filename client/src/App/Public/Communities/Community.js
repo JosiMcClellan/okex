@@ -1,82 +1,71 @@
 import React from 'react';
-import Tabs, { Tab } from 'material-ui/Tabs';
+import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
 
-import DashboardIcon from 'material-ui-icons/Home';
-import ProfileIcon from 'material-ui-icons/Face';
-import MessagesIcon from 'material-ui-icons/QuestionAnswer';
-import QuestionsIcon from 'material-ui-icons/AssignmentTurnedIn';
-import MatchesIcon from 'material-ui-icons/Star';
-import ForumIcon from 'material-ui-icons/AccountBalance';
-import SettingsIcon from 'material-ui-icons/Settings';
-
-import fetchPreview from '../../../fetchers/communities/preview';
-// import fetchFull from '../../../fetchers/communities/full';
+import Header from './Community/Header';
+import MemberArea from './Community/MemberArea';
+import Join from './Community/Join';
+import getCommunity from '../../../fetchers/communities/show';
+import profileFetcher from '../../../fetchers/profile';
 
 class Community extends React.Component {
+  static propTypes = {
+    account: PropTypes.shape({
+      id: PropTypes.number,
+      email: PropTypes.string.isRequired,
+      token: PropTypes.string.isRequired,
+    }),
+  }
+
   constructor(props) {
     super(props);
-    this.id = props.match.params.id;
-    this.state = { preview: props.location.state };
+    this.slug = props.match.params.slug;
+    this.state = {
+      community: props.location.state,
+      profile: null,
+    };
   }
 
   componentDidMount() {
-    fetchPreview(this.id).then(preview => this.setState({ preview }));
+    this.getProfile();
+    this.getCommunity();
+  }
+
+  componentWillReceiveProps() {
+    this.getProfile();
+  }
+
+  setProfile = profile => this.setState({ profile })
+  getProfile() {
+    const { slug, setProfile, props: { account } } = this;
+    if (!account) return;
+    profileFetcher.get(slug, account.token).then(setProfile);
+  }
+
+  setCommunity = community => this.setState({ community })
+  getCommunity() {
+    if (this.state.community) return;
+    getCommunity(this.slug).then(this.setCommunity);
+  }
+
+  renderMain() {
+    const {
+      slug, setProfile,
+      props: { account },
+      state: { community, profile },
+    } = this;
+    if (!account) return <p>Sign in to join {community.name}</p>;
+    if (!profile) return <Join slug={slug} token={account.token} onJoin={setProfile} />;
+    return <MemberArea community={community} profile={profile} />;
   }
 
   render() {
-    const { preview } = this.state;
-    if (!preview) return 'Loading';
+    const { community } = this.state;
+    if (!community) return 'LOADING';
     return (
-      <Paper color="primary">
-        <Paper>
-          <h1>{preview.name}</h1>
-          <p>{preview.description}</p>
-        </Paper>
-        <Tabs centered>
-          <Tab
-            label="Dashboard"
-            icon={<DashboardIcon />}
-          >
-            <Paper>Your Dashboard!  Yay!</Paper>
-          </Tab>
-          <Tab
-            label="Profile"
-            icon={<ProfileIcon />}
-          >
-            <Paper>Your Profile!  Yay!</Paper>
-          </Tab>
-          <Tab
-            label="Messages"
-            icon={<MessagesIcon />}
-          >
-            <Paper>Your Messages!  Yay!</Paper>
-          </Tab>
-          <Tab
-            label="Matches"
-            icon={<MatchesIcon />}
-          >
-            <Paper>Your Matches!  Yay!</Paper>
-          </Tab>
-          <Tab
-            label="Questions"
-            icon={<QuestionsIcon />}
-          >
-            <Paper>Some Questions to Answer!  Yay!</Paper>
-          </Tab>
-          <Tab
-            label="Forum"
-            icon={<ForumIcon />}
-          >
-            <Paper>The Forum!  Yay!</Paper>
-          </Tab>
-          <Tab
-            label="Settings"
-            icon={<SettingsIcon />}
-          >
-            <Paper>Your Settings!  Yay!</Paper>
-          </Tab>
-        </Tabs>
+      <Paper>
+        <Header community={community} />
+        {this.renderMain()}
       </Paper>
     );
   }

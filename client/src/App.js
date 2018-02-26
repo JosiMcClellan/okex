@@ -6,14 +6,15 @@ import {
   Route,
 } from 'react-router-dom';
 import Public from './App/Public';
+import Admin from './App/Admin';
 import HelloWorld from './App/HelloWorld';
 
 const App = () => (
   <Reboot>
     <Router>
       <Switch>
-        <Route path="/admin" component={() => 'Admin'} />
         <Route exact path="/hello_world" component={HelloWorld} />
+        <Route path="/admin" component={Admin} />
         <Route component={Public} />
       </Switch>
     </Router>

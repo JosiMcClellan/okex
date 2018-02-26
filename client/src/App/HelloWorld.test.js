@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
 import HelloWorld from './HelloWorld';
-import stub from '../../setupTests';
+import stub from '../setupTests';
 
 it('renders welcome message', function(done) {
   const promise = stub.fetch(200, { hello: 'World' });

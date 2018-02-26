@@ -11,7 +11,7 @@ It's time to refactor our relationships.  Human are complex; we need many kinds 
 Activism, support, collaboration, discussion, and many other categories could benefit from that same tool.  We want to be the Stack Exchange Network to OkCupid's Stack Overflow (not that we'll be affiliated or even jock their steez). By letting self-moderating communities generate their own match criteria and design, we can build an internet-scale network with minimal content administration.  I deleted my XML joke, you're welcome.
 
 #### The Technology
-__React Client__: (React Router, SCSS... Bootstrap?)
+__React Client__: (React Router, Material UI)
 __Rails JSON API__: (Redis, ActiveJob, ActionCable)
 __3rd-party APIs__ (SendGrid, Google OAuth, Google Maps)
 __Feature Tests:__: Cypress

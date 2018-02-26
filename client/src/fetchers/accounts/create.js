@@ -1,8 +1,10 @@
 import fetchOKX from '../../fetchOKX';
 
-export default code => fetchOKX('accounts', {
-  method: 'POST',
-  headers: new Headers({
-    Authorization: code,
-  }),
-});
+export default code => (
+  fetchOKX('account', {
+    method: 'POST',
+    headers: new Headers({
+      Authorization: `Bearer ${code}`,
+    }),
+  })
+);

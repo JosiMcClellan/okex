@@ -13,7 +13,7 @@ const GoogleLoginButton = ({ handleLogin }) => (
     className="login"
     tag="div"
   >
-    <img alt="Sign In with Google" src="google_signin_buttons/web/1x/btn_google_signin_dark_normal_web.png" />
+    <img alt="Sign In with Google" src="google_sign_in.png" />
   </GoogleLogin>
 );
 GoogleLoginButton.propTypes = {
