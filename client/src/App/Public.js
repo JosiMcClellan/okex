@@ -1,20 +1,26 @@
 import React from 'react';
-import { Switch, Route, NavLink } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
-import Icon from 'material-ui/Icon';
-import IconButton from 'material-ui/IconButton';
 
 import PublicThemeProvider from './Public/PublicThemeProvider';
 import GoogleLoginButton from './Public/GoogleLoginButton';
 import AccountMenu from './Public/AccountMenu';
 import CommunityIndex from './Public/CommunityIndex';
 import Community from './Public/Community';
+import Settings from './Public/Settings';
 import PropsRoute from './PropsRoute';
 import accountFetcher from '../fetchers/account';
 import localAccount from './localAccount';
+
+import HelloWorld from './Public/HelloWorld';
+import Terms from './Public/Terms';
+import About from './Public/About';
+import NotFound from './Public/NotFound';
 
 class Public extends React.Component {
   constructor(props) {
@@ -40,49 +46,58 @@ class Public extends React.Component {
   AccountSection = () => {
     const { account } = this.state;
     const { handleLogout, handleLogin } = this;
-    if (account) return <AccountMenu {...{ account, handleLogout }} />;
-    return <GoogleLoginButton {...{ handleLogin }} />;
+    if (!account) return <GoogleLoginButton {...{ handleLogin }} />;
+    return <AccountMenu {...{ account, handleLogout }} />;
   }
 
   render() {
     const { account } = this.state;
     return (
       <PublicThemeProvider>
+        <div className="public">
 
-        <AppBar>
-          <Toolbar>
-            <LinkContainer to="/" className="brand">
-              <IconButton disableRipple>
-                <Icon>OKX</Icon>
-              </IconButton>
-            </LinkContainer>
-            <NavLink to="/c">Communities</NavLink>
-            <this.AccountSection />
-          </Toolbar>
-        </AppBar>
+          <header>
+            <AppBar position="sticky">
+              <Toolbar>
+                <LinkContainer to="/c"><Button>Communities</Button></LinkContainer>
+                <LinkContainer to="/" className="brand">
+                  <Button>
+                    <Typography variant="display4">OKX</Typography>
+                  </Button>
+                </LinkContainer>
+                <this.AccountSection />
+              </Toolbar>
+            </AppBar>
+          </header>
 
-        <Paper>
-          <Switch>
-            <Route exact path="/" render={() => 'Home Page'} />
-            <Route exact path="/terms" render={() => 'Terms'} />
-            <Route exact path="/about" render={() => 'About'} />
-            <Route exact path="/josi" render={() => 'Josi'} />
-            <Route exact path="/c" component={CommunityIndex} />
-            <PropsRoute path="/c/:slug" Component={Community} props={{ account }} />
-            <Route render={() => 'Not Found'} />
-          </Switch>
-        </Paper>
+          <main>
+            <Paper>
+              <Switch>
+                <Route exact path="/" render={() => 'Home Page'} />
+                <Route exact path="/terms" component={Terms} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/settings" component={Settings} />
+                <Route exact path="/hello_world" component={HelloWorld} />
+                <Route exact path="/c" component={CommunityIndex} />
+                <PropsRoute path="/c/:slug" Component={Community} props={{ account }} />
+                <Route component={NotFound} />
+              </Switch>
+            </Paper>
+          </main>
 
-        <Paper color="primary">
-          <p>©2018 Josi McClellan</p>
-          <NavLink exact to="/terms">Terms</NavLink>
-          <NavLink exact to="/about">About</NavLink>
-          <NavLink exact to="/josi">Josi</NavLink>
-        </Paper>
+          <footer>
+            <Toolbar>
+              <Typography variant="headline">©2018 Josi McClellan</Typography>
+              <LinkContainer to="/terms"><Button>Terms</Button></LinkContainer>
+              <LinkContainer to="/about"><Button>About</Button></LinkContainer>
+              <LinkContainer to="/hello_world"><Button>Hello World</Button></LinkContainer>
+            </Toolbar>
+          </footer>
+
+        </div>
       </PublicThemeProvider>
 
     );
   }
 }
-
 export default Public;

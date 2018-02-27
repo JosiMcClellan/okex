@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { LinkContainer } from 'react-router-bootstrap';
 import Paper from 'material-ui/Paper';
 import Tabs, { Tab } from 'material-ui/Tabs';
 
@@ -17,6 +18,7 @@ import fetchDiscussons from '../../../fetchers/discussions';
 class MemberArea extends React.Component {
   static propTypes = {
     community: PropTypes.shape({
+      name: PropTypes.string.isRequired,
       slug: PropTypes.string.isRequired,
     }).isRequired,
   };
@@ -55,13 +57,16 @@ class MemberArea extends React.Component {
   };
 
   render() {
+    const { slug } = this.props.community;
     return (
       <Paper>
-        <Tabs centered value={this.state.value} onChange={this.handleChange}>
-          {this.tabs.map(([name, Icon]) => (
-            <Tab key={name} label={name} value={name} icon={<Icon />} />
-          ))}
-        </Tabs>
+        <LinkContainer to={`/c/${slug}`}>
+          <Tabs centered value={this.state.value} onChange={this.handleChange}>
+            {this.tabs.map(([name, Icon]) => (
+              <Tab key={name} label={name} value={name} icon={<Icon />} />
+            ))}
+          </Tabs>
+        </LinkContainer>
         <this.OpenTab />
       </Paper>
     );

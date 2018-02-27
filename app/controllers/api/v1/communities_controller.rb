@@ -5,7 +5,7 @@ class Api::V1::CommunitiesController < ApplicationController
   end
 
   def show
-    set_community && render(json: @community)
+    render(json: @community) if set_community
   end
 
 end

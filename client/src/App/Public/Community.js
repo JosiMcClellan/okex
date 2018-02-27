@@ -61,7 +61,7 @@ class Community extends React.Component {
     if (!profile) return <Join slug={slug} onJoin={setProfile} />;
     return (
       <Switch>
-        <Route path="c/:slug/thread/:id" component={Discussion} />
+        <Route path="/c/:slug/thread/:id" component={Discussion} />
         <PropsRoute Component={MemberArea} props={{ community, profile }} />
       </Switch>
     );

@@ -17,7 +17,7 @@ class Forum extends React.Component {
         <ListItem>
           <ListItemText
             primary={data.topic}
-            secondary={`Created: ${data.createdAt} Active: ${data.activeAt}`}
+            secondary={`Created: ${data.createdAt}, Active: ${data.activeAt}`}
           />
         </ListItem>
       </LinkContainer>
@@ -26,8 +26,6 @@ class Forum extends React.Component {
 
   render() {
     const { discussions } = this.props;
-    console.log(this);
-    console.log(discussions);
     return (
       <div>
         <List>

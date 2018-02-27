@@ -1,5 +1,5 @@
 import React from 'react';
-import fetchOKX from '../fetchOKX';
+import fetchOKX from '../../fetchOKX';
 
 class HelloWorld extends React.Component {
   constructor(props) {

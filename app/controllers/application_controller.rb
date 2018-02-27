@@ -1,22 +1,29 @@
 class ApplicationController < ActionController::API
 
+  def set_community
+    @community ||= Community.find_by_slug(params[:slug])
+    @community || no_record
+  end
+
   def set_account
     return bad_auth unless token = extract_auth('Token')
     @account ||= Account.find_by_token(token)
-    unauthorized unless @account
-  end
-
-  def set_community
-    @community ||= Community.find_by_slug(params[:slug])
-    no_record unless @community
+    @account || unauthorized
   end
 
   def set_profile
-    set_account; set_community
-    return unless @account && @community
+    return unless set_community && set_account
     @profile ||= Profile.find_by(account: @account, community: @community)
-    puts(puts(puts(puts(@profile))))
-    unauthorized unless @profile
+    @profile || unauthorized
+  end
+
+  def extract_auth(type)
+    AuthHeader.extract(type, request.headers[:Authorization])
+  end
+
+  def send_error(status, message)
+    render status: status, json: { error: message }
+    false
   end
 
   def bad_request
@@ -33,14 +40,6 @@ class ApplicationController < ActionController::API
 
   def bad_auth
     send_error 500, 'bad authorization header'
-  end
-
-  def send_error(status, message)
-    render status, json: { error: message }
-  end
-
-  def extract_auth(type)
-    AuthHeader.extract(type, request.headers[:Authorization])
   end
 
 end

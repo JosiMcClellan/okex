@@ -14,18 +14,23 @@ class Discussion extends React.Component {
   )
 
   constructor(props) {
-    throw('shit');
     super(props);
-    this.id = props.location.id;
-    this.state = { discussion: props.location.state };
-    this.state.discussion.posts = [];
+    this.id = props.match.params.id;
+    const discussion = Object.assign({ posts: [] }, props.location.state);
+    this.state = { discussion };
   }
 
   componentDidMount() {
-    discussionFetcher.get(this.id).then(discussion => this.setState({ discussion }));
+    this.getDiscussion();
+  }
+
+  getDiscussion() {
+    const { id } = this.props.match.params;
+    discussionFetcher.get(id).then(discussion => this.setState({ discussion }));
   }
 
   render() {
+    console.log(this);
     const { discussion: { posts, topic } } = this.state;
     return (
       <List subheader={<ListSubheader>{ topic }</ListSubheader>}>

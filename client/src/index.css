@@ -1,5 +1,19 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+}
+
+html, body, .public {
+  min-height: 100vh;
+}
+.public {
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1 0 auto;
+  background-color: black;
+}
+footer {
+  flex-shrink: 0;
 }

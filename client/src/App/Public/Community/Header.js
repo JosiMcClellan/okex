@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Typography from 'material-ui/Typography';
 import Paper from 'material-ui/Paper';
 
 const CommunityHeader = ({ community }) => (
-  <Paper color="primary">
-    <Paper>
-      <h1>{community.name}</h1>
-      <p>{community.description}</p>
-    </Paper>
+  <Paper>
+    <Typography variant="display3">{community.name}</Typography>
+    <p>{community.description}</p>
   </Paper>
 );
 CommunityHeader.propTypes = {

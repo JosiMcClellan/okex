@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import Menu from 'material-ui/Menu';
-import { Link } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class AccountMenu extends React.Component {
   static propTypes = {
+    handleLogout: PropTypes.func.isRequired,
     account: PropTypes.shape({
       token: PropTypes.string.isRequired,
       email: PropTypes.string.isRequired,
@@ -29,15 +30,14 @@ class AccountMenu extends React.Component {
 
   render() {
     const {
-      props: { account },
       state: { anchorEl },
-      handleOpen, handleClose, handleLogout,
+      props: { account, handleLogout },
+      handleOpen, handleClose,
     } = this;
 
     return (
       <div>
         <Button
-          variant="raised"
           onClick={handleOpen}
           aria-owns={anchorEl && 'login-dropdown'}
           aria-haspopup="true"
@@ -50,8 +50,8 @@ class AccountMenu extends React.Component {
           open={!!anchorEl}
           onClose={handleClose}
         >
-          <Link to="/settings">Settings</Link>
-          <Link to="/profiles">My Profiles</Link>
+          <LinkContainer to="/settings"><Button>Settings</Button></LinkContainer>
+          <LinkContainer to="/profiles"><Button>My Profiles</Button></LinkContainer>
           <Button onClick={handleLogout}>Logout</Button>
         </Menu>
       </div>
