@@ -1,12 +1,13 @@
-import fetchOKX from '../fetchOKX';
+import localAccount from '../App/localAccount';
 
 export default {
-  get: (slug, token) => (
-    fetchOKX.withToken(token, `communities/${slug}/profile`)
+  get: slug => (
+    localAccount.fetchWithToken(`communities/${slug}/profile`)
   ),
-  create: (slug, token) => (
-    fetchOKX.withToken(token, `communities/${slug}/profile`, {
-      method: 'POST',
-    })
+  create: slug => (
+    localAccount.fetchWithToken(
+      `communities/${slug}/profile`,
+      { method: 'POST' },
+    )
   ),
 };

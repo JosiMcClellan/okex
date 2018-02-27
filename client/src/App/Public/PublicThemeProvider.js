@@ -18,6 +18,13 @@ const PublicThemeProvider = ({ children }) => (
           contrastText: '#ffffff',
         },
       },
+      overrides: {
+        background: {
+          AppBar: {
+            color: '#000000',
+          },
+        },
+      },
     })}
   >
     {children}

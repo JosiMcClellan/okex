@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import profileFetcher from '../../../../fetchers/profile';
+import profileFetcher from '../../../fetchers/profile';
 
-const Join = ({ slug, token, onJoin }) => {
+const Join = ({ slug, onJoin }) => {
   const handleClick = () => {
-    profileFetcher.create(slug, token).then(onJoin);
+    profileFetcher.create(slug).then(onJoin);
   };
   return <Button onClick={handleClick}>Join</Button>;
 };
 Join.propTypes = {
   slug: PropTypes.string.isRequired,
-  token: PropTypes.string.isRequired,
   onJoin: PropTypes.func.isRequired,
 };
 

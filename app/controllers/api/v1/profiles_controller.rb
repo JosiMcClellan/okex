@@ -4,12 +4,17 @@ class Api::V1::ProfilesController < ApplicationController
   def show
     render json: Profile.find_by(
       account: @account,
-      community: @community,
+      community: @community
     )
   end
 
   def create
-    render json: @community.profiles.create(account: @account)
+    profile = @community.profiles.new(account: @account)
+    if profile.save
+      render json: profile
+    else
+      send_error 500, profile.errors.full_messages
+    end
   end
 
 end

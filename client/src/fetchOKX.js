@@ -1,12 +1,14 @@
 export default function fetchOKX(path, options) {
   return fetch(`/api/v1/${path}`, options)
+    .then(res => res.json())
     .then((res) => {
-      if (res.ok) return res.json();
-      throw res;
-    }).catch(console.log);
+      if (res.error) throw res.error;
+      return res;
+    })
+    .catch(console.log);
 }
 
 fetchOKX.withToken = (token, path, options) => {
-  const header = new Headers({ Authorization: token });
+  const header = new Headers({ Authorization: `Token ${token}` });
   return fetchOKX(path, { headers: header, ...options });
 };

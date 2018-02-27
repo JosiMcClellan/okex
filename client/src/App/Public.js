@@ -1,80 +1,86 @@
 import React from 'react';
 import { Switch, Route, NavLink } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
-// Material UI
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Paper from 'material-ui/Paper';
 import Icon from 'material-ui/Icon';
 import IconButton from 'material-ui/IconButton';
-// Local
+
 import PublicThemeProvider from './Public/PublicThemeProvider';
 import GoogleLoginButton from './Public/GoogleLoginButton';
 import AccountMenu from './Public/AccountMenu';
-import CommunityIndex from './Public/Communities/Index';
-import Community from './Public/Communities/Community';
-import fetchAccount from '../fetchers/accounts/create';
+import CommunityIndex from './Public/CommunityIndex';
+import Community from './Public/Community';
 import PropsRoute from './PropsRoute';
+import accountFetcher from '../fetchers/account';
+import localAccount from './localAccount';
 
 class Public extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { account: null };
+    this.state = { account: localAccount.load() };
   }
 
   handleLogin = ({ code }) => {
-    // this.setState({ account: 'pending' });
-    fetchAccount(code).then(account => this.setState({ account }));
+    accountFetcher.create(code)
+      .then(this.saveAccount);
+  }
+
+  handleLogout = () => {
+    localAccount.destroy();
+    this.setState({ account: null });
+  }
+
+  saveAccount = (account) => {
+    localAccount.save(account);
+    this.setState({ account });
+  }
+
+  AccountSection = () => {
+    const { account } = this.state;
+    const { handleLogout, handleLogin } = this;
+    if (account) return <AccountMenu {...{ account, handleLogout }} />;
+    return <GoogleLoginButton {...{ handleLogin }} />;
   }
 
   render() {
-    const {
-      state: { account },
-      handleLogin,
-    } = this;
-
+    const { account } = this.state;
     return (
       <PublicThemeProvider>
 
-        <AppBar position="static">
-          <LinkContainer to="/" className="brand">
-            <IconButton
-              style={{ fontsize: '150px' }}
-              disableRipple
-            >
-              <Icon>OKX</Icon>
-            </IconButton>
-          </LinkContainer>
+        <AppBar>
           <Toolbar>
+            <LinkContainer to="/" className="brand">
+              <IconButton disableRipple>
+                <Icon>OKX</Icon>
+              </IconButton>
+            </LinkContainer>
             <NavLink to="/c">Communities</NavLink>
-            {
-              account
-              ? <AccountMenu account={account} />
-              : <GoogleLoginButton handleLogin={handleLogin} />
-            }
+            <this.AccountSection />
           </Toolbar>
         </AppBar>
 
-        <Switch>
-          <Route exact path="/" render={() => 'Home Page'} />
-          <Route exact path="/terms" render={() => 'Terms'} />
-          <Route exact path="/about" render={() => 'About'} />
-          <Route exact path="/josi" render={() => 'Josi'} />
-          <Route exact path="/c" component={CommunityIndex} />
-          <PropsRoute path="/c/:slug" Component={Community} props={{ account }} />
-          <Route render={() => 'Not Found'} />
-        </Switch>
+        <Paper>
+          <Switch>
+            <Route exact path="/" render={() => 'Home Page'} />
+            <Route exact path="/terms" render={() => 'Terms'} />
+            <Route exact path="/about" render={() => 'About'} />
+            <Route exact path="/josi" render={() => 'Josi'} />
+            <Route exact path="/c" component={CommunityIndex} />
+            <PropsRoute path="/c/:slug" Component={Community} props={{ account }} />
+            <Route render={() => 'Not Found'} />
+          </Switch>
+        </Paper>
 
-        <footer>
-          <Paper color="primary">
-            <p>©2018 Josi McClellan</p>
-            <NavLink exact to="/terms">Terms</NavLink>
-            <NavLink exact to="/about">About</NavLink>
-            <NavLink exact to="/josi">Josi</NavLink>
-          </Paper>
-        </footer>
-
+        <Paper color="primary">
+          <p>©2018 Josi McClellan</p>
+          <NavLink exact to="/terms">Terms</NavLink>
+          <NavLink exact to="/about">About</NavLink>
+          <NavLink exact to="/josi">Josi</NavLink>
+        </Paper>
       </PublicThemeProvider>
+
     );
   }
 }

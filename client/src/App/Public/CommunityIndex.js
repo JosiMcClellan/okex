@@ -1,16 +1,17 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
-import fetchIndex from '../../../fetchers/communities/index';
+import communitiesFetcher from '../../fetchers/communities';
 
-class Index extends React.Component {
+class CommunityIndex extends React.Component {
   constructor(props) {
     super(props);
     this.state = { communities: null };
   }
 
   componentDidMount() {
-    fetchIndex().then(communities => this.setState({ communities }));
+    communitiesFetcher.index()
+      .then(communities => this.setState({ communities }));
   }
 
   render() {
@@ -36,4 +37,4 @@ class Index extends React.Component {
   }
 }
 
-export default Index;
+export default CommunityIndex;

@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Switch, Route } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
 
 import Header from './Community/Header';
-import MemberArea from './Community/MemberArea';
 import Join from './Community/Join';
-import getCommunity from '../../../fetchers/communities/show';
-import profileFetcher from '../../../fetchers/profile';
+import MemberArea from './Community/MemberArea';
+import Discussion from './Community/MemberArea/Discussion';
+import communitiesFetcher from '../../fetchers/communities';
+import PropsRoute from '../PropsRoute';
+import profileFetcher from '../../fetchers/profile';
 
 class Community extends React.Component {
   static propTypes = {
     account: PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.number.isRequired,
       email: PropTypes.string.isRequired,
       token: PropTypes.string.isRequired,
     }),
@@ -37,26 +40,31 @@ class Community extends React.Component {
 
   setProfile = profile => this.setState({ profile })
   getProfile() {
-    const { slug, setProfile, props: { account } } = this;
-    if (!account) return;
-    profileFetcher.get(slug, account.token).then(setProfile);
+    if (!this.props.account) return;
+    profileFetcher.get(this.slug).then(this.setProfile);
   }
 
   setCommunity = community => this.setState({ community })
   getCommunity() {
     if (this.state.community) return;
-    getCommunity(this.slug).then(this.setCommunity);
+    communitiesFetcher.get(this.slug).then(this.setCommunity);
   }
 
-  renderMain() {
+  Main = () => {
     const {
       slug, setProfile,
       props: { account },
       state: { community, profile },
     } = this;
+
     if (!account) return <p>Sign in to join {community.name}</p>;
-    if (!profile) return <Join slug={slug} token={account.token} onJoin={setProfile} />;
-    return <MemberArea community={community} profile={profile} />;
+    if (!profile) return <Join slug={slug} onJoin={setProfile} />;
+    return (
+      <Switch>
+        <Route path="c/:slug/thread/:id" component={Discussion} />
+        <PropsRoute Component={MemberArea} props={{ community, profile }} />
+      </Switch>
+    );
   }
 
   render() {
@@ -65,7 +73,7 @@ class Community extends React.Component {
     return (
       <Paper>
         <Header community={community} />
-        {this.renderMain()}
+        <this.Main />
       </Paper>
     );
   }

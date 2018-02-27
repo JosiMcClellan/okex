@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 class AccountMenu extends React.Component {
   static propTypes = {
     account: PropTypes.shape({
+      token: PropTypes.string.isRequired,
       email: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
     }).isRequired,
@@ -30,7 +31,7 @@ class AccountMenu extends React.Component {
     const {
       props: { account },
       state: { anchorEl },
-      handleOpen, handleClose,
+      handleOpen, handleClose, handleLogout,
     } = this;
 
     return (
@@ -51,7 +52,7 @@ class AccountMenu extends React.Component {
         >
           <Link to="/settings">Settings</Link>
           <Link to="/profiles">My Profiles</Link>
-          <Button>???logout???</Button>
+          <Button onClick={handleLogout}>Logout</Button>
         </Menu>
       </div>
     );

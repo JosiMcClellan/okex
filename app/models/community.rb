@@ -5,6 +5,7 @@ class Community < ApplicationRecord
 
   # belongs_to :category
   has_many :profiles
+  has_many :discussions
   # has_many :profile_prompts
   # has_many :match_prompts
 
