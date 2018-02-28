@@ -1,14 +1,13 @@
 class Api::V1::DiscussionsController < ApplicationController
 
-  before_action :set_profile
+  before_action :require_profile
 
   def index
-    render json: @community.discussions
+    okay @community.discussions
   end
 
   def show
-    @discussion = @community.discussions.find_by_id(params[:id])
-    render json: @discussion.includes(:posts)
+    try_okay @community.discussions.find_by_id(params[:id])
   end
 
 end

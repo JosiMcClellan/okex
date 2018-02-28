@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     end
   end
 
-  match 'api', anchor: false, via: :all, to: 'application#bad_request'
+  match 'api', anchor: false, via: :all, to: 'application#no_route'
   get 'hello_world', to: 'react#index'
   get '*path', to: 'react#index'
 end

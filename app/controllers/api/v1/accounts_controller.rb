@@ -1,8 +1,9 @@
 class Api::V1::AccountsController < ApplicationController
 
   def create
-    return bad_auth unless @code = extract_auth('Bearer')
-    render json: AccountCreator.new(request_tokens).create
+    return unauthorized unless @code = extract_auth('Bearer')
+    account = AccountCreator.new(request_tokens).create
+    try_created account
   end
 
   private

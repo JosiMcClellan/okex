@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'request_spec_helper'
 
 describe 'communities#index' do
   it %{
@@ -6,7 +6,8 @@ describe 'communities#index' do
       it returns an empty array.
   } do
     get api_v1_communities_path
-    expect(response.body).to eq('[]')
+    expect(response).to be_ok
+    expect(contents).to eq([])
   end
   it %{
     returns all communties as JSON, including:
@@ -20,9 +21,9 @@ describe 'communities#index' do
   } do
     create_list(:community, 3)
     get api_v1_communities_path
-    all = parse(response)
-    expect(all.length).to eq(3)
-    expect(all.first.keys).to contain_exactly(
+    expect(response).to be_ok
+    expect(contents.length).to eq(3)
+    expect(contents.first.keys).to contain_exactly(
       :id,
       :name,
       :slug,

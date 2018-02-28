@@ -1,11 +1,11 @@
 class Api::V1::CommunitiesController < ApplicationController
 
   def index
-    render json: Community.all
+    okay Community.all
   end
 
   def show
-    render(json: @community) if set_community
+    okay @community if require_community
   end
 
 end

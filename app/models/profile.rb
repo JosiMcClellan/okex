@@ -2,8 +2,8 @@ class Profile < ApplicationRecord
 
   before_validation :set_handle_and_slug
 
-  belongs_to :account
-  belongs_to :community
+  belongs_to :account, touch: true
+  belongs_to :community, touch: true
   has_many :discussions
   has_many :posts
   # has_many :profile_responses

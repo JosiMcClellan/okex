@@ -1,8 +1,8 @@
-require 'rails_helper'
+require_relative 'request_spec_helper'
 
-describe 'Hello World', type: :request do
-  it 'hello world!' do
+describe 'Hello,' do
+  it 'World!' do
     get api_v1_hello_world_path
-    expect(parse(response)).to eq(hello: 'World')
+    expect(contents).to eq(hello: 'World')
   end
 end

@@ -1,20 +1,13 @@
 class Api::V1::ProfilesController < ApplicationController
-  before_action :set_account, :set_community
+
+  before_action :require_community, :require_account
 
   def show
-    render json: Profile.find_by(
-      account: @account,
-      community: @community
-    )
+    try_okay Profile.find_by(account: @account, community: @community)
   end
 
   def create
-    profile = @community.profiles.new(account: @account)
-    if profile.save
-      render json: profile
-    else
-      send_error 500, profile.errors.full_messages
-    end
+    try_created @community.profiles.create(account: @account)
   end
 
 end
