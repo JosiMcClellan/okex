@@ -11,15 +11,45 @@
     - plugin:react/recommended
     - airbnb
   rules:
+
+    # personal preference
     space-before-function-paren:
       - error
       - never
 
+    # for react-router
+    react/prop-types:
+      - warn #TEMP
+      - ignore:
+        - children
+        - location
+        - history
+        - match
+
+    # https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
+    react/jsx-filename-extension:
+      - error
+      - extensions:
+        - .js
+
+    # for react-router
+    jsx-a11y/anchor-is-valid:
+      - error
+      - specialLink:
+        - to
+
+    # sometimes it's really optional
+    react/require-default-props:
+      - off
+
+    # slow to conform in early development
+    react/prefer-stateless-function:
+      - off #TEMP
+
   overrides:
     - files:
-        - src/*.test.js
-        - src/*.test.jsx
-        - src/testUtil/*.js
+        - src/**/*.test.js
+        - src/**/*.test.jsx
         - src/setupTests.js
       env:
         mocha: true

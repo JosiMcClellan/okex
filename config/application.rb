@@ -16,6 +16,7 @@ require "action_cable/engine"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require_relative "../app/middleware/reaction_dispatch/static"
 module Okex
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -29,5 +30,9 @@ module Okex
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    config.middleware.insert_after(
+      ActionDispatch::Static,
+      ReactionDispatch::Static, "public"
+    )
   end
 end
