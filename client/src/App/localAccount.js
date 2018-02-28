@@ -2,8 +2,9 @@ import fetchOKX from '../fetchOKX';
 
 export default {
   fetchWithToken(path, options) {
-    const { token } = this.load();
-    const header = new Headers({ Authorization: `Token ${token}` });
+    const stored = this.load();
+    if (!stored) return Promise.resolve(null);
+    const header = new Headers({ Authorization: `Token ${stored.token}` });
     return fetchOKX(path, { headers: header, ...options });
   },
   stored() {

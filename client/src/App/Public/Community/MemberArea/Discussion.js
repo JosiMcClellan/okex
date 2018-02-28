@@ -1,15 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import List, {
   ListItem,
   ListItemText,
   ListSubheader,
 } from 'material-ui/List';
+import ButtonForNew from './ButtonForNew';
 import discussionFetcher from '../../../../fetchers/discussions';
 
 class Discussion extends React.Component {
   static Post = ({ body, postedAt, id }) => (
     <ListItem key={id}>
-      <ListItemText primary={body} secondary={`Posted: ${postedAt}`} />
+      <ListItemText inset primary={body} secondary={`Posted: ${postedAt}`} />
     </ListItem>
   )
 
@@ -33,9 +35,18 @@ class Discussion extends React.Component {
   render() {
     const { discussion: { posts, topic } } = this.state;
     return (
-      <List subheader={<ListSubheader>{ topic }</ListSubheader>}>
-        {posts.map(Discussion.Post)}
-      </List>
+      <div>
+        <ButtonForNew
+          title="New Post"
+          resource="post"
+          handleCreate={console.log} // {this.handleCreateDiscussion}
+        >
+          Enter the text below.  If you haven&#39;t yet, please read our <Link to="/terms">terms</Link>.
+        </ButtonForNew>
+        <List subheader={<ListSubheader>{ topic }</ListSubheader>}>
+          {posts.map(Discussion.Post)}
+        </List>
+      </div>
     );
   }
 }

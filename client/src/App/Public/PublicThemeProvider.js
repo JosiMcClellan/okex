@@ -3,23 +3,40 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import Reboot from 'material-ui/Reboot';
 import pink from 'material-ui/colors/pink';
 import cyan from 'material-ui/colors/cyan';
+import deepPurple from 'material-ui/colors/deepPurple';
+import lime from 'material-ui/colors/lime';
+import grey from 'material-ui/colors/grey';
 
 const PublicThemeProvider = ({ children }) => (
   <MuiThemeProvider
     theme={createMuiTheme({
+      typography: {
+        root: {
+          color: 'black',
+        },
+        display4: {
+          color: 'black',
+          fontSize: '3rem',
+        },
+        display3: {
+          color: 'black',
+          fontSize: '4rem',
+        },
+      },
       palette: {
         primary: {
-          light: '#ffeeff',
+          light: deepPurple[50],
           main: pink[100],
           dark: '#c48b9f',
-          contrastText: '#000',
+          contrastText: 'black',
         },
         secondary: {
           light: '#4f5b62',
           main: '#263238',
           dark: '#000a12',
-          contrastText: '#ffffff',
+          contrastText: 'white',
         },
+        action: lime,
       },
       overrides: {
         MuiToolbar: {
@@ -30,27 +47,23 @@ const PublicThemeProvider = ({ children }) => (
             backgroundColor: pink[100],
           },
         },
-        MuiButton: {
-          root: {
-            // background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-            // borderRadius: 3,
-            // border: 0,
-            // color: 'white',
-            // padding: '0 30px',
-            // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .30)',
-          },
-        },
         MuiPaper: {
           root: {
-            backgroundColor: cyan[100],
-            color: 'black',
+            backgroundColor: cyan[50],
+            color: grey[900],
             textAlign: 'center',
             padding: '1vh',
+            height: '100%',
           },
         },
         MuiGridList: {
           root: {
             padding: '1vh',
+          },
+        },
+        MuiListItem: {
+          root: {
+            textAlign: 'center',
           },
         },
       },

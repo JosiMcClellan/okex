@@ -1,6 +1,8 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom';
 import List, { ListItem, ListItemText } from 'material-ui/List';
+import ButtonForNew from './ButtonForNew';
 
 class Forum extends React.Component {
   static defaultProps = {
@@ -16,6 +18,7 @@ class Forum extends React.Component {
       <LinkContainer key={data.id} to={linkTo}>
         <ListItem>
           <ListItemText
+            inset
             primary={data.topic}
             secondary={`Created: ${data.createdAt}, Active: ${data.activeAt}`}
           />
@@ -28,6 +31,13 @@ class Forum extends React.Component {
     const { discussions } = this.props;
     return (
       <div>
+        <ButtonForNew
+          title="Start a Thread"
+          resource="thread"
+          handleCreate={console.log} // {this.handleCreateDiscussion}
+        >
+          Enter the topic below.  If you haven&#39;t yet, please read our <Link to="/terms">terms</Link>.
+        </ButtonForNew>
         <List>
           {discussions.map(this.Thread)}
         </List>

@@ -2,8 +2,8 @@ body {
   margin: 0;
   padding: 0;
 }
-
 html, body, .public {
+  background-color: black;
   min-height: 100vh;
 }
 .public {
@@ -11,9 +11,10 @@ html, body, .public {
   flex-direction: column;
 }
 main {
+  background-color: 'black';
   flex: 1 0 auto;
-  background-color: black;
 }
 footer {
+  background-color: black;
   flex-shrink: 0;
 }

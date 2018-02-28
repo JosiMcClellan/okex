@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Switch, Route } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
-import Paper from 'material-ui/Paper';
 import Tabs, { Tab } from 'material-ui/Tabs';
 
 import DashboardIcon from 'material-ui-icons/Home';
@@ -13,6 +13,7 @@ import ForumIcon from 'material-ui-icons/AccountBalance';
 import SettingsIcon from 'material-ui-icons/Settings';
 
 import Forum from './MemberArea/Forum';
+import Discussion from '../Community/MemberArea/Discussion';
 import fetchDiscussons from '../../../fetchers/discussions';
 
 class MemberArea extends React.Component {
@@ -59,7 +60,7 @@ class MemberArea extends React.Component {
   render() {
     const { slug } = this.props.community;
     return (
-      <Paper>
+      <div>
         <LinkContainer to={`/c/${slug}`}>
           <Tabs centered value={this.state.value} onChange={this.handleChange}>
             {this.tabs.map(([name, Icon]) => (
@@ -67,8 +68,11 @@ class MemberArea extends React.Component {
             ))}
           </Tabs>
         </LinkContainer>
-        <this.OpenTab />
-      </Paper>
+        <Switch>
+          <Route path="/c/:slug/thread/:id" component={Discussion} />
+          <Route component={this.OpenTab} />
+        </Switch>
+      </div>
     );
   }
 }

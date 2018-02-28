@@ -1,22 +1,32 @@
 import React from 'react';
+import Typography from 'material-ui/Typography';
 import fetchOKX from '../../fetchOKX';
 
 class HelloWorld extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hello: null, ready: false };
+    this.state = { hello: null };
   }
 
   componentDidMount() {
     fetchOKX('/hello_world')
-      .then(({ hello }) => this.setState({ hello, ready: true }))
-      .catch(console.log);
+      .then(({ hello }) => this.setState({ hello }));
+  }
+
+  style = {
+    fontFamily: 'Papyrus',
+    margin: '10%',
+    fontSize: '10rem',
   }
 
   render() {
-    const { ready, hello } = this.state;
-    if (ready) return <p>Hello, {hello}!</p>;
-    return <p>Loading</p>;
+    const { hello } = this.state;
+    if (!hello) return null;
+    return (
+      <Typography style={this.style}>
+        Hello, {hello}!
+      </Typography>
+    );
   }
 }
 

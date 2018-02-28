@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 
 import Header from './Community/Header';
 import Join from './Community/Join';
 import MemberArea from './Community/MemberArea';
-import Discussion from './Community/MemberArea/Discussion';
 import communitiesFetcher from '../../fetchers/communities';
-import PropsRoute from '../PropsRoute';
 import profileFetcher from '../../fetchers/profile';
+
 
 class Community extends React.Component {
   static propTypes = {
@@ -59,20 +58,16 @@ class Community extends React.Component {
 
     if (!account) return <p>Sign in to join {community.name}</p>;
     if (!profile) return <Join slug={slug} onJoin={setProfile} />;
-    return (
-      <Switch>
-        <Route path="/c/:slug/thread/:id" component={Discussion} />
-        <PropsRoute Component={MemberArea} props={{ community, profile }} />
-      </Switch>
-    );
+    return <MemberArea {...{ community, profile }} />
   }
 
   render() {
     const { community } = this.state;
-    if (!community.name) console.log(this);
+    if (!community) return null;
     return (
       <Paper>
         <Header community={community} />
+        <Divider />
         <this.Main />
       </Paper>
     );
