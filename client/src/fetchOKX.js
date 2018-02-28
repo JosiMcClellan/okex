@@ -7,8 +7,3 @@ export default function fetchOKX(path, options) {
     })
     .catch(console.log);
 }
-
-fetchOKX.withToken = (token, path, options) => {
-  const header = new Headers({ Authorization: `Token ${token}` });
-  return fetchOKX(path, { headers: header, ...options });
-};

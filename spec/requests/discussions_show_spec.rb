@@ -1,9 +1,9 @@
 require_relative 'request_spec_helper'
 
 describe 'discussions#show' do
-  let! :community { create(:community) }
-  let! :discussion { create(:discussion, community: community) }
-  let! :account { create(:account) }
+  let!(:community) { create(:community) }
+  let!(:account) { create(:account) }
+  let!(:discussion) { create(:discussion, community: community) }
 
   it %{
     if the account doesn't have a profile for the community,

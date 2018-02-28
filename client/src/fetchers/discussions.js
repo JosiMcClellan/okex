@@ -1,7 +1,7 @@
 import localAccount from '../App/localAccount';
 
 export default {
-  get: id => (
+  get: (slug, id) => (
     localAccount.fetchWithToken(`discussions/${id}`)
   ),
   index: slug => (

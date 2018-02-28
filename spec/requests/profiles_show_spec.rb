@@ -1,8 +1,8 @@
 require_relative 'request_spec_helper'
 
 describe 'profiles#show', :type => :request do
-  let! :community { create(:community) }
-  let! :account { create(:account) }
+  let!(:community) { create(:community) }
+  let!(:account) { create(:account) }
 
   it %{
     if there is not a profile for that account/community pair

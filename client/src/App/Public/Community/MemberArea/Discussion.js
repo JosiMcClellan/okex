@@ -7,8 +7,8 @@ import List, {
 import discussionFetcher from '../../../../fetchers/discussions';
 
 class Discussion extends React.Component {
-  static Post = ({ body, postedAt }) => (
-    <ListItem>
+  static Post = ({ body, postedAt, id }) => (
+    <ListItem key={id}>
       <ListItemText primary={body} secondary={`Posted: ${postedAt}`} />
     </ListItem>
   )
@@ -16,21 +16,21 @@ class Discussion extends React.Component {
   constructor(props) {
     super(props);
     this.id = props.match.params.id;
-    const discussion = Object.assign({ posts: [] }, props.location.state);
+    const discussion = props.location.state.data;
     this.state = { discussion };
   }
 
   componentDidMount() {
+    if (this.state.discussion) return;
     this.getDiscussion();
   }
 
   getDiscussion() {
-    const { id } = this.props.match.params;
-    discussionFetcher.get(id).then(discussion => this.setState({ discussion }));
+    const { id, slug } = this.props.match.params;
+    discussionFetcher.get(id, slug).then(discussion => this.setState({ discussion }));
   }
 
   render() {
-    console.log(this);
     const { discussion: { posts, topic } } = this.state;
     return (
       <List subheader={<ListSubheader>{ topic }</ListSubheader>}>

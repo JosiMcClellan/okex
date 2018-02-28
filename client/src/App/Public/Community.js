@@ -69,7 +69,7 @@ class Community extends React.Component {
 
   render() {
     const { community } = this.state;
-    if (!community) return null;
+    if (!community.name) console.log(this);
     return (
       <Paper>
         <Header community={community} />

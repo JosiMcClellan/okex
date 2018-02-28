@@ -1,8 +1,8 @@
 require_relative 'request_spec_helper'
 
 describe 'discussions#index' do
-  let! :community { create(:community) }
-  let! :account { create(:account) }
+  let!(:community) { create(:community) }
+  let!(:account) { create(:account) }
   before { create_list(:discussion, 3, community: community) }
 
   it %{
