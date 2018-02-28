@@ -1,9 +1,6 @@
 class PostSerializer < ActiveModel::Serializer
 
-  attributes  :id, :body
-
-  def postedAt
-    object.created_at
-  end
+  attributes :id, :body
+  attribute :created_at, key: :postedAt
 
 end

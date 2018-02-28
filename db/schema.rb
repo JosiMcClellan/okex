@@ -37,14 +37,24 @@ ActiveRecord::Schema.define(version: 20180226130922) do
     t.index ["name"], name: "index_communities_on_name", unique: true
   end
 
+  create_table "discussions", force: :cascade do |t|
+    t.bigint "profile_id"
+    t.bigint "community_id"
+    t.string "topic", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_discussions_on_community_id"
+    t.index ["profile_id"], name: "index_discussions_on_profile_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.bigint "profile_id"
     t.bigint "discussion_id"
     t.text "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["profile_id"], name: "index_posts_on_profile_id"
     t.index ["discussion_id"], name: "index_posts_on_discussion_id"
+    t.index ["profile_id"], name: "index_posts_on_profile_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -59,24 +69,14 @@ ActiveRecord::Schema.define(version: 20180226130922) do
     t.index ["community_id"], name: "index_profiles_on_community_id"
   end
 
-  create_table "discussions", force: :cascade do |t|
-    t.bigint "profile_id"
-    t.bigint "community_id"
-    t.string "topic", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["community_id"], name: "index_discussions_on_community_id"
-    t.index ["profile_id"], name: "index_discussions_on_profile_id"
-  end
-
   create_table "worlds", force: :cascade do |t|
     t.string "hello"
   end
 
-  add_foreign_key "posts", "profiles"
-  add_foreign_key "posts", "discussions"
-  add_foreign_key "profiles", "accounts"
-  add_foreign_key "profiles", "communities"
   add_foreign_key "discussions", "communities"
   add_foreign_key "discussions", "profiles"
+  add_foreign_key "posts", "discussions"
+  add_foreign_key "posts", "profiles"
+  add_foreign_key "profiles", "accounts"
+  add_foreign_key "profiles", "communities"
 end
