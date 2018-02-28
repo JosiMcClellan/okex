@@ -2,7 +2,6 @@ class Seeder
   include FactoryBot::Syntax::Methods
 
   def seed
-    DatabaseCleaner.clean_with(:truncation)
 
     communities.each do |c|
       create(:community, **c) do |community|
