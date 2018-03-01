@@ -1,5 +1,7 @@
 class Community < ApplicationRecord
 
+  default_scope{ order(name: :asc) }
+
   before_validation :set_slug
   def to_param
     slug
