@@ -23,7 +23,7 @@ class Community extends React.Component {
     super(props);
     this.slug = props.match.params.slug;
     this.state = {
-      community: props.location.state,
+      community: props.location.state && props.location.state.data,
       profile: null,
     };
   }

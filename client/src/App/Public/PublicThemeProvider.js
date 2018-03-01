@@ -52,8 +52,7 @@ const PublicThemeProvider = ({ children }) => (
             backgroundColor: cyan[50],
             color: grey[900],
             textAlign: 'center',
-            padding: '1vh',
-            height: '100%',
+            padding: '2vh',
           },
         },
         MuiGridList: {

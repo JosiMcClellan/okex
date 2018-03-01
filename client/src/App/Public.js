@@ -6,6 +6,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
+import Icon from 'material-ui/Icon';
 
 import PublicThemeProvider from './Public/PublicThemeProvider';
 import GoogleLoginButton from './Public/GoogleLoginButton';
@@ -20,6 +21,7 @@ import localAccount from './localAccount';
 import HelloWorld from './Public/HelloWorld';
 import Terms from './Public/Terms';
 import About from './Public/About';
+import Josi from './Public/Josi';
 import NotFound from './Public/NotFound';
 
 class Public extends React.Component {
@@ -59,25 +61,28 @@ class Public extends React.Component {
           <header>
             <AppBar position="sticky">
               <Toolbar>
-                <LinkContainer to="/c"><Button>Communities</Button></LinkContainer>
                 <LinkContainer to="/" className="brand">
                   <Button>
-                    <Typography variant="display4">OKX</Typography>
+                    <Typography variant="display4"><Icon>O</Icon></Typography>
+                    <Typography variant="display4"><Icon>K</Icon></Typography>
+                    <Typography variant="display4"><Icon>X</Icon></Typography>
                   </Button>
                 </LinkContainer>
                 <this.AccountSection />
+                <LinkContainer to="/c"><Button>Communities</Button></LinkContainer>
               </Toolbar>
             </AppBar>
           </header>
 
           <main>
-            <Paper>
+            <Paper className="big">
               <Switch>
                 <Route exact path="/" render={() => 'Home Page'} />
                 <Route exact path="/terms" component={Terms} />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/settings" component={Settings} />
                 <Route exact path="/hello_world" component={HelloWorld} />
+                <Route exact path="/josi" component={Josi} />
                 <Route exact path="/c" component={CommunityIndex} />
                 <PropsRoute path="/c/:slug" Component={Community} props={{ account }} />
                 <Route component={NotFound} />
@@ -91,6 +96,7 @@ class Public extends React.Component {
               <LinkContainer to="/terms"><Button>Terms</Button></LinkContainer>
               <LinkContainer to="/about"><Button>About</Button></LinkContainer>
               <LinkContainer to="/hello_world"><Button>Hello World</Button></LinkContainer>
+              <LinkContainer to="/josi"><Button>Josi</Button></LinkContainer>
             </Toolbar>
           </footer>
 

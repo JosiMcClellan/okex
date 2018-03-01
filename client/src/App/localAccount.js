@@ -7,12 +7,25 @@ export default {
     const header = new Headers({ Authorization: `Token ${stored.token}` });
     return fetchOKX(path, { headers: header, ...options });
   },
-  stored() {
-    return localStorage.getItem('account');
+  post(path, data) {
+    const stored = this.load();
+    if (!stored) return Promise.resolve(null);
+    const body = JSON.stringify(data);
+    const headers = new Headers({
+      Authorization: `Token ${stored.token}`,
+      'Content-Type': 'application/json',
+    });
+    return fetchOKX(path, { headers, body, method: 'post' });
   },
   load() {
-    const stored = this.stored();
-    return stored && JSON.parse(stored);
+    const stored = localStorage.getItem('account');
+    try {
+      return stored && JSON.parse(stored);
+    } catch (e) {
+      console.log(e);
+      this.destroy();
+      return false;
+    }
   },
   save(account) {
     localStorage.setItem('account', JSON.stringify(account));

@@ -1,9 +1,7 @@
 class AccountCreator
 
   def self.create(*args)
-    creator = new(*args)
-    creator.create
-    creator.account
+    new(*args).create
   end
 
   attr_reader :account
@@ -11,18 +9,27 @@ class AccountCreator
     @response = response
   end
 
-    private
-
-    def create
-      welcome if populate_created
+  def create
+    if account.new_record?
+      populate && welcome
+    else
+      account.touch
     end
+    account
+  end
 
-    def populate_created
-      account.new_record? && account.update(
+  private
+
+    def populate
+      account.update(
         token: tokens['access_token'],
         email: profile['email'],
         email_verified: profile['email_verified']
       )
+    end
+
+    def welcome
+      SendGrid.new(account).welcome
     end
 
     def account
@@ -35,10 +42,6 @@ class AccountCreator
 
     def tokens
       @tokens ||= JSON.parse(@response.body)
-    end
-
-    def welcome
-      SendGrid.new(account).welcome
     end
 
 end

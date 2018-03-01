@@ -7,9 +7,5 @@ export default {
   index: slug => (
     account.fetchWithToken(`communities/${slug}/discussions`)
   ),
-  create: slug => (
-    account.fetchWithToken(`communities/${slug}/discussions`, {
-      method: 'POST',
-    })
-  ),
+  create: (slug, topic) => account.post(`communities/${slug}/discussions`, { topic }),
 };

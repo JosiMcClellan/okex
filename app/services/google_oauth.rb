@@ -1,8 +1,7 @@
 class GoogleOauth
 
-  REDIRECT_URI = 'http://localhost:3000'
-  API_URL = 'https://www.googleapis.com'
-  TOKEN_PATH = '/oauth2/v4/token'
+  REDIRECT = 'http://localhost:3000'
+  ENDPOINT = 'https://www.googleapis.com/oauth2/v4/token'
 
   def self.fetch_tokens(*args)
     new(*args).fetch_tokens
@@ -12,11 +11,11 @@ class GoogleOauth
     @code = code
   end
 
-  private
 
     def fetch_tokens
-      connection.post(TOKEN_PATH) do |request|
-        request.body = build_body
+      Faraday.post(ENDPOINT) do |req|
+        req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        req.body = body
       end
     end
 
@@ -27,12 +26,23 @@ class GoogleOauth
       end
     end
 
-    def body
+    def fetch_tokens
+      Faraday.post(ENDPOINT) do |req|
+        req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        req.body = build_body
+      end
+    end
+
+    def token_url
+      'https://www.googleapis.com/oauth2/v4/token'
+    end
+
+    def build_body
       {
         code: @code,
         client_id: ENV['GOOGLE_CLIENT_ID'],
         client_secret: ENV['GOOGLE_CLIENT_SECRET'],
-        redirect_uri: REDIRECT_URI,
+        redirect_uri: 'http://localhost:3000',
         grant_type: 'authorization_code'
       }
     end

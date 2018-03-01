@@ -68,8 +68,8 @@ class Seeder
         # description:
       },
       {
-        name: 'Antiracism',
-        image_url: 'https://78.media.tumblr.com/810b6d7949cc4159b48ceb58b3297b78/tumblr_mtlphyXKge1sb3v5jo1_500.jpg'
+        name: 'Antiracism'
+        # image_url: 'https://78.media.tumblr.com/810b6d7949cc4159b48ceb58b3297b78/tumblr_mtlphyXKge1sb3v5jo1_500.jpg'
         # description:
       },
       {
@@ -87,8 +87,9 @@ class Seeder
       },
       {
         name: 'Queer Rights',
-        image_url: 'https://78.media.tumblr.com/9f128d28bd7cb2104de83c96aae354cd/tumblr_od7bq205cT1rxif0no5_400.gif'
+        image_url: 'http://www.dannizamudio.com/wp-content/uploads/2014/03/Screen-shot-2011-09-17-at-1.27.39-AM.png'
         # description: ""
+        # image_url: 'https://78.media.tumblr.com/9f128d28bd7cb2104de83c96aae354cd/tumblr_od7bq205cT1rxif0no5_400.gif'
         # 'https://blog.animationstudies.org/wp-content/uploads/2017/04/Garnetop.png'
         # 'https://cdn2.desu-usergeneratedcontent.xyz/co/image/1446/00/1446006960475.jpg'
         # 'https://cdn2.desu-usergeneratedcontent.xyz/co/image/1478/05/1478054525204.png'

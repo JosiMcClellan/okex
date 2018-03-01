@@ -3,7 +3,7 @@ class Api::V1::DiscussionsController < ApplicationController
   before_action :require_profile
 
   def index
-    okay @community.discussions
+    okay @community.discussions.eager_load(:posts)
   end
 
   def show

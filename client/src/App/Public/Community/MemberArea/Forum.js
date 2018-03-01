@@ -22,15 +22,17 @@ class Forum extends React.Component {
             inset
             primary={data.topic}
             // eslint-disable-next-line max-len
-            secondary={<span>started {data.founded} -- <b>{data.posts.length} posts</b> -- active {data.active}</span>}
+            secondary={
+              <span>started {data.founded} -- <b>{data.posts.length} posts</b> -- active {data.active}
+               </span>}
           />
         </ListItem>
       </LinkContainer>
     );
   }
 
-  handleCreate = () => (
-    fetchDiscussions.create(this.props.slug).then(this.reset)
+  handleCreateDiscussion = topic => (
+    fetchDiscussions.create(this.props.slug, topic)
   )
 
   render() {
@@ -39,11 +41,11 @@ class Forum extends React.Component {
         <ButtonForNew
           title="Start a Thread"
           resource="thread"
-          handleCreate={this.handleCreate}
+          handleCreate={this.handleCreateDiscussion}
         >
           Enter the topic below.  If you haven&#39;t yet, please read our <Link to="/terms">terms</Link>.
         </ButtonForNew>
-        <List>
+        <List dense>
           {this.props.discussions.map(this.Thread)}
         </List>
       </div>

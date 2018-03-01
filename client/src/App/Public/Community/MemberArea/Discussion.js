@@ -5,20 +5,23 @@ import List, {
   ListItemText,
   ListSubheader,
 } from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 import ButtonForNew from './ButtonForNew';
 import fetchDiscussions from '../../../../fetchers/discussions';
-// import fetchPosts from '../../../../fetchers/posts';
+import fetchPosts from '../../../../fetchers/posts';
 
 class Discussion extends React.Component {
   static Post = ({ body, posted, id }) => (
     <ListItem key={id}>
+      <Divider />
       <ListItemText inset primary={body} secondary={`posted ${posted}`} />
     </ListItem>
   )
 
   constructor(props) {
     super(props);
-    this.id = props.match.params.id;
+    this.discussion_id = props.match.params.id;
+    this.slug = props.match.params.slug;
     this.state = { discussion: props.location.state.data };
   }
 
@@ -28,9 +31,12 @@ class Discussion extends React.Component {
 
   setDiscussion = discussion => this.setState({ discussion })
   getDiscussion() {
-    const { id, slug } = this.props.match.params;
-    return fetchDiscussions.get(id, slug).then(this.setDiscussion);
+    fetchDiscussions.get(this.slug, this.discussion_id).then(this.setDiscussion);
   }
+
+  handleCreatePost = body => (
+    fetchPosts.create(this.slug, this.discussion_id, body)
+  )
 
   render() {
     const { discussion: { posts, topic } } = this.state;
@@ -39,7 +45,7 @@ class Discussion extends React.Component {
         <ButtonForNew
           title="New Post"
           resource="post"
-          handleCreate={console.log} // {this.handleCreatePost}
+          handleCreate={this.handleCreatePost}
         >
           Enter the text below.  If you haven&#39;t yet, please read our <Link to="/terms">terms</Link>.
         </ButtonForNew>

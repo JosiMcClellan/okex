@@ -15,8 +15,8 @@ class HelloWorld extends React.Component {
 
   style = {
     fontFamily: 'Papyrus',
-    margin: '10%',
-    fontSize: '10rem',
+    padding: '20vh',
+    fontSize: '20vh',
   }
 
   render() {

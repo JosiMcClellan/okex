@@ -1,10 +1,7 @@
 import account from '../App/localAccount';
 
 export default {
-  create: (slug, discussionId) => (
-    account.fetchWithToken(
-      `communities/${slug}/discussions/${discussionId}/posts`,
-      { method: 'POST' },
-    )
+  create: (slug, discussionId, body) => (
+    account.post(`communities/${slug}/discussions/${discussionId}/posts`, { body })
   ),
 };

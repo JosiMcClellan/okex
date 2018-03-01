@@ -41,18 +41,28 @@ class ButtonForNew extends React.Component {
   handleKeyPress = (event) => {
     if (event.key !== 'Enter') return;
     event.preventDefault();
-    this.handleCreate();
+    this.handleCreate(this.state.value);
   }
 
   ButtonPaper = withStyles(theme => ({
     root: {
-      marginLeft: '10%',
-      marginRight: '10%',
+      marginLeft: '5%',
+      marginRight: '5%',
       backgroundColor: theme.palette.action.A100,
       color: 'white',
-      borderRadius: '0 0 100% 100%',
+      borderRadius: '1vh 1vh 25vh 25vh',
+      paddingTop: '100vh',
+      marginTop: '-100vh',
+      zIndex: -25,
     },
   }))(Paper)
+
+  NewButton = withStyles(theme => ({
+    root: {
+      backgroundColor: theme.palette.secondary.main,
+      color: 'white',
+    },
+  }))(Button)
 
   render() {
     const {
@@ -64,7 +74,7 @@ class ButtonForNew extends React.Component {
 
     return (
       <this.ButtonPaper>
-        <Button onClick={setOpen}>{title}</Button>
+        <this.NewButton onClick={setOpen}>{title}</this.NewButton>
         <Dialog
           open={open}
           onClose={setClosed}

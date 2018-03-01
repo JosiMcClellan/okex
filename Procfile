@@ -1,1 +1,1 @@
-web: bin/rails server
+rails server RAILS_ENV='production'
