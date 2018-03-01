@@ -21,8 +21,8 @@ describe 'discussions#index' do
     if the account has a profile for the community,
       it renders all discussions, including:
         topic
-        createdAt
-        activeAt
+        started
+        active
   } do
     create(:profile, account: account, community: community)
     get(
@@ -32,8 +32,8 @@ describe 'discussions#index' do
     expect_array_shape(3,
       :id,
       :topic,
-      :createdAt,
-      :activeAt,
+      :started,
+      :active,
       :posts
     )
     expect(response).to be_ok

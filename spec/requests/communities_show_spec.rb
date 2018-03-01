@@ -15,20 +15,20 @@ describe 'communities#show' do
       name,
       slug,
       description,
-      image_url,
-      created_at,
-      updated_at
+      image,
+      founded,
+      active
   } do
     get api_v1_community_path(create(:community))
-    expect(response).to be_ok
-    expect(contents.keys).to contain_exactly(
+    expect_shape(
       :id,
       :name,
       :slug,
       :description,
-      :image_url,
-      :created_at,
-      :updated_at
+      :image,
+      :founded,
+      :active
     )
+    expect(response).to be_ok
   end
 end

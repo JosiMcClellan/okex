@@ -3,17 +3,12 @@ require_relative 'request_spec_helper'
 describe 'accounts#create' do
 
   before do
-    allow_any_instance_of(AccountCreator)
-      .to receive(:create)
-      .and_return(build(:account))
-    allow_any_instance_of(Api::V1::AccountsController)
-      .to receive(:request_tokens)
-      .and_return({})
+
   end
 
   it %{
     with a non-bearer auth header
-      it returns an error.
+      it renders unauthorized.
   } do
     headers = { 'Authorization' => 'Token abc123' }
     post api_v1_account_path, headers: headers
@@ -30,9 +25,8 @@ describe 'accounts#create' do
         email,
         token,
   } do
-    allow_any_instance_of(AccountCreator)
-      .to receive(:create)
-      .and_return(create(:account))
+    allow(GoogleOauth).to receive(:fetch_tokens).and_return({})
+    allow(AccountCreator).to receive(:create).and_return(create(:account))
     headers = { 'Authorization' => 'Bearer abc123' }
     post api_v1_account_path, headers: headers
 

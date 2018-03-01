@@ -10,4 +10,11 @@ class Api::V1::DiscussionsController < ApplicationController
     try_okay @community.discussions.find_by_id(params[:id])
   end
 
+  def create
+    try_created @community.discussions.create(
+      profile: @profile,
+      topic: params[:topic]
+    )
+  end
+
 end

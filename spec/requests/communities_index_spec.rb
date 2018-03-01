@@ -15,22 +15,22 @@ describe 'communities#index' do
       name,
       slug,
       description,
-      image_url,
-      created_at,
-      updated_at
+      image,
+      founded,
+      active
   } do
     create_list(:community, 3)
     get api_v1_communities_path
-    expect(response).to be_ok
     expect(contents.length).to eq(3)
     expect(contents.first.keys).to contain_exactly(
       :id,
       :name,
       :slug,
       :description,
-      :image_url,
-      :created_at,
-      :updated_at
+      :image,
+      :founded,
+      :active
     )
+    expect(response).to be_ok
   end
 end

@@ -6,7 +6,9 @@ Rails.application.routes.draw do
       resources :communities, only: [:index, :show], param: :slug
       scope path: 'communities/:slug' do
         resource :profile, only: [:show, :create]
-        resources :discussions, only: [:index, :show]
+        resources :discussions, only: [:index, :show, :create] do
+          resources :posts, only: :create
+        end
       end
 
       get 'hello_world', to: 'hello_world#hello_world'

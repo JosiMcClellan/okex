@@ -1,16 +1,16 @@
 require_relative 'request_spec_helper'
 
-describe 'discussions#show' do
+describe 'posts#create' do
   let!(:community) { create(:community) }
   let!(:account) { create(:account) }
   let!(:discussion) { create(:discussion, community: community) }
 
   it %{
     if the account doesn't have a profile for the community,
-      it renders an error.
+      it renders a forbidden error.
   } do
-    get(
-      api_v1_discussion_path(community, discussion),
+    post(
+      api_v1_discussion_posts_path(community, discussion),
       headers: token_header(account)
     )
     expect_shape :error
@@ -18,38 +18,38 @@ describe 'discussions#show' do
   end
 
   it %{
-    if the discussion doesnt exist,
-      it renders an error.
+    if the account has a profile for the community,
+      but no body param is supplied,
+        it renders an unprocessable error.
   } do
     create(:profile, account: account, community: community)
-    get(
-      api_v1_discussion_path(community, -1),
+    post(
+      api_v1_discussion_posts_path(community, discussion),
       headers: token_header(account)
     )
     expect_shape :error
-    expect(response).to be_not_found
+    expect(response).to be_unprocessable
   end
 
   it %{
     if the account has a profile for the community,
-      it renders the discussion, including:
-        topic
-        started
-        active
-        posts
+      and a body param is supplied,
+        it renders the discussion, including:
+          id,
+          body,
+          posted
   } do
     create(:profile, account: account, community: community)
-    get(
-      api_v1_discussion_path(community, discussion),
+    post(
+      api_v1_discussion_posts_path(community, discussion),
+      params: { body: 'whatever' },
       headers: token_header(account)
     )
     expect_shape(
       :id,
-      :topic,
-      :started,
-      :active,
-      :posts
+      :body,
+      :posted
     )
-    expect(response).to be_ok
+    expect(response).to be_created
   end
 end
