@@ -1,4 +1,4 @@
-class AccountSerializer < ActiveModel::Serializer
+class AccountSerializer < ApplicationSerializer
   attributes :id, :email, :token
 
   # has_many :profiles

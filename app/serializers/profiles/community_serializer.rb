@@ -1,4 +1,4 @@
-class CommunitySerializer < ActiveModel::Serializer
+class CommunitySerializer < ApplicationSerializer
 
   attributes  :id,
               :name,

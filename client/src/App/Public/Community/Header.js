@@ -5,7 +5,7 @@ import Typography from 'material-ui/Typography';
 const CommunityHeader = ({ community }) => (
   <div>
     <Typography variant="display3">{community.name}</Typography>
-    <p>{community.description}</p>
+    <Typography variant="caption">{community.description}</Typography>
   </div>
 );
 CommunityHeader.propTypes = {

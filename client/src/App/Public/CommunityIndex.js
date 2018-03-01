@@ -7,7 +7,7 @@ class CommunityIndex extends React.Component {
   static Preview = preview => (
     <LinkContainer key={preview.slug} to={{ state: preview, pathname: `c/${preview.slug}` }}>
       <GridListTile rows={3}>
-        <img alt={preview.name} src={preview.image_url} />
+        <img alt={preview.name} src={preview.image} />
         <GridListTileBar
           title={preview.name}
           subtitle={preview.description}

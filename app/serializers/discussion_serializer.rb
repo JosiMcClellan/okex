@@ -1,8 +1,14 @@
-class DiscussionSerializer < ActiveModel::Serializer
+class DiscussionSerializer < ApplicationSerializer
 
   has_many :posts
-  attributes :id, :topic
-  attribute :updated_at, key: :activeAt
-  attribute :created_at, key: :createdAt
+  attributes :id, :topic, :started, :active
+
+  def started
+    formatted_time(:created_at)
+  end
+
+  def active
+    formatted_time(:updated_at)
+  end
 
 end

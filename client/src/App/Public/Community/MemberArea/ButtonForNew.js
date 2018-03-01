@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
@@ -11,42 +12,43 @@ import Dialog, {
 import { withStyles } from 'material-ui/styles';
 
 class ButtonForNew extends React.Component {
+  static propTypes = {
+    handleCreate: PropTypes.func.isRequired,
+    resource: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }
+
   constructor(props) {
     super(props);
-    this.state = {
-      open: false,
-      value: '',
-    };
+    this.state = { open: false, value: '' };
   }
 
-  setOpen = () => {
-    this.setState({ open: true });
-  };
+  setOpen = () => this.setState({ open: true })
+  setClosed = () => this.setState({ open: false })
 
-  setClosed = () => {
-    this.setState({ open: false });
-  };
+  handleChange = event => (
+    this.setState({ value: event.target.value })
+  )
 
-  handleChange = (e) => {
-    this.setState({ value: e.target.value });
-  }
+  handleCreate = () => (
+    this.props.handleCreate(this.state.value)
+      .then(this.reset)
+      .catch(console.log)
+  )
 
-  handleCreate = () => {
-    this.props.handleCreate(this.state.value);
-    this.setState({ open: false, value: '' });
-  }
+  reset = () => this.setState({ open: false, value: '' });
 
-  handleKeyPress = (e) => {
-    if (e.key !== 'Enter') return;
-    e.preventDefault();
+  handleKeyPress = (event) => {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
     this.handleCreate();
   }
 
-  NewButtonPaper = withStyles(theme => ({
+  ButtonPaper = withStyles(theme => ({
     root: {
       marginLeft: '10%',
       marginRight: '10%',
-      backgroundColor: theme.palette.action.A100, // [50],
+      backgroundColor: theme.palette.action.A100,
       color: 'white',
       borderRadius: '0 0 100% 100%',
     },
@@ -56,12 +58,12 @@ class ButtonForNew extends React.Component {
     const {
       state: { open, value },
       props: { title, resource, children },
-      setOpen, setClosed,
       handleCreate, handleChange, handleKeyPress,
+      setOpen, setClosed,
     } = this;
 
     return (
-      <this.NewButtonPaper>
+      <this.ButtonPaper>
         <Button onClick={setOpen}>{title}</Button>
         <Dialog
           open={open}
@@ -95,7 +97,7 @@ class ButtonForNew extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </this.NewButtonPaper>
+      </this.ButtonPaper>
     );
   }
 }

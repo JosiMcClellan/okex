@@ -58,7 +58,7 @@ class Community extends React.Component {
 
     if (!account) return <p>Sign in to join {community.name}</p>;
     if (!profile) return <Join slug={slug} onJoin={setProfile} />;
-    return <MemberArea {...{ community, profile }} />
+    return <MemberArea {...{ community, profile }} />;
   }
 
   render() {

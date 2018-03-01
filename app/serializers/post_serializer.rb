@@ -1,6 +1,9 @@
-class PostSerializer < ActiveModel::Serializer
+class PostSerializer < ApplicationSerializer
 
-  attributes :id, :body
-  attribute :created_at, key: :postedAt
+  attributes :id, :body, :posted
+
+  def posted
+    formatted_time(:created_at)
+  end
 
 end
