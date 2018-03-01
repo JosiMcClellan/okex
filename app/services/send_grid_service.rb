@@ -5,8 +5,8 @@ class SendGridService
     @account = account
   end
 
-  def welcome(account)
-    account[:email_verified] ? welcome_verified : welcome_unverified
+  def welcome
+    @account[:email_verified] ? welcome_verified : welcome_unverified
   end
 
   private
@@ -53,7 +53,5 @@ class SendGridService
         })
       )
     end
-
-  end
 
 end

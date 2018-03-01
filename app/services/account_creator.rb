@@ -29,7 +29,7 @@ class AccountCreator
     end
 
     def welcome
-      SendGrid.new(account).welcome
+      SendGridService.new(account).welcome
     end
 
     def account

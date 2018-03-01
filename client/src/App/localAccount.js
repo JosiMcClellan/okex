@@ -28,7 +28,7 @@ export default {
     }
   },
   save(account) {
-    localStorage.setItem('account', JSON.stringify(account));
+    if (account) localStorage.setItem('account', JSON.stringify(account));
   },
   destroy() {
     localStorage.removeItem('account');
