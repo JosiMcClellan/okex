@@ -6,12 +6,14 @@ class Api::V1::AccountsController < ApplicationController
     try_created create_account(response)
   end
 
-  def fetch_tokens(code)
-    GoogleOauth.fetch_tokens(code)
-  end
+  private
 
-  def create_account(response)
-    AccountCreator.create(response)
-  end
+    def fetch_tokens(code)
+      GoogleOauth.fetch_tokens(code)
+    end
+
+    def create_account(response)
+      AccountCreator.create(response)
+    end
 
 end

@@ -12,19 +12,20 @@ class ApplicationController < ActionController::API
   end
 
   def require_account
-    return unauthorized unless token = extract_auth('Token')
-    @account ||= Account.find_by_token(token)
+    @account ||= Account.find_by_token(extract_auth('Token'))
     @account || unauthorized
   end
 
   def require_profile
     return unless require_community && require_account
-    @profile ||= Profile.find_by(account: @account, community: @community)
+    @profile ||= Profile.find_by(community: @community, account: @account)
     @profile || forbidden
   end
 
   def extract_auth(type)
-    AuthHeader.extract(type, request.headers[:Authorization])
+    pattern = /#{type} (.+)/
+    match = pattern.match(request.headers[:Authorization])
+    match && match.captures.first
   end
 
 end

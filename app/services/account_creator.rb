@@ -4,7 +4,6 @@ class AccountCreator
     new(*args).create
   end
 
-  attr_reader :account
   def initialize(response)
     @response = response
   end
