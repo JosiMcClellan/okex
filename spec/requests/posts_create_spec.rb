@@ -7,34 +7,34 @@ describe 'posts#create' do
 
   it %{
     if the account doesn't have a profile for the community,
-      it renders a forbidden error.
+      it sends a forbidden error.
   } do
     post(
       api_v1_discussion_posts_path(community, discussion),
       headers: token_header(account)
     )
+    expect_status 403
     expect_shape :error
-    expect(response).to be_forbidden
   end
 
   it %{
     if the account has a profile for the community,
       but no body param is supplied,
-        it renders an unprocessable error.
+        it sends an unprocessable error.
   } do
     create(:profile, account: account, community: community)
     post(
       api_v1_discussion_posts_path(community, discussion),
       headers: token_header(account)
     )
+    expect_status 422
     expect_shape :error
-    expect(response).to be_unprocessable
   end
 
   it %{
     if the account has a profile for the community,
       and a body param is supplied,
-        it renders the discussion, including:
+        it creates and sends the post, including:
           id,
           body,
           posted
@@ -45,11 +45,11 @@ describe 'posts#create' do
       params: { body: 'whatever' },
       headers: token_header(account)
     )
+    expect_status 201
     expect_shape(
       :id,
       :body,
       :posted
     )
-    expect(response).to be_created
   end
 end

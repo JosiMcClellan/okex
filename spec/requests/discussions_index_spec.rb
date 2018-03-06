@@ -7,19 +7,19 @@ describe 'discussions#index' do
 
   it %{
     if the account doesn't have a profile for the community,
-      it renders an error.
+      it sends a forbidden error.
   } do
     get(
       api_v1_discussions_path(community),
       headers: token_header(account)
     )
+    expect_status 403
     expect_shape :error
-    expect(response).to be_forbidden
   end
 
   it %{
     if the account has a profile for the community,
-      it renders all discussions, including:
+      it sends all discussions, including:
         topic
         started
         active
@@ -29,13 +29,14 @@ describe 'discussions#index' do
       api_v1_discussions_path(community),
       headers: token_header(account)
     )
-    expect_array_shape(3,
+    expect_status 200
+    expect_array_shape(
+      3,
       :id,
       :topic,
       :started,
       :active,
       :posts
     )
-    expect(response).to be_ok
   end
 end

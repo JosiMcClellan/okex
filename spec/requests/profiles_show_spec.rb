@@ -6,19 +6,19 @@ describe 'profiles#show', :type => :request do
 
   it %{
     if there is not a profile for that account/community pair
-      it returns an error message.
+      it sends a forbidden error.
   } do
     get(
       api_v1_profile_path(community),
       headers: token_header(account)
     )
+    expect_status 403
     expect_shape :error
-    expect(response).to be_not_found
   end
 
   it %{
     if there is a profile for that account/community pair
-      it renders the profile including:
+      it sends a profile including:
         handle
         community
   } do
@@ -27,7 +27,7 @@ describe 'profiles#show', :type => :request do
       api_v1_profile_path(community),
       headers: token_header(account)
     )
+    expect_status 200
     expect_shape :handle, :community
-    expect(response).to be_ok
   end
 end

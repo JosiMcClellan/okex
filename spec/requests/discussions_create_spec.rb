@@ -6,34 +6,34 @@ describe 'discussions#create' do
 
   it %{
     if the account doesn't have a profile for the community,
-      it renders a forbidden error.
+      it sends a forbidden error.
   } do
     post(
       api_v1_discussions_path(community),
       headers: token_header(account)
     )
+    expect_status 403
     expect_shape :error
-    expect(response).to be_forbidden
   end
 
   it %{
     if the account has a profile for the community,
       but no topic param is supplied,
-        it renders an unprocessable error
+        it sends an unprocessable error
   } do
     create(:profile, account: account, community: community)
     post(
       api_v1_discussions_path(community),
       headers: token_header(account)
     )
+    expect_status 422
     expect_shape :error
-    expect(response).to be_unprocessable
   end
 
   it %{
     if the account has a profile for the community,
       and there a topic param is supplied,
-        it renders the discussion, including:
+        it creates and sends the discussion, including:
           topic
           started
           active
@@ -45,6 +45,7 @@ describe 'discussions#create' do
       params: { topic: 'FOOBAR' },
       headers: token_header(account)
     )
+    expect_status 201
     expect_shape(
       :id,
       :topic,
@@ -52,6 +53,5 @@ describe 'discussions#create' do
       :active,
       :posts
     )
-    expect(response).to be_created
   end
 end

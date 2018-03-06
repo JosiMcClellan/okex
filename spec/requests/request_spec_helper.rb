@@ -1,11 +1,15 @@
 require 'rails_helper'
 
+def token_header(account)
+  { Authorization: "Token #{account.token}" }
+end
+
 def contents
   JSON.parse(response.body, symbolize_names: true)
 end
 
-def token_header(account)
-  { Authorization: "Token #{account.token}" }
+def expect_status(code)
+  expect(response.status).to eq(code)
 end
 
 def expect_shape(*keys)
