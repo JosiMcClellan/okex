@@ -12,9 +12,10 @@ import MatchesIcon from 'material-ui-icons/Star';
 import ForumIcon from 'material-ui-icons/AccountBalance';
 import SettingsIcon from 'material-ui-icons/Settings';
 
+import Banner from './Banner';
 import Forum from './MemberArea/Forum';
 import Discussion from '../Community/MemberArea/Discussion';
-import fetchDiscussons from '../../../fetchers/discussions';
+import fetchDiscussions from '../../../fetchers/discussions';
 
 class MemberArea extends React.Component {
   static propTypes = {
@@ -26,20 +27,34 @@ class MemberArea extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { discussions: [], value: 'Dashboard' };
+    this.state = { discussions: [], tab: 'Dashboard' };
   }
 
   componentDidMount() {
     const { slug } = this.props.community;
-    fetchDiscussons.index(slug).then(discussions => this.setState({ discussions }));
+    fetchDiscussions.index(slug).then(discussions => this.setState({ discussions }));
   }
 
+  handleNewTopic = async (topic) => {
+    console.log(this);
+    const created = await fetchDiscussions.create(this.props.community.slug, topic);
+    if (created.error) return console.log(`failed to create discussion: ${created.error}`);
+    this.state.discussions.unshift(created);
+    this.forceUpdate();
+  }
+  // addCreatedDiscussion = (created) => {
+  //   this.forceUpdate();
+  // }
+
   OpenTab = () => {
-    const { value, discussions } = this.state;
-    const { slug } = this.props.community;
-    switch (value) {
-      case 'Forum': return <Forum {...{ discussions, slug }} />;
-      default: return `It's your ${value}!  Yay!`;
+    const {
+      handleNewTopic,
+      state: { tab, discussions },
+      props: { community: { slug } },
+    } = this;
+    switch (tab) {
+      case 'Forum': return console.log(this) || console.log(slug) || <Forum {...{ handleNewTopic, discussions, slug }} />;
+      default: return `It's your ${tab}!  Yay!`;
     }
   }
 
@@ -53,8 +68,8 @@ class MemberArea extends React.Component {
     ['Settings', SettingsIcon],
   ]
 
-  handleChange = (e, value) => {
-    this.setState({ value });
+  handleChange = (e, tab) => {
+    this.setState({ tab });
   };
 
   render() {
@@ -62,11 +77,13 @@ class MemberArea extends React.Component {
     return (
       <div>
         <LinkContainer to={`/c/${slug}`}>
-          <Tabs centered value={this.state.value} onChange={this.handleChange}>
-            {this.tabs.map(([name, Icon]) => (
-              <Tab key={name} label={name} value={name} icon={<Icon />} />
-            ))}
-          </Tabs>
+          <Banner>
+            <Tabs centered value={this.state.tab} onChange={this.handleChange}>
+              {this.tabs.map(([name, Icon]) => (
+                <Tab key={name} label={name} value={name} icon={<Icon />} />
+              ))}
+            </Tabs>
+          </Banner>
         </LinkContainer>
         <Switch>
           <Route path="/c/:slug/thread/:id" component={Discussion} />

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Paper from 'material-ui/Paper';
-import Divider from 'material-ui/Divider';
+import Typography from 'material-ui/Typography';
 
+import communitiesFetcher from '../../fetchers/communities';
+import profileFetcher from '../../fetchers/profile';
+import Banner from './Community/Banner';
 import Header from './Community/Header';
 import Join from './Community/Join';
 import MemberArea from './Community/MemberArea';
-import communitiesFetcher from '../../fetchers/communities';
-import profileFetcher from '../../fetchers/profile';
 
 
 class Community extends React.Component {
@@ -33,13 +33,15 @@ class Community extends React.Component {
     this.getCommunity();
   }
 
-  componentWillReceiveProps() {
-    this.getProfile();
+  componentWillReceiveProps({ account }) {
+    const oldAccount = this.props.account;
+    if (account && !oldAccount) this.getProfile();
+    if (oldAccount && !account) this.setState({ profile: null });
   }
 
   setProfile = profile => this.setState({ profile })
   getProfile() {
-    if (!this.props.account) return;
+    // if (!this.props.account) return;
     profileFetcher.get(this.slug).then(this.setProfile);
   }
 
@@ -49,27 +51,31 @@ class Community extends React.Component {
     communitiesFetcher.get(this.slug).then(this.setCommunity);
   }
 
-  Main = () => {
-    const {
-      slug, setProfile,
-      props: { account },
-      state: { community, profile },
-    } = this;
-
-    if (!account) return <p>Sign in to join {community.name}</p>;
-    if (!profile) return <Join slug={slug} onJoin={setProfile} />;
-    return <MemberArea {...{ community, profile }} />;
-  }
+  LoginPrompt = () => (
+    <Banner>
+      <Typography variant="body2">
+        Sign in to join {this.state.community.name}
+      </Typography>
+    </Banner>
+  );
 
   render() {
-    const { community } = this.state;
+    const {
+      state: { community, profile },
+      props: { account },
+      slug, setProfile, LoginPrompt,
+    } = this;
+
     if (!community) return null;
     return (
-      <Paper>
-        <Header community={community} />
-        <Divider />
-        <this.Main />
-      </Paper>
+      <div>
+        <Header {...{ community }} />
+        {
+          (profile && <MemberArea {...{ community, profile }} />)
+          || (account && <Join slug={slug} onJoin={setProfile} />)
+          || <LoginPrompt />
+        }
+      </div>
     );
   }
 }

@@ -42,7 +42,7 @@ class AccountMenu extends React.Component {
           aria-owns={anchorEl && 'login-dropdown'}
           aria-haspopup="true"
         >
-          {account.email}
+          {account.email} &#9660;
         </Button>
         <Menu
           id="login-dropdown"
@@ -50,9 +50,9 @@ class AccountMenu extends React.Component {
           open={!!anchorEl}
           onClose={handleClose}
         >
-          <LinkContainer to="/settings"><Button>Settings</Button></LinkContainer>
-          <LinkContainer to="/profiles"><Button>My Profiles</Button></LinkContainer>
-          <Button onClick={handleLogout}>Logout</Button>
+          <LinkContainer to="/settings"><Button variant="raised">Settings</Button></LinkContainer>
+          <LinkContainer to="/profiles"><Button variant="raised">My Profiles</Button></LinkContainer>
+          <Button onClick={handleLogout} variant="raised">Logout</Button>
         </Menu>
       </div>
     );

@@ -11,13 +11,18 @@ class GoogleOauth
   end
 
   def fetch_tokens
-    Faraday.post(ENDPOINT) do |req|
-      req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-      req.body = build_body
-    end
+    response = send_request
+    JSON.parse(response.body)
   end
 
   private
+
+    def send_request
+      Faraday.post(ENDPOINT) do |req|
+        req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        req.body = build_body
+      end
+    end
 
     def build_body
       {
@@ -25,8 +30,14 @@ class GoogleOauth
         code: @code,
         client_id: ENV['GOOGLE_CLIENT_ID'],
         client_secret: ENV['GOOGLE_CLIENT_SECRET'],
-        redirect_uri: '/'
+        redirect_uri: redirect_uri
       }
+    end
+
+    def redirect_uri
+      if Rails.env.production?
+        'https://okx.herokuapp.com' else 'http://localhost:3000'
+      end
     end
 
 end

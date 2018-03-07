@@ -1,73 +1,83 @@
 import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import Reboot from 'material-ui/Reboot';
-import pink from 'material-ui/colors/pink';
+import amber from 'material-ui/colors/amber';
+import lightGreen from 'material-ui/colors/lightGreen';
 import cyan from 'material-ui/colors/cyan';
-import deepPurple from 'material-ui/colors/deepPurple';
-import lime from 'material-ui/colors/lime';
-import grey from 'material-ui/colors/grey';
+import lightBlue from 'material-ui/colors/lightBlue';
+
+const palette = {
+  primary:
+  cyan,
+  secondary:
+  lightBlue,
+  action:
+  lightGreen,
+  grey:
+  amber,
+};
+const typography = {
+  display4: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: '2em',
+    letterSpacing: '-4px',
+    textShadow: '2px 0 1px red, 4px 0 1px orange, 6px 0 1px yellow, 8px 0 1px green, 10px 0 1px blue, 12px 0 1px indigo, 15px 0 1px violet',
+    marginLeft: '-15px',
+  },
+  display3: {
+    // fontFamily: 'monospace',
+    fontSize: '6rem',
+    fontWeight: '100',
+    letterSpacing: '0.05em',
+    color: 'black',
+  },
+  display2: {
+    marginBottom: '2%',
+  },
+};
+const overrides = {
+  MuiToolbar: {
+    root: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      backgroundColor: palette.secondary.A200,
+      border: '1px solid black',
+    },
+  },
+  MuiPaper: {
+    root: {
+      backgroundColor: palette.secondary[200],
+      textAlign: 'center',
+      padding: '2vh',
+    },
+  },
+  MuiGridList: {
+    root: {
+      padding: '1vh',
+    },
+  },
+  MuiListItem: {
+    root: {
+      textAlign: 'center',
+    },
+  },
+  MuiButton: {
+    raised: {
+      margin: 'auto',
+      borderRadius: '20px',
+    },
+  },
+};
+const styles = {
+  palette,
+  typography,
+  overrides,
+};
 
 const PublicThemeProvider = ({ children }) => (
-  <MuiThemeProvider
-    theme={createMuiTheme({
-      typography: {
-        root: {
-          color: 'black',
-        },
-        display4: {
-          color: 'black',
-          fontSize: '3rem',
-        },
-        display3: {
-          color: 'black',
-          fontSize: '4rem',
-        },
-      },
-      palette: {
-        primary: {
-          light: deepPurple[50],
-          main: pink[100],
-          dark: '#c48b9f',
-          contrastText: 'black',
-        },
-        secondary: {
-          light: '#4f5b62',
-          main: '#263238',
-          dark: '#000a12',
-          contrastText: 'white',
-        },
-        action: lime,
-      },
-      overrides: {
-        MuiToolbar: {
-          root: {
-            display: 'flex',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            backgroundColor: pink[100],
-          },
-        },
-        MuiPaper: {
-          root: {
-            backgroundColor: cyan[50],
-            color: grey[900],
-            textAlign: 'center',
-            padding: '2vh',
-          },
-        },
-        MuiGridList: {
-          root: {
-            padding: '1vh',
-          },
-        },
-        MuiListItem: {
-          root: {
-            textAlign: 'center',
-          },
-        },
-      },
-    })}
-  >
+  <MuiThemeProvider theme={createMuiTheme(styles)}>
     <Reboot />
     {children}
   </MuiThemeProvider>

@@ -6,7 +6,7 @@ import communitiesFetcher from '../../fetchers/communities';
 class CommunityIndex extends React.Component {
   static Preview = preview => (
     <LinkContainer key={preview.slug} to={{ state: preview, pathname: `c/${preview.slug}` }}>
-      <GridListTile rows={3}>
+      <GridListTile>
         <img alt={preview.name} src={preview.image} />
         <GridListTileBar
           title={preview.name}
@@ -30,7 +30,7 @@ class CommunityIndex extends React.Component {
     const { communities } = this.state;
     if (!communities) return 'Loading';
     return (
-      <GridList cols={3} padding={10} spacing={12}>
+      <GridList cols={2} padding={10} spacing={12}>
         {communities.map(CommunityIndex.Preview)}
       </GridList>
     );

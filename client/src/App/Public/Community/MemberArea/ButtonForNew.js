@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Button from 'material-ui/Button';
-import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogActions,
@@ -44,37 +44,29 @@ class ButtonForNew extends React.Component {
     this.handleCreate(this.state.value);
   }
 
-  ButtonPaper = withStyles(theme => ({
-    root: {
-      marginLeft: '5%',
-      marginRight: '5%',
-      backgroundColor: theme.palette.action.A100,
-      color: 'white',
-      borderRadius: '1vh 1vh 25vh 25vh',
-      paddingTop: '100vh',
-      marginTop: '-100vh',
-      zIndex: -25,
-    },
-  }))(Paper)
-
   NewButton = withStyles(theme => ({
     root: {
-      backgroundColor: theme.palette.secondary.main,
-      color: 'white',
+      backgroundColor: theme.palette.action.A400,
+      border: `1px solid ${theme.palette.action.A700}`,
+      marginBottom: '2%',
+      width: '90%',
+    },
+    label: {
+      padding: '1em',
     },
   }))(Button)
 
   render() {
     const {
       state: { open, value },
-      props: { title, resource, children },
+      props: { title, resource },
       handleCreate, handleChange, handleKeyPress,
       setOpen, setClosed,
     } = this;
 
     return (
-      <this.ButtonPaper>
-        <this.NewButton onClick={setOpen}>{title}</this.NewButton>
+      <div>
+        <this.NewButton variant="raised" onClick={setOpen}>{title}</this.NewButton>
         <Dialog
           open={open}
           onClose={setClosed}
@@ -84,12 +76,12 @@ class ButtonForNew extends React.Component {
           <DialogTitle id={`new-${resource}-form-title`}>{title}</DialogTitle>
           <DialogContent>
             <DialogContentText id={`new-${resource}-form-text`}>
-              {children}
+              If you haven&#39;t yet, please read our <Link to="/terms">terms</Link>.
             </DialogContentText>
             <TextField
               id="topic"
               label="Topic"
-              type="text"
+              type="textarea"
               margin="dense"
               autoFocus
               fullWidth
@@ -99,15 +91,15 @@ class ButtonForNew extends React.Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={setClosed} color="primary">
+            <Button onClick={setClosed}>
               Cancel
             </Button>
-            <Button onClick={handleCreate} color="secondary">
+            <Button onClick={handleCreate}>
               Save
             </Button>
           </DialogActions>
         </Dialog>
-      </this.ButtonPaper>
+      </div>
     );
   }
 }

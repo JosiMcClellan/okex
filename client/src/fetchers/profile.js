@@ -2,11 +2,9 @@ import account from '../App/localAccount';
 
 export default {
   get: slug => (
-    account.fetchWithToken(`communities/${slug}/profile`)
+    account.authorizedFetch(`communities/${slug}/profile`)
   ),
   create: slug => (
-    account.fetchWithToken(`communities/${slug}/profile`, {
-      method: 'POST',
-    })
+    account.authorizedPost(`communities/${slug}/profile`)
   ),
 };

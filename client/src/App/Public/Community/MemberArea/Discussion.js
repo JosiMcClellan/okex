@@ -1,28 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import List, {
-  ListItem,
-  ListItemText,
-  ListSubheader,
-} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import ButtonForNew from './ButtonForNew';
+
 import fetchDiscussions from '../../../../fetchers/discussions';
 import fetchPosts from '../../../../fetchers/posts';
+import ButtonForNew from './ButtonForNew';
+import DataGrid from './Forum/DataGrid';
 
 class Discussion extends React.Component {
   static Post = ({ body, posted, id }) => (
-    <ListItem key={id}>
-      <Divider />
-      <ListItemText inset primary={body} secondary={`posted ${posted}`} />
-    </ListItem>
+    <DataGrid.Item
+      key={id}
+      primary={body}
+      captions={[`posted ${posted}`]}
+    />
   )
 
   constructor(props) {
     super(props);
     this.discussion_id = props.match.params.id;
     this.slug = props.match.params.slug;
-    this.state = { discussion: props.location.state.data };
+    this.state = props.location.state || {};
   }
 
   componentDidMount() {
@@ -46,12 +42,10 @@ class Discussion extends React.Component {
           title="New Post"
           resource="post"
           handleCreate={this.handleCreatePost}
-        >
-          Enter the text below.  If you haven&#39;t yet, please read our <Link to="/terms">terms</Link>.
-        </ButtonForNew>
-        <List subheader={<ListSubheader>{topic}</ListSubheader>}>
+        />
+        <DataGrid title={`Thread: ${topic}`}>
           {posts.map(Discussion.Post)}
-        </List>
+        </DataGrid>
       </div>
     );
   }

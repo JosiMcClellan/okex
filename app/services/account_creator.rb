@@ -4,8 +4,8 @@ class AccountCreator
     new(*args).create
   end
 
-  def initialize(response)
-    @response = response
+  def initialize(tokens)
+    @tokens = tokens
   end
 
   def create
@@ -21,7 +21,7 @@ class AccountCreator
 
     def populate
       account.update(
-        token: tokens['access_token'],
+        token: @tokens['access_token'],
         email: profile['email'],
         email_verified: profile['email_verified']
       )
@@ -36,11 +36,7 @@ class AccountCreator
     end
 
     def profile
-      @profile ||= JWT.decode(tokens['id_token'], false, nil).first
-    end
-
-    def tokens
-      @tokens ||= JSON.parse(@response.body)
+      @profile ||= JWT.decode(@tokens['id_token'], false, nil).first
     end
 
 end

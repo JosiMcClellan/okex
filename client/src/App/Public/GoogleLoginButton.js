@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GoogleLogin from 'react-google-login';
+import Button from 'material-ui/Button';
 
 const GoogleLoginButton = ({ handleLogin }) => (
   <GoogleLogin
@@ -13,7 +14,9 @@ const GoogleLoginButton = ({ handleLogin }) => (
     className="login"
     tag="div"
   >
-    <img alt="Sign In with Google" src="../google_sign_in.png" />
+    <Button style={{ padding: 0 }}>
+      <img alt="Sign In with Google" src="../google_sign_in.png" />
+    </Button>
   </GoogleLogin>
 );
 GoogleLoginButton.propTypes = {

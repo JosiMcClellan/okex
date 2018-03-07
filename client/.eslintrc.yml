@@ -16,8 +16,14 @@
     space-before-function-paren:
       - error
       - never
+    consistent-return:
+      - off
 
-    # for react-router
+    # react-router
+    jsx-a11y/anchor-is-valid:
+      - error
+      - specialLink:
+        - to
     react/prop-types:
       - warn #TEMP
       - ignore:
@@ -26,23 +32,17 @@
         - history
         - match
 
-    # https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
+    # Dan Abramov says so: https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
     react/jsx-filename-extension:
       - error
       - extensions:
         - .js
 
-    # for react-router
-    jsx-a11y/anchor-is-valid:
-      - error
-      - specialLink:
-        - to
-
-    # sometimes it's really optional
+    # sometimes it's really optional, do I need to specify default null?
     react/require-default-props:
       - off
 
-    # slow to conform in early development
+    # nbd and switching back/forth is slow early on
     react/prefer-stateless-function:
       - off #TEMP
 

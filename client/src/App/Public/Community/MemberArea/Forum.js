@@ -1,39 +1,39 @@
 import React from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Link } from 'react-router-dom';
-import List, { ListItem, ListItemText } from 'material-ui/List';
+import PropTypes from 'prop-types';
+
+// import fetchDiscussions from '../../../../fetchers/discussions';
 import ButtonForNew from './ButtonForNew';
-import fetchDiscussions from '../../../../fetchers/discussions';
+import DataGrid from './Forum/DataGrid';
 
 class Forum extends React.Component {
+  static propTypes = {
+    slug: PropTypes.string.isRequired,
+    handleCreateDiscussion: PropTypes.func.isRequired,
+  }
   static defaultProps = {
     discussions: [],
   }
 
-  Thread = (data) => {
-    const linkTo = {
-      pathname: `/c/${this.props.slug}/thread/${data.id}`,
-      state: { data },
-    };
+  Thread = (discussion) => {
+    const {
+      id, topic, started, active, posts,
+    } = discussion;
     return (
-      <LinkContainer key={data.id} to={linkTo}>
-        <ListItem>
-          <ListItemText
-            inset
-            primary={data.topic}
-            // eslint-disable-next-line max-len
-            secondary={
-              <span>started {data.founded} -- <b>{data.posts.length} posts</b> -- active {data.active}
-               </span>}
-          />
-        </ListItem>
-      </LinkContainer>
+      <DataGrid.Item
+        key={id}
+        primary={topic}
+        captions={[
+          `${posts.length} posts`,
+          `started ${started}`,
+          `active ${active}`,
+        ]}
+        to={{
+          pathname: `/c/${this.props.slug}/thread/${id}`,
+          state: { discussion },
+        }}
+      />
     );
   }
-
-  handleCreateDiscussion = topic => (
-    fetchDiscussions.create(this.props.slug, topic)
-  )
 
   render() {
     return (
@@ -41,13 +41,11 @@ class Forum extends React.Component {
         <ButtonForNew
           title="Start a Thread"
           resource="thread"
-          handleCreate={this.handleCreateDiscussion}
-        >
-          Enter the topic below.  If you haven&#39;t yet, please read our <Link to="/terms">terms</Link>.
-        </ButtonForNew>
-        <List dense>
+          handleCreate={this.props.handleNewTopic}
+        />
+        <DataGrid title="All Threads">
           {this.props.discussions.map(this.Thread)}
-        </List>
+        </DataGrid>
       </div>
     );
   }

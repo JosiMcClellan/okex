@@ -3,7 +3,6 @@ body {
   padding: 0;
 }
 html, body, .public {
-  background-color: black;
   min-height: 100%;
 }
 .public {
@@ -11,7 +10,7 @@ html, body, .public {
   flex-direction: column;
 }
 .big {
-  min-height: 77vh;
+  min-height: 83vh;
 }
 main {
   background-color: 'black';

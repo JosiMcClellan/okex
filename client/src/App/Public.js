@@ -1,12 +1,14 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
-import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
-import Icon from 'material-ui/Icon';
+
+import accountFetcher from '../fetchers/account';
+import localAccount from './localAccount';
+import PropsRoute from './PropsRoute';
 
 import PublicThemeProvider from './Public/PublicThemeProvider';
 import GoogleLoginButton from './Public/GoogleLoginButton';
@@ -14,10 +16,7 @@ import AccountMenu from './Public/AccountMenu';
 import CommunityIndex from './Public/CommunityIndex';
 import Community from './Public/Community';
 import Settings from './Public/Settings';
-import PropsRoute from './PropsRoute';
-import accountFetcher from '../fetchers/account';
-import localAccount from './localAccount';
-
+import HomePage from './Public/HomePage';
 import HelloWorld from './Public/HelloWorld';
 import Terms from './Public/Terms';
 import About from './Public/About';
@@ -45,8 +44,7 @@ class Public extends React.Component {
     this.setState({ account });
   }
 
-  AccountSection = () => {
-    const { account } = this.state;
+  AccountSection = ({ account }) => {
     const { handleLogout, handleLogin } = this;
     if (!account) return <GoogleLoginButton {...{ handleLogin }} />;
     return <AccountMenu {...{ account, handleLogout }} />;
@@ -57,27 +55,23 @@ class Public extends React.Component {
     return (
       <PublicThemeProvider>
         <div className="public">
-
           <header>
-            <AppBar position="sticky">
-              <Toolbar>
-                <LinkContainer to="/" className="brand">
-                  <Button>
-                    <Typography variant="display4"><Icon>O</Icon></Typography>
-                    <Typography variant="display4"><Icon>K</Icon></Typography>
-                    <Typography variant="display4"><Icon>X</Icon></Typography>
-                  </Button>
-                </LinkContainer>
-                <this.AccountSection />
-                <LinkContainer to="/c"><Button>Communities</Button></LinkContainer>
-              </Toolbar>
-            </AppBar>
+            <Toolbar position="sticky">
+              <LinkContainer to="/" className="brand">
+                <Button>
+                  <Typography variant="display4">OKX</Typography>
+                </Button>
+              </LinkContainer>
+              <this.AccountSection {...{ account }} />
+              <LinkContainer to="/c">
+                <Button>Communities</Button>
+              </LinkContainer>
+            </Toolbar>
           </header>
-
           <main>
             <Paper className="big">
               <Switch>
-                <Route exact path="/" render={() => 'Home Page'} />
+                <Route exact path="/" component={HomePage} />
                 <Route exact path="/terms" component={Terms} />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/settings" component={Settings} />
@@ -89,20 +83,20 @@ class Public extends React.Component {
               </Switch>
             </Paper>
           </main>
-
           <footer>
             <Toolbar>
-              <Typography variant="headline">©2018 Josi McClellan</Typography>
+              <LinkContainer to="/josi">
+                <Button>
+                  <Typography variant="headline">©2018 Josi McClellan</Typography>
+                </Button>
+              </LinkContainer>
               <LinkContainer to="/terms"><Button>Terms</Button></LinkContainer>
               <LinkContainer to="/about"><Button>About</Button></LinkContainer>
               <LinkContainer to="/hello_world"><Button>Hello World</Button></LinkContainer>
-              <LinkContainer to="/josi"><Button>Josi</Button></LinkContainer>
             </Toolbar>
           </footer>
-
         </div>
       </PublicThemeProvider>
-
     );
   }
 }

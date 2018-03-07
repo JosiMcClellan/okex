@@ -48,8 +48,8 @@ module ResponseHelpers
     send_error 404, 'route matches, but record not found'
   end
 
-  def general_error
-    send_error 500, 'something went wrong'
+  def general_error(message = 'something went wrong')
+    send_error 500, message
   end
 
 end

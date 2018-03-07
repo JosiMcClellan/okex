@@ -29,8 +29,6 @@ class Seeder
         ) do |discussion|
           seed_discussion_posts(discussion)
         end
-      rescue Exception => e
-        require "pry"; binding.pry
       end
     end
   end
