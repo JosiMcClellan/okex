@@ -1,33 +1,45 @@
 require_relative 'request_spec_helper'
 
-describe 'profiles#show', :type => :request do
-  let!(:community) { create(:community) }
-  let!(:account) { create(:account) }
+describe 'profiles#show' do
+  let(:community){ create(:community) }
+  let(:account){ create(:account) }
+  let(:header){ token_header(account.token) }
+  let(:path){ "/api/v1/communities/#{community.slug}/profile" }
 
-  it %{
-    if there is not a profile for that account/community pair
-      it sends a forbidden error.
-  } do
-    get(
-      api_v1_profile_path(community),
-      headers: token_header(account)
-    )
-    expect_status 403
-    expect_shape :error
+  context 'if there is no community' do
+    specify 'it sends a not found error' do
+      get('/api/v1/communities/fake-slug/profile')
+      expect_error 404
+    end
   end
 
-  it %{
-    if there is a profile for that account/community pair
-      it sends a profile including:
-        handle
-        community
-  } do
-    create(:profile, account: account, community: community)
-    get(
-      api_v1_profile_path(community),
-      headers: token_header(account)
-    )
-    expect_status 200
-    expect_shape :handle, :community
+  context 'if there is no account' do
+    specify 'it sends an unauthorized error' do
+      get(path)
+      expect_error 401
+    end
+  end
+
+  context 'if the account has no profile for that community' do
+    specify 'it sends a forbidden error' do
+      get(path, headers: header)
+      expect_error 403
+    end
+  end
+
+  context 'if the account has a profile for that community' do
+    specify 'it sends a profile including id, handle, and fields' do
+      create(:profile, account: account, community: community)
+      get(path, headers: header)
+      expect_response 200, {
+        id: Integer,
+        handle: String,
+        fields: [
+          id: Integer,
+          prompt: String,
+          response: ShapeExpecter.optional(String)
+        ]
+      }
+    end
   end
 end

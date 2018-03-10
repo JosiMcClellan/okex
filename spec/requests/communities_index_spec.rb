@@ -11,18 +11,16 @@ describe 'communities#index' do
       founded,
       active
   } do
-    create_list(:community, 3)
-    get api_v1_communities_path
-    expect_status 200
-    expect_array_shape(
-      3,
-      :id,
-      :name,
-      :slug,
-      :description,
-      :image,
-      :founded,
-      :active
-    )
+    create_list(:community, 2)
+    get '/api/v1/communities'
+    expect_response(200, [{
+      id: Integer,
+      name: String,
+      slug: String,
+      description: String,
+      image: String,
+      founded: String,
+      active: String
+    }])
   end
 end

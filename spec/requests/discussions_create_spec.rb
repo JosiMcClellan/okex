@@ -1,57 +1,45 @@
 require_relative 'request_spec_helper'
 
 describe 'discussions#create' do
-  let!(:community) { create(:community) }
-  let!(:account) { create(:account) }
+  let(:community) { create(:community) }
+  let(:account) { create(:account) }
+  let(:path) { api_v1_discussions_path(community) }
+  let(:header) { token_header(account.token) }
 
-  it %{
-    if the account doesn't have a profile for the community,
-      it sends a forbidden error.
-  } do
-    post(
-      api_v1_discussions_path(community),
-      headers: token_header(account)
-    )
-    expect_status 403
-    expect_shape :error
+  context 'if the account has no profile for the community' do
+    specify 'it sends a forbidden error' do
+      post(path, headers: header)
+      expect_error 403
+    end
   end
 
-  it %{
-    if the account has a profile for the community,
-      but no topic param is supplied,
-        it sends an unprocessable error
-  } do
-    create(:profile, account: account, community: community)
-    post(
-      api_v1_discussions_path(community),
-      headers: token_header(account)
-    )
-    expect_status 422
-    expect_shape :error
-  end
+  context 'if the account has a profile for the community' do
+    before do
+      create(:profile, account: account, community: community)
+    end
 
-  it %{
-    if the account has a profile for the community,
-      and there a topic param is supplied,
-        it creates and sends the discussion, including:
-          topic
-          started
-          active
-          posts
-  } do
-    create(:profile, account: account, community: community)
-    post(
-      api_v1_discussions_path(community),
-      params: { topic: 'FOOBAR' },
-      headers: token_header(account)
-    )
-    expect_status 201
-    expect_shape(
-      :id,
-      :topic,
-      :started,
-      :active,
-      :posts
-    )
+    context 'but no topic param is supplied' do
+      specify 'it sends an unprocessable error' do
+        post(path, headers: header)
+        expect_error 422
+      end
+    end
+
+    context 'and a topic param is supplied' do
+      specify 'it creates and sends discussion with topic, started, active, posts' do
+        post(path, headers: header, params: { topic: 'FOOBAR' })
+        expect_response(201,
+          id: Integer,
+          topic: String,
+          started: String,
+          active: String,
+          posts: [{
+            id: Integer,
+            body: String,
+            posted: String,
+          }]
+        )
+      end
+    end
   end
 end

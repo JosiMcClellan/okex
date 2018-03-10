@@ -1,55 +1,46 @@
 require_relative 'request_spec_helper'
 
 describe 'discussions#show' do
-  let!(:community) { create(:community) }
-  let!(:account) { create(:account) }
-  let!(:discussion) { create(:discussion, community: community) }
+  let(:community) { create(:community) }
+  let(:account) { create(:account) }
+  let(:discussion) { create(:discussion, community: community) }
+  let(:path) { api_v1_discussion_path(community, discussion) }
+  let(:header) { token_header(account.token) }
 
-  it %{
-    if the account doesn't have a profile for the community,
-      it sends a forbidden error.
-  } do
-    get(
-      api_v1_discussion_path(community, discussion),
-      headers: token_header(account)
-    )
-    expect_status 403
-    expect_shape :error
+  context 'if the account has no profile for the community' do
+    specify 'it sends a forbidden error' do
+      get(path, headers: header)
+      expect_error 403
+    end
   end
 
-  it %{
-    if the discussion doesnt exist,
-      it it sends a not found error.
-  } do
-    create(:profile, account: account, community: community)
-    get(
-      api_v1_discussion_path(community, -1),
-      headers: token_header(account)
-    )
-    expect_status 404
-    expect_shape :error
-  end
+  context 'if the account has a profile for the community' do
+    before do
+      create(:profile, account: account, community: community)
+    end
 
-  it %{
-    if the account has a profile for the community,
-      it sends the discussion, including:
-        topic
-        started
-        active
-        posts
-  } do
-    create(:profile, account: account, community: community)
-    get(
-      api_v1_discussion_path(community, discussion),
-      headers: token_header(account)
-    )
-    expect_status 200
-    expect_shape(
-      :id,
-      :topic,
-      :started,
-      :active,
-      :posts
-    )
+    context 'but no discussion matches' do
+      specify 'it sends a not found error' do
+        get(api_v1_discussion_path(community, 404101), headers: header)
+        expect_error 404
+      end
+    end
+
+    context 'and a discussion matches' do
+      specify 'it sends the discussion with topic, started, active and posts' do
+        get(path, headers: header)
+        expect_response(200,
+          id: Integer,
+          topic: String,
+          started: String,
+          active: String,
+          posts: [{
+            id: Integer,
+            body: String,
+            posted: String
+          }]
+        )
+      end
+    end
   end
 end
