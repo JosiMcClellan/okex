@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from 'material-ui/Typography';
-import fetchOKX from '../../fetchOKX';
+import fetchOKX from '../../../fetchOKX';
 
 class HelloWorld extends React.Component {
   constructor(props) {
