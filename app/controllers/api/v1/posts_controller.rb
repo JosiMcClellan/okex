@@ -12,7 +12,7 @@ class Api::V1::PostsController < ApplicationController
   private
 
     def require_discussion
-      no_resource unless @discussion = find_discussion
+      no_record unless @discussion = find_discussion
     end
 
     def find_discussion

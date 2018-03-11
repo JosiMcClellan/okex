@@ -15,7 +15,7 @@ class Api::V1::AccountsController < ApplicationController
     end
 
     def error_message(tokens)
-       "Google OAuth error: #{tokens['error_description']}"
+       "Google OAuth error: #{tokens['error']}: #{tokens['error_description']}"
     end
 
     def create_account(tokens)

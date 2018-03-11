@@ -6,7 +6,7 @@ module ResponseHelpers
   end
 
   def try_created(resource)
-    return created resource if resource.valid?
+    return created resource if resource.save
     failed_to_create(resource)
   end
 
