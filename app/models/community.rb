@@ -9,8 +9,8 @@ class Community < ApplicationRecord
 
   # belongs_to :category
   has_many :profiles
-  has_many :discussions#, through :profiles
-  # has_many :profile_prompts
+  has_many :discussions#, through :profiles, right?
+  has_many :profile_prompts
   # has_many :match_prompts
 
   validates_presence_of :name, :description, :image_url, :slug

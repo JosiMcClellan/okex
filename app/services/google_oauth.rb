@@ -10,6 +10,9 @@ class GoogleOauth
     @code = code
   end
 
+  # - No matter on format, it's all gonna be strings in my database
+# - property descriptions? the word communities is misleading but I haven't been able to think of a better one.  Anyway, in this version of the app, they're more like activist groups.  But it only has to be like one sentence stating the purpose.  And it doesn't have to be good, just better than, e.g. "Xoxo hashtag before they sold out trust fund vhs chicharrones."
+
   def fetch_tokens
     response = send_request
     JSON.parse(response.body)

@@ -6,7 +6,7 @@ import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 
-import accountFetcher from '../fetchers/account';
+import AccountFetcher from '../fetchers/AccountFetcher';
 import localAccount from './localAccount';
 import PropsRoute from './PropsRoute';
 
@@ -16,22 +16,23 @@ import AccountMenu from './Public/AccountMenu';
 import CommunityIndex from './Public/CommunityIndex';
 import Community from './Public/Community';
 import Settings from './Public/Settings';
-import HomePage from './Public/HomePage';
-import HelloWorld from './Public/HelloWorld';
-import Terms from './Public/Terms';
-import About from './Public/About';
-import Josi from './Public/Josi';
-import NotFound from './Public/NotFound';
+
+import About from './Public/StaticPages/About';
+import HelloWorld from './Public/StaticPages/HelloWorld';
+import HomePage from './Public/StaticPages/HomePage';
+import Josi from './Public/StaticPages/Josi';
+import NotFound from './Public/StaticPages/NotFound';
+import Terms from './Public/StaticPages/Terms';
 
 class Public extends React.Component {
   constructor(props) {
     super(props);
     this.state = { account: localAccount.load() };
+    this.accountFetcher = new AccountFetcher();
   }
 
   handleLogin = ({ code }) => {
-    accountFetcher.create(code)
-      .then(this.saveAccount);
+    this.accountFetcher.create(code).then(this.saveAccount);
   }
 
   handleLogout = () => {

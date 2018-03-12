@@ -1,10 +1,11 @@
 import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import Reboot from 'material-ui/Reboot';
-import amber from 'material-ui/colors/amber';
+import blueGrey from 'material-ui/colors/blueGrey';
 import lightGreen from 'material-ui/colors/lightGreen';
 import cyan from 'material-ui/colors/cyan';
 import lightBlue from 'material-ui/colors/lightBlue';
+import pink from 'material-ui/colors/pink';
 
 const palette = {
   primary:
@@ -14,7 +15,9 @@ const palette = {
   action:
   lightGreen,
   grey:
-  amber,
+  blueGrey,
+  error:
+  pink,
 };
 const typography = {
   display4: {
@@ -31,6 +34,7 @@ const typography = {
     fontWeight: '100',
     letterSpacing: '0.05em',
     color: 'black',
+    marginTop: '0',
   },
   display2: {
     marginBottom: '2%',
@@ -67,6 +71,27 @@ const overrides = {
     raised: {
       margin: 'auto',
       borderRadius: '20px',
+    },
+  },
+  MuiInput: {
+    root: {
+      fontSize: '1.5em',
+    },
+  },
+  MuiFormLabel: {
+    root: {
+      color: palette.action[900],
+    },
+  },
+  MuiMenu: {
+    paper: {
+      backgroundColor: palette.secondary[100],
+      minWidth: '20%',
+    },
+  },
+  MuiMenuItem: {
+    root: {
+      
     },
   },
 };

@@ -1,17 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import Menu from 'material-ui/Menu';
+import Menu, { MenuItem } from 'material-ui/Menu';
 import { LinkContainer } from 'react-router-bootstrap';
+import { shape, func, accountShape } from './propShapes';
 
 class AccountMenu extends React.Component {
   static propTypes = {
-    handleLogout: PropTypes.func.isRequired,
-    account: PropTypes.shape({
-      token: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
-    }).isRequired,
+    handleLogout: func.isRequired,
+    account: shape(accountShape).isRequired,
   }
 
   constructor(props) {
@@ -42,7 +38,7 @@ class AccountMenu extends React.Component {
           aria-owns={anchorEl && 'login-dropdown'}
           aria-haspopup="true"
         >
-          {account.email} &#9660;
+          {account.email}&nbsp;&#9660;
         </Button>
         <Menu
           id="login-dropdown"
@@ -50,9 +46,9 @@ class AccountMenu extends React.Component {
           open={!!anchorEl}
           onClose={handleClose}
         >
-          <LinkContainer to="/settings"><Button variant="raised">Settings</Button></LinkContainer>
-          <LinkContainer to="/profiles"><Button variant="raised">My Profiles</Button></LinkContainer>
-          <Button onClick={handleLogout} variant="raised">Logout</Button>
+          <LinkContainer to="/settings"><MenuItem dense>Settings</MenuItem></LinkContainer>
+          <LinkContainer to="/profiles"><MenuItem dense>My Profiles</MenuItem></LinkContainer>
+          <MenuItem onClick={handleLogout} dense>Logout</MenuItem>
         </Menu>
       </div>
     );

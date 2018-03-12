@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         resources :discussions, only: [:index, :show, :create] do
           resources :posts, only: :create
         end
+        resources :profile_fields, only: :update
       end
 
     end

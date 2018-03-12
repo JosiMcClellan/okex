@@ -1,50 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-// import fetchDiscussions from '../../../../fetchers/discussions';
-import ButtonForNew from './ButtonForNew';
 import DataGrid from './Forum/DataGrid';
 
+import DiscussionsFetcher from '../../../../fetchers/DiscussionsFetcher';
+import Preview from './Forum/ThreadPreview';
+
 class Forum extends React.Component {
-  static propTypes = {
-    slug: PropTypes.string.isRequired,
-    handleCreateDiscussion: PropTypes.func.isRequired,
-  }
-  static defaultProps = {
-    discussions: [],
+  static propTypes = { slug: PropTypes.string.isRequired }
+
+  constructor(props) {
+    super(props);
+    this.state = { discussions: [] };
+    this.discussionsFetcher = new DiscussionsFetcher(props.slug);
   }
 
-  Thread = (discussion) => {
-    const {
-      id, topic, started, active, posts,
-    } = discussion;
-    return (
-      <DataGrid.Item
-        key={id}
-        primary={topic}
-        captions={[
-          `${posts.length} posts`,
-          `started ${started}`,
-          `active ${active}`,
-        ]}
-        to={{
-          pathname: `/c/${this.props.slug}/thread/${id}`,
-          state: { discussion },
-        }}
-      />
-    );
+  componentDidMount() {
+    this.discussionsFetcher.index()
+      .then(discussions => this.setState({ discussions }));
+  }
+
+  createDiscussion = async(topic) => {
+    if (!topic) return;
+    const { error, ...created } = await this.discussionsFetcher.create(topic)
+      || { error: 'undefined resolution' };
+    if (error) return console.log(`discussion create error: ${error}`);
+    this.state.discussions.unshift(created);
+    this.forceUpdate();
   }
 
   render() {
+    const { props: { slug }, state: { discussions } } = this;
     return (
       <div>
-        <ButtonForNew
-          title="Start a Thread"
-          resource="thread"
-          handleCreate={this.props.handleNewTopic}
-        />
-        <DataGrid title="All Threads">
-          {this.props.discussions.map(this.Thread)}
+        <DataGrid title="All Threads" newLabel="New Thread" handleSubmit={this.createDiscussion}>
+          {discussions.map(({ id, ...rest }) => <Preview key={id} {...{ slug, id, ...rest }} />)}
         </DataGrid>
       </div>
     );

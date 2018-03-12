@@ -2,13 +2,18 @@ class Seeder
   include FactoryBot::Syntax::Methods
 
   def seed_communities
-    fixed_communities.each do |c|
-      create(:community, **c)
+    community_fixtures.each do |fixture|
+      community = create(:community, **fixture)
+      seed_community_profile_prompts(community)
     end
   end
 
+  def seed_community_profile_prompts(community)
+    rand(4..10).times { create(:profile_prompt, community: community) }
+  end
+
   def seed_accounts
-    create_list(:account, 50) do |account|
+    create_list(:account, 60) do |account|
       seed_account_profiles(account)
     end
   end
@@ -16,7 +21,16 @@ class Seeder
   def seed_account_profiles(account)
     communities = pick_random(rand(2..5), Community)
     communities.each do |community|
-      create(:profile, community: community, account: account)
+      profile = create(:profile, community: community, account: account)
+      seed_profile_responses(profile)
+    end
+  end
+
+  def seed_profile_responses(profile)
+    prompts = profile.community.profile_prompts
+    answered = pick_random(prompts.count, prompts)
+    answered.each do |prompt|
+      create(:profile_response, profile: profile, profile_prompt: prompt)
     end
   end
 
@@ -53,40 +67,37 @@ class Seeder
     assoc.order('RANDOM()').first(n)
   end
 
-  def fixed_communities
+  def community_fixtures
     [
       {
-        name: 'Ecology'
-        # image_url: '',
-        # description:
+        name: 'Environmentalism',
+        image_url: '/communities/environmentalism.jpg',
+        description: 'We care about the environment and its conservation.'
       },
       {
-        name: 'Accessibility'
-        # image_url: '',
-        # description:
+        name: 'Accessibility',
+        image_url: '/communities/accessibility.png',
+        description: 'We care about and discuss differing physical and intellectual experiences, and their ability to access the world.'
       },
       {
-        name: 'Antiracism'
-        # image_url: 'https://78.media.tumblr.com/810b6d7949cc4159b48ceb58b3297b78/tumblr_mtlphyXKge1sb3v5jo1_500.jpg'
-        # description:
+        name: 'Antiracism',
+        image_url: '/communities/antiracism.jpg',
+        description: 'We oppose racism/colorism and seek many forms of sustained action to build understanding and break down prejudices.'
       },
       {
         name: 'Feminism',
-        image_url: 'https://en.wikipedia.org/wiki/Bell_hooks#/media/File:Bell_hooks,_October_2014.jpg',
-        # http://www.orangenarwhals.com/wp-content/uploads/2015/08/hack4femlogo.svg
-        description: '"Ayo, these days I\'m on a Bell Hooks tip, and through that prism, many of you, well, look s***." -KTP'
+        image_url: '/communities/feminism.png',
+        description: 'We believe there is social, economic, or financial disparity between the genders and that this difference is wrong.'
       },
       {
         name: 'Anti Poverty',
-        image_url: 'https://video-images.vice.com/_uncategorized/1495207476572-MONOPOLY_PROTEST4.jpeg?resize=1050',
-        description: '"Everybody knows the deal is rotten, Old Black Joe\'s still picking cotton for your ribbons and bows, and everybody knows" -L. Cohen'
-        # http://www.eapn.ie/eapn/wp-content/uploads/2017/02/end-poverty-logo.jpg
-        # http://www.antipovertynetwork.org/resources/Pictures/APN_2015_SummitLogo%20copy.jpg
+        image_url: '/communities/antipoverty.jpg',
+        description: %{We connect on the multifaceted issues surrounding poverty, including its causes, effects, and how to solve.},
       },
       {
         name: 'Queer Rights',
-        image_url: 'http://www.dannizamudio.com/wp-content/uploads/2014/03/Screen-shot-2011-09-17-at-1.27.39-AM.png'
-        # description: ""
+        image_url: '/communities/queerRights.png',
+        description: 'We support all those under the Queer umbrella (LGBTQA+), and their right to life, love, and happiness.'
         # image_url: 'https://78.media.tumblr.com/9f128d28bd7cb2104de83c96aae354cd/tumblr_od7bq205cT1rxif0no5_400.gif'
         # 'https://blog.animationstudies.org/wp-content/uploads/2017/04/Garnetop.png'
         # 'https://cdn2.desu-usergeneratedcontent.xyz/co/image/1446/00/1446006960475.jpg'
@@ -94,19 +105,19 @@ class Seeder
 
       },
       {
-        name: 'Code for America',
-        image_url: 'https://s3-us-west-1.amazonaws.com/codeforamerica-cms1/profile-photos/jennifer-pahlka.jpg',
+        name: 'Pahlka Posse',
+        image_url: '/communities/pahlka.jpg',
         description: 'We are a network of people making government work for the people, by the people, in the 21st century. How do we get there? Government services that are simple, effective, and easy to use, working at scale to build healthy, prosperous, and safe communities.'
       },
       {
-        name: 'Animal Rights'
-        # image_url: '',
+        name: 'Animal Rights',
+        image_url: '/communities/animalRights.jpg'
         # description:
       },
       {
-        name: 'Free Speech'
-        # image_url: '',
-        # description:
+        name: 'Free Speech',
+        image_url: '/communities/freeSpeech.jpg',
+        description: 'Come fight for the free exchange of ideas which underpins all other rights.'
       }
     ]
   end

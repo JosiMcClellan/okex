@@ -1,24 +1,18 @@
 import React from 'react';
 
-import fetchDiscussions from '../../../../fetchers/discussions';
-import fetchPosts from '../../../../fetchers/posts';
-import ButtonForNew from './ButtonForNew';
+import DiscussionsFetcher from '../../../../fetchers/DiscussionsFetcher';
+import PostsFetcher from '../../../../fetchers/PostsFetcher';
 import DataGrid from './Forum/DataGrid';
+import Post from './Forum/Post';
 
 class Discussion extends React.Component {
-  static Post = ({ body, posted, id }) => (
-    <DataGrid.Item
-      key={id}
-      primary={body}
-      captions={[`posted ${posted}`]}
-    />
-  )
-
   constructor(props) {
     super(props);
-    this.discussion_id = props.match.params.id;
-    this.slug = props.match.params.slug;
-    this.state = props.location.state || {};
+    const { slug, id } = props.match.params;
+    this.id = id;
+    this.discussionsFetcher = new DiscussionsFetcher(slug);
+    this.postsFetcher = new PostsFetcher(slug, id);
+    this.state = props.location.state || { discussion: null };
   }
 
   componentDidMount() {
@@ -26,25 +20,21 @@ class Discussion extends React.Component {
   }
 
   setDiscussion = discussion => this.setState({ discussion })
-  getDiscussion() {
-    fetchDiscussions.get(this.slug, this.discussion_id).then(this.setDiscussion);
-  }
+  getDiscussion = () => this.discussionsFetcher.get(this.id)
+    .then(this.setDiscussion);
 
-  handleCreatePost = body => (
-    fetchPosts.create(this.slug, this.discussion_id, body)
-  )
+  createPost = body => this.postsFetcher.create(body)
 
   render() {
     const { discussion: { posts, topic } } = this.state;
     return (
       <div>
-        <ButtonForNew
-          title="New Post"
-          resource="post"
-          handleCreate={this.handleCreatePost}
-        />
-        <DataGrid title={`Thread: ${topic}`}>
-          {posts.map(Discussion.Post)}
+        <DataGrid
+          title={`Thread: ${topic}`}
+          newLabel="New Post"
+          handleSubmit={this.createPost}
+        >
+          {posts.map(Post)}
         </DataGrid>
       </div>
     );

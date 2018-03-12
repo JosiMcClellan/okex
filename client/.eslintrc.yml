@@ -11,14 +11,23 @@
     - plugin:react/recommended
     - airbnb
   rules:
-
     # personal preference
     space-before-function-paren:
       - error
       - never
     consistent-return:
       - off
-
+    default-case:
+      - error
+      - commentPattern: ^no default$
+    # leads to similar methods being confusingly seperated
+    class-methods-use-this:
+      - off
+    # for `#reduce` and such
+    no-param-reassign:
+      - error
+      - ignorePropertyModificationsFor:
+        - memo
     # react-router
     jsx-a11y/anchor-is-valid:
       - error
@@ -31,20 +40,18 @@
         - location
         - history
         - match
-
     # Dan Abramov says so: https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
     react/jsx-filename-extension:
       - error
       - extensions:
         - .js
-
-    # sometimes it's really optional, do I need to specify default null?
-    react/require-default-props:
-      - off
-
-    # nbd and switching back/forth is slow early on
+    # no big deal, but switching back/forth is slow early on
     react/prefer-stateless-function:
       - off #TEMP
+    #love it EXCEPT that I'm not gonna start importing classes
+      # just to proptype their instances
+    react/forbid-prop-types:
+      - off
 
   overrides:
     - files:

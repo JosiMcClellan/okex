@@ -4,6 +4,5 @@ export default function fetchOKX(path, options) {
     .then((res) => {
       if (res.error) throw res.error;
       return res;
-    })
-    .catch(console.log);
+    });
 }

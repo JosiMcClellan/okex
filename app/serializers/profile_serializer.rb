@@ -1,8 +1,15 @@
 class ProfileSerializer < ApplicationSerializer
-  attributes :handle
+  attributes :id, :handle, :fields
 
-  belongs_to :community
-
-  # has_many :match_responses
-  # has_many :profile_responses
+  def fields
+    object.community.profile_prompts.select('
+      profile_prompts.id, text AS prompt, prs.body AS response
+    ').joins("
+      LEFT OUTER JOIN profile_responses AS prs
+        ON
+      prs.profile_prompt_id = profile_prompts.id
+        AND
+      prs.profile_id = #{object.id}
+    ")
+  end
 end

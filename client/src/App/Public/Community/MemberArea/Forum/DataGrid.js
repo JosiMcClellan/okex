@@ -6,33 +6,44 @@ import Typography from 'material-ui/Typography';
 import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
 import { LinkContainer } from 'react-router-bootstrap';
+import SimpleDialog from '../../../Widgets/SimpleDialog';
+import BreakpointVersions from '../../../Widgets/BreakpointVersions';
 
-const DataGrid = ({ children, title }) => (
+const DataGrid = ({ children, title, newLabel, handleSubmit }) => (
   <div>
     {title &&
-      <Typography noWrap variant="display2">
-        {title}
-      </Typography>
+      <BreakpointVersions
+        Component={Typography}
+        props={{ noWrap: true }}
+        breaks={[
+          [{               smUp: true }, { key: 'xsthr', variant: 'title'    }],
+          [{ xsDown: true, mdUp: true }, { key: 'smthr', variant: 'display1' }],
+          [{ smDown: true             }, { key: 'mdthr', variant: 'display2' }],
+        ]}
+        children={title}
+      />
     }
-    <Grid container spacing={16}>
+    <SimpleDialog label={newLabel} {...{ handleSubmit }} />
+    <Grid container spacing={0}>
       {children}
     </Grid>
   </div>
 );
-DataGrid.propTypes = {
-  title: PropTypes.string,
-};
+DataGrid.propTypes = { title: PropTypes.string, newLabel: PropTypes.string.isRequired };
+DataGrid.defaultProps = { title: null };
 
 DataGrid.Link = ({ to, children }) => {
   if (!to) return children;
   return <LinkContainer to={to}>{children}</LinkContainer>;
-};
+}
 
 DataGrid.Item = withStyles(theme => ({
   root: {
-    width: '90%',
-    border: `1px solid ${theme.palette.primary.A700}`,
-    backgroundColor: theme.palette.primary.A100,
+    width: '95%',
+    border: `1px solid ${theme.palette.grey.A700}`,
+    backgroundColor: 'transparent',
+    borderRadius: '0',
+    padding: '2em',
   },
   label: {
     width: '100%',
@@ -46,16 +57,12 @@ DataGrid.Item = withStyles(theme => ({
   <DataGrid.Link to={to}>
     <Grid item xs={12} xl={6}>
       <ButtonBase variant="raised" {...{ classes }}>
-        <Typography noWrap variant="subheading">
+        <Typography variant="subheading">
           {primary}
         </Typography>
         <div>
-          <Hidden only="xs">
-            {captions.map((caption, key) => (
-              <Typography noWrap variant="caption" {...{ key }}>
-                {caption}
-              </Typography>
-            ))}
+          <Hidden xsDown>
+            {captions.map((caption, key) => <DataGrid.Caption {...{ caption, key }} />)}
           </Hidden>
         </div>
       </ButtonBase>
@@ -63,25 +70,10 @@ DataGrid.Item = withStyles(theme => ({
   </DataGrid.Link>
 ));
 
-// DataGrid.Item = ({ primary, captions, to }) => (
-//   <DataGrid.Link to={to}>
-//     <Grid item xs={12} lg={6} xl={4}>
-//       <Test variant="raised" style={{ width: '100%', borderRadius: '5%' }}>
-//         <Typography noWrap variant="subheading">
-//           {primary}
-//         </Typography>
-//         <Hidden xsDown>
-//           <div>
-//             {captions.map((caption, key) => <DataGrid.Caption {...{ caption, key }} />)}
-//           </div>
-//         </Hidden>
-//       </Test>
-//     </Grid>
-//   </DataGrid.Link>
-// );
 DataGrid.Item.propTypes = {
   primary: PropTypes.string.isRequired,
   captions: PropTypes.arrayOf(PropTypes.string),
+  // to: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
 };
 
 DataGrid.Caption = ({ caption, key }) => (

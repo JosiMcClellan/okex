@@ -7,7 +7,10 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def create
-    try_created @community.profiles.create(account: @account)
+    try_created @community.profiles.create(
+      account: @account,
+      handle: params[:handle]
+    )
   end
 
 end

@@ -1,7 +1,7 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
-import communitiesFetcher from '../../fetchers/communities';
+import CommunitiesFetcher from '../../fetchers/CommunitiesFetcher';
 
 class CommunityIndex extends React.Component {
   static Preview = preview => (
@@ -22,7 +22,7 @@ class CommunityIndex extends React.Component {
   }
 
   componentDidMount() {
-    communitiesFetcher.index()
+    new CommunitiesFetcher().index()
       .then(communities => this.setState({ communities }));
   }
 
@@ -30,7 +30,7 @@ class CommunityIndex extends React.Component {
     const { communities } = this.state;
     if (!communities) return 'Loading';
     return (
-      <GridList cols={2} padding={10} spacing={12}>
+      <GridList cols={2} spacing={2}>
         {communities.map(CommunityIndex.Preview)}
       </GridList>
     );

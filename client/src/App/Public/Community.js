@@ -1,27 +1,39 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Typography from 'material-ui/Typography';
 
-import communitiesFetcher from '../../fetchers/communities';
-import profileFetcher from '../../fetchers/profile';
+import CommunitiesFetcher from '../../fetchers/CommunitiesFetcher';
+import ProfileFetcher from '../../fetchers/ProfileFetcher';
+import SimpleDialog from './Widgets/SimpleDialog';
 import Banner from './Community/Banner';
 import Header from './Community/Header';
-import Join from './Community/Join';
 import MemberArea from './Community/MemberArea';
+import { shape, accountShape } from './propShapes';
 
+const LoginPrompt = community => (
+  <Banner>
+    <Typography variant="body2">
+      Sign in to join {community.name}
+    </Typography>
+  </Banner>
+);
+const JoinButton = createProfile => (
+  <SimpleDialog
+    label="Pick a handle to join!"
+    handleSubmit={createProfile}
+  />
+);
 
 class Community extends React.Component {
   static propTypes = {
-    account: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      email: PropTypes.string.isRequired,
-      token: PropTypes.string.isRequired,
-    }),
+    account: shape(accountShape).isRequired,
   }
+  static defaultProps = { account: null }
 
   constructor(props) {
     super(props);
-    this.slug = props.match.params.slug;
+    const { slug } = props.match.params;
+    this.profileFetcher = new ProfileFetcher(slug);
+    this.communitiesFetcher = new CommunitiesFetcher();
     this.state = {
       community: props.location.state && props.location.state.data,
       profile: null,
@@ -29,8 +41,8 @@ class Community extends React.Component {
   }
 
   componentDidMount() {
-    this.getProfile();
-    this.getCommunity();
+    if (this.props.account) this.getProfile();
+    if (!this.state.community) this.getCommunity();
   }
 
   componentWillReceiveProps({ account }) {
@@ -39,31 +51,21 @@ class Community extends React.Component {
     if (oldAccount && !account) this.setState({ profile: null });
   }
 
-  setProfile = profile => this.setState({ profile })
-  getProfile() {
-    // if (!this.props.account) return;
-    profileFetcher.get(this.slug).then(this.setProfile);
-  }
-
   setCommunity = community => this.setState({ community })
-  getCommunity() {
-    if (this.state.community) return;
-    communitiesFetcher.get(this.slug).then(this.setCommunity);
-  }
+  getCommunity = () => this.communitiesFetcher.get(this.props.match.params.slug)
+    .then(this.setCommunity);
 
-  LoginPrompt = () => (
-    <Banner>
-      <Typography variant="body2">
-        Sign in to join {this.state.community.name}
-      </Typography>
-    </Banner>
-  );
+  setProfile = profile => this.setState({ profile });
+  getProfile = () => this.profileFetcher.get()
+    .then(this.setProfile);
+  createProfile = handle => this.profileFetcher.create(handle)
+    .then(this.setProfile);
 
   render() {
     const {
       state: { community, profile },
       props: { account },
-      slug, setProfile, LoginPrompt,
+      createProfile,
     } = this;
 
     if (!community) return null;
@@ -72,8 +74,8 @@ class Community extends React.Component {
         <Header {...{ community }} />
         {
           (profile && <MemberArea {...{ community, profile }} />)
-          || (account && <Join slug={slug} onJoin={setProfile} />)
-          || <LoginPrompt />
+          || (account && JoinButton(createProfile))
+          || LoginPrompt(community)
         }
       </div>
     );

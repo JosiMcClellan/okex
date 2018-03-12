@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180226130922) do
+ActiveRecord::Schema.define(version: 20180311141832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20180226130922) do
     t.datetime "updated_at", null: false
     t.index ["community_id"], name: "index_discussions_on_community_id"
     t.index ["profile_id"], name: "index_discussions_on_profile_id"
+    t.index ["updated_at"], name: "index_discussions_on_updated_at"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -53,8 +54,24 @@ ActiveRecord::Schema.define(version: 20180226130922) do
     t.text "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_posts_on_created_at"
     t.index ["discussion_id"], name: "index_posts_on_discussion_id"
     t.index ["profile_id"], name: "index_posts_on_profile_id"
+  end
+
+  create_table "profile_prompts", force: :cascade do |t|
+    t.bigint "community_id"
+    t.string "text", null: false
+    t.index ["community_id"], name: "index_profile_prompts_on_community_id"
+  end
+
+  create_table "profile_responses", force: :cascade do |t|
+    t.bigint "profile_prompt_id"
+    t.bigint "profile_id"
+    t.text "body", null: false
+    t.index ["profile_id", "profile_prompt_id"], name: "index_profile_responses_on_profile_id_and_profile_prompt_id", unique: true
+    t.index ["profile_id"], name: "index_profile_responses_on_profile_id"
+    t.index ["profile_prompt_id"], name: "index_profile_responses_on_profile_prompt_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -77,6 +94,9 @@ ActiveRecord::Schema.define(version: 20180226130922) do
   add_foreign_key "discussions", "profiles"
   add_foreign_key "posts", "discussions"
   add_foreign_key "posts", "profiles"
+  add_foreign_key "profile_prompts", "communities"
+  add_foreign_key "profile_responses", "profile_prompts"
+  add_foreign_key "profile_responses", "profiles"
   add_foreign_key "profiles", "accounts"
   add_foreign_key "profiles", "communities"
 end

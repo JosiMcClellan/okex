@@ -1,85 +1,69 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import Tabs, { Tab } from 'material-ui/Tabs';
 
-import DashboardIcon from 'material-ui-icons/Home';
+// import DashboardIcon from 'material-ui-icons/Home';
 import ProfileIcon from 'material-ui-icons/Face';
-import MessagesIcon from 'material-ui-icons/QuestionAnswer';
-import QuestionsIcon from 'material-ui-icons/AssignmentTurnedIn';
-import MatchesIcon from 'material-ui-icons/Star';
+// import MessagesIcon from 'material-ui-icons/QuestionAnswer';
+// import QuestionsIcon from 'material-ui-icons/AssignmentTurnedIn';
+// import MatchesIcon from 'material-ui-icons/Star';
 import ForumIcon from 'material-ui-icons/AccountBalance';
-import SettingsIcon from 'material-ui-icons/Settings';
+// import SettingsIcon from 'material-ui-icons/Settings';
 
 import Banner from './Banner';
 import Forum from './MemberArea/Forum';
+import Profile from './MemberArea/Profile';
 import Discussion from '../Community/MemberArea/Discussion';
-import fetchDiscussions from '../../../fetchers/discussions';
+import { shape, communityShape, profileShape } from '../propShapes';
 
 class MemberArea extends React.Component {
   static propTypes = {
-    community: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      slug: PropTypes.string.isRequired,
-    }).isRequired,
+    community: shape(communityShape).isRequired,
+    profile: shape(profileShape).isRequired,
   };
+
+  static tabs = [
+    // ['Dashboard', DashboardIcon],
+    ['Profile', ProfileIcon],
+    // ['Messages', MessagesIcon],
+    // ['Matches', MatchesIcon],
+    // ['Questions', QuestionsIcon],
+    ['Forum', ForumIcon],
+    // ['Settings', SettingsIcon],
+  ]
 
   constructor(props) {
     super(props);
-    this.state = { discussions: [], tab: 'Dashboard' };
+    this.state = { tab: 'Profile' };
+    this.slug = props.community.slug;
   }
-
-  componentDidMount() {
-    const { slug } = this.props.community;
-    fetchDiscussions.index(slug).then(discussions => this.setState({ discussions }));
-  }
-
-  handleNewTopic = async (topic) => {
-    console.log(this);
-    const created = await fetchDiscussions.create(this.props.community.slug, topic);
-    if (created.error) return console.log(`failed to create discussion: ${created.error}`);
-    this.state.discussions.unshift(created);
-    this.forceUpdate();
-  }
-  // addCreatedDiscussion = (created) => {
-  //   this.forceUpdate();
-  // }
 
   OpenTab = () => {
     const {
-      handleNewTopic,
+      slug, handleCreateTopic,
       state: { tab, discussions },
-      props: { community: { slug } },
+      props: { profile },
     } = this;
+
     switch (tab) {
-      case 'Forum': return console.log(this) || console.log(slug) || <Forum {...{ handleNewTopic, discussions, slug }} />;
+      case 'Forum': return <Forum {...{ slug, discussions, handleCreateTopic }} />;
+      case 'Profile': return <Profile {...{ slug, ...profile }} />;
       default: return `It's your ${tab}!  Yay!`;
     }
   }
 
-  tabs = [
-    ['Dashboard', DashboardIcon],
-    ['Profile', ProfileIcon],
-    ['Messages', MessagesIcon],
-    ['Matches', MatchesIcon],
-    ['Questions', QuestionsIcon],
-    ['Forum', ForumIcon],
-    ['Settings', SettingsIcon],
-  ]
-
-  handleChange = (e, tab) => {
+  handleChange = (event, tab) => {
     this.setState({ tab });
   };
 
   render() {
-    const { slug } = this.props.community;
     return (
       <div>
-        <LinkContainer to={`/c/${slug}`}>
+        <LinkContainer to={`/c/${this.slug}`}>
           <Banner>
             <Tabs centered value={this.state.tab} onChange={this.handleChange}>
-              {this.tabs.map(([name, Icon]) => (
+              {MemberArea.tabs.map(([name, Icon]) => (
                 <Tab key={name} label={name} value={name} icon={<Icon />} />
               ))}
             </Tabs>
