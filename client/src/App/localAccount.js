@@ -1,64 +1,39 @@
 import fetchOKX from '../fetchOKX';
 
+const KEY = 'account';
+
 export default {
-  fetchWithToken(path, options) {
-    const { token } = this.load();
-    const header = new Headers({ Authorization: `Token ${token}` });
-    return fetchOKX(path, { headers: header, ...options });
+  authorizedFetch(path, options) {
+    const stored = this.load();
+    if (!stored) return console.log('tried to fetch without account') || Promise.resolve(null);
+    const headers = new Headers({
+      Authorization: `Token ${stored.token}`,
+      'Content-Type': 'application/json',
+    });
+    return fetchOKX(path, { headers, ...options });
   },
-  stored() {
-    return localStorage.getItem('account');
+  authorizedPut(path, data) {
+    const body = JSON.stringify(data);
+    return this.authorizedFetch(path, { body, method: 'put' });
+  },
+  authorizedPost(path, data) {
+    const body = JSON.stringify(data);
+    return this.authorizedFetch(path, { body, method: 'post' });
   },
   load() {
-    const stored = this.stored();
-    return stored && JSON.parse(stored);
+    const stored = localStorage.getItem(KEY);
+    try {
+      return stored && JSON.parse(stored);
+    } catch (e) {
+      console.log(e);
+      this.destroy();
+    }
   },
   save(account) {
-    localStorage.setItem('account', JSON.stringify(account));
+    if (!account) return console.log(`tried to save ${account} as account`);
+    localStorage.setItem(KEY, JSON.stringify(account));
   },
   destroy() {
-    localStorage.removeItem('account');
+    console.log(KEY) || localStorage.removeItem(KEY);
   },
 };
-
-// import PropTypes from 'prop-types';
-// class Account {
-//   static fetchWithToken(path, options) {
-//     const token = this.load().token;
-//     const header = new Headers({ Authorization: `Token ${token}` });
-//     return fetchOKX(path, { headers: header, ...options });
-//   }
-//   static shape = {
-//     uid: PropTypes.string.isRequired,
-//     token: PropTypes.string.isRequired,
-//     email: PropTypes.string.isRequired,
-//   }
-//   static load() {
-//     const stored = localStorage.getItem('account');
-//     if (!stored) return null;
-//     return new this(JSON.parse(stored));
-//   }
-//   static create(code) {
-//     return fetchOKX('account', {
-//       method: 'POST',
-//       headers: new Headers({
-//         Authorization: `Bearer ${code}`,
-//       }),
-//     }).then((raw) => {
-//       const wrapped = new this(raw);
-//       wrapped.save();
-//       return wrapped;
-//     });
-//   }
-//   save() {
-//     localStorage.setItem('account', JSON.stringify(this.raw));
-//   }
-//   constructor(data) {
-//     this.raw = data;
-//   }
-//   get uid() { return this.raw.uid; }
-//   get token() { return this.raw.token; }
-//   get email() { return this.raw.email; }
-// }
-//
-// export default Account;

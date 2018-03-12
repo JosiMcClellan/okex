@@ -17,8 +17,11 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.7'
 
 gem "active_model_serializers", "~> 0.10.7"
+gem "factory_bot_rails", "~> 4.8"
+gem "faker", "~> 1.8"
 
 group :development, :production do
+  gem "sendgrid-ruby", "~> 5.2"
   gem "faraday", "~> 0.14.0"
   gem "jwt", "~> 2.1"
 end
@@ -28,8 +31,6 @@ group :development, :test do
   gem "foreman", "~> 0.64.0"
   gem "pry", "~> 0.11.3"
   gem "database_cleaner", "~> 1.6"
-  gem "factory_bot_rails", "~> 4.8"
-  gem "faker", "~> 1.8"
 end
 
 group :development do

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="105" width="105">
+0 -10px  2px red, 0 -20px  4px orange, 0 -30px  6px yellow, 0 -40px  8px green, 0 -50px  10px blue, 0 -60px  12px indigo, 0 -75px  14px violet, -10px 0 2px red, -20px 0 4px orange, -30px 0 6px yellow, -40px 0 8px green, -50px 0 10px blue, -60px 0 12px indigo, -75px 0 14px violet, 10px 0 2px red, 20px 0 4px orange, 30px 0 6px yellow, 40px 0 8px green, 50px 0 10px blue, 60px 0 12px indigo, 75px 0 14px violet;
+
+  <defs>
+    <text id="okx" font-family="Helvetica" font-size="40" y="33" stroke-width="6px" letter-spacing="-3">
+      OKX
+    </text>
+    <filter id="blurry" x="0" y="0">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
+    </filter>
+    <use id="blurkx" href="#okx" filter="url(#blurry)" />
+  </defs>
+
+  <use x="18" href="#blurkx" stroke="violet" />
+  <use x="15" href="#blurkx" stroke="blue" />
+  <use x="12" href="#blurkx" stroke="green" />
+  <use x="09" href="#blurkx" stroke="yellow" />
+  <use x="06" href="#blurkx" stroke="orange" />
+  <use x="03" href="#blurkx" stroke="red" />
+  <use x="00" href="#okx" stroke="black" />
+</svg>

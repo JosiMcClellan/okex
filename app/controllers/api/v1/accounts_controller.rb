@@ -1,31 +1,25 @@
 class Api::V1::AccountsController < ApplicationController
 
   def create
-    return unauthorized unless @code = extract_auth('Bearer')
-    account = AccountCreator.new(request_tokens).create
-    try_created account
+    return unauthorized unless code = extract_auth('Bearer')
+    return unless tokens = fetch_tokens(code)
+    try_created create_account(tokens)
   end
 
   private
 
-    def token_url
-      'https://www.googleapis.com/oauth2/v4/token'
+    def fetch_tokens(code)
+      tokens = GoogleOauth.fetch_tokens(code)
+      return tokens unless tokens['error']
+      general_error(error_message(tokens))
     end
 
-    def request_tokens
-      Faraday.post(token_url) do |req|
-        req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-        req.body = build_body
-      end
+    def error_message(tokens)
+       "Google OAuth error: #{tokens['error']}: #{tokens['error_description']}"
     end
 
-    def build_body
-      {
-        code: @code,
-        client_id: ENV['GOOGLE_CLIENT_ID'],
-        client_secret: ENV['GOOGLE_CLIENT_SECRET'],
-        redirect_uri: 'http://localhost:3000',
-        grant_type: 'authorization_code'
-      }
+    def create_account(tokens)
+      AccountCreator.create(tokens)
     end
+
 end

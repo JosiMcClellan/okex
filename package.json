@@ -6,7 +6,7 @@
   "scripts": {
     "test": "$(npm bin)/cypress run --record",
     "test:client": "cd client && yarn test",
-    "build": "cd client && yarn && yarn build && mv build ../public",
+    "build": "yarn unbuild && cd client && yarn && yarn build && mv build ../public",
     "unbuild": "rm -rf public",
     "heroku-postbuild": "yarn build && rm -rf node_modules client/node_modules",
     "install:all": "bundle && yarn && cd client && yarn"

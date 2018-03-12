@@ -1,5 +1,15 @@
 module ResponseHelpers
 
+  def try_okay(resource)
+    return okay resource if resource
+    no_record
+  end
+
+  def try_created(resource)
+    return created resource if resource.save
+    failed_to_create(resource)
+  end
+
   def okay(resource)
     render status: 200, json: resource
   end
@@ -8,20 +18,14 @@ module ResponseHelpers
     render status: 201, json: resource
   end
 
-  def try_okay(resource)
-    return okay resource if resource
-    no_record
-  end
-
-  def try_created(resource)
-    return created resource if resource.valid?
-    send_error 500, resource.errors.full_messages
-  end
-
   ### ERRORS ###
   def send_error(status, message)
     render status: status, json: { error: message }
     false
+  end
+
+  def failed_to_create(resource)
+    send_error 422, resource.errors.full_messages
   end
 
   def bad_request
@@ -44,8 +48,8 @@ module ResponseHelpers
     send_error 404, 'route matches, but record not found'
   end
 
-  def general_error
-    send_error 500, 'something went wrong'
+  def general_error(message = 'something went wrong')
+    send_error 500, message
   end
 
 end

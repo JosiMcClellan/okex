@@ -1,41 +1,42 @@
 import React from 'react';
-import List, {
-  ListItem,
-  ListItemText,
-  ListSubheader,
-} from 'material-ui/List';
-import discussionFetcher from '../../../../fetchers/discussions';
+
+import DiscussionsFetcher from '../../../../fetchers/DiscussionsFetcher';
+import PostsFetcher from '../../../../fetchers/PostsFetcher';
+import DataGrid from './Forum/DataGrid';
+import Post from './Forum/Post';
 
 class Discussion extends React.Component {
-  static Post = ({ body, postedAt, id }) => (
-    <ListItem key={id}>
-      <ListItemText primary={body} secondary={`Posted: ${postedAt}`} />
-    </ListItem>
-  )
-
   constructor(props) {
     super(props);
-    this.id = props.match.params.id;
-    const discussion = props.location.state.data;
-    this.state = { discussion };
+    const { slug, id } = props.match.params;
+    this.id = id;
+    this.discussionsFetcher = new DiscussionsFetcher(slug);
+    this.postsFetcher = new PostsFetcher(slug, id);
+    this.state = props.location.state || { discussion: null };
   }
 
   componentDidMount() {
-    if (this.state.discussion) return;
-    this.getDiscussion();
+    if (!this.state.discussion) this.getDiscussion();
   }
 
-  getDiscussion() {
-    const { id, slug } = this.props.match.params;
-    discussionFetcher.get(id, slug).then(discussion => this.setState({ discussion }));
-  }
+  setDiscussion = discussion => this.setState({ discussion })
+  getDiscussion = () => this.discussionsFetcher.get(this.id)
+    .then(this.setDiscussion);
+
+  createPost = body => this.postsFetcher.create(body)
 
   render() {
     const { discussion: { posts, topic } } = this.state;
     return (
-      <List subheader={<ListSubheader>{ topic }</ListSubheader>}>
-        {posts.map(Discussion.Post)}
-      </List>
+      <div>
+        <DataGrid
+          title={`Thread: ${topic}`}
+          newLabel="New Post"
+          handleSubmit={this.createPost}
+        >
+          {posts.map(Post)}
+        </DataGrid>
+      </div>
     );
   }
 }

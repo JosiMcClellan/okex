@@ -1,10 +1,8 @@
 class ApplicationController < ActionController::API
   include ResponseHelpers
 
-  after_action :ensure_response
-  def ensure_response
-    general_error unless performed?
-  end
+  after_action { general_error unless performed? }
+  rescue_from Exception, with: :general_error unless Rails.env.production?
 
   def require_community
     @community ||= Community.find_by_slug(params[:slug])
@@ -12,19 +10,20 @@ class ApplicationController < ActionController::API
   end
 
   def require_account
-    return unauthorized unless token = extract_auth('Token')
-    @account ||= Account.find_by_token(token)
+    @account ||= Account.find_by_token(extract_auth('Token'))
     @account || unauthorized
   end
 
   def require_profile
     return unless require_community && require_account
-    @profile ||= Profile.find_by(account: @account, community: @community)
+    @profile ||= Profile.find_by(community: @community, account: @account)
     @profile || forbidden
   end
 
   def extract_auth(type)
-    AuthHeader.extract(type, request.headers[:Authorization])
+    pattern = /#{type} (.+)/
+    match = pattern.match(request.headers[:Authorization])
+    match && match.captures.first
   end
 
 end

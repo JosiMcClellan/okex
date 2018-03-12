@@ -2,35 +2,25 @@ require_relative 'request_spec_helper'
 
 describe 'communities#index' do
   it %{
-    if it can't find a record,
-      it returns an empty array.
-  } do
-    get api_v1_communities_path
-    expect(response).to be_ok
-    expect(contents).to eq([])
-  end
-  it %{
-    returns all communties as JSON, including:
+    it sends all communties, including:
       id,
       name,
       slug,
       description,
-      image_url,
-      created_at,
-      updated_at
+      image,
+      founded,
+      active
   } do
-    create_list(:community, 3)
-    get api_v1_communities_path
-    expect(response).to be_ok
-    expect(contents.length).to eq(3)
-    expect(contents.first.keys).to contain_exactly(
-      :id,
-      :name,
-      :slug,
-      :description,
-      :image_url,
-      :created_at,
-      :updated_at
-    )
+    create_list(:community, 2)
+    get '/api/v1/communities'
+    expect_response(200, [{
+      id: Integer,
+      name: String,
+      slug: String,
+      description: String,
+      image: String,
+      founded: String,
+      active: String
+    }])
   end
 end

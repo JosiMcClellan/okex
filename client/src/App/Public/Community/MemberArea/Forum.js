@@ -1,36 +1,40 @@
 import React from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import List, { ListItem, ListItemText } from 'material-ui/List';
+import PropTypes from 'prop-types';
+import DataGrid from './Forum/DataGrid';
+
+import DiscussionsFetcher from '../../../../fetchers/DiscussionsFetcher';
+import Preview from './Forum/ThreadPreview';
 
 class Forum extends React.Component {
-  static defaultProps = {
-    discussions: [],
+  static propTypes = { slug: PropTypes.string.isRequired }
+
+  constructor(props) {
+    super(props);
+    this.state = { discussions: [] };
+    this.discussionsFetcher = new DiscussionsFetcher(props.slug);
   }
 
-  Thread = (data) => {
-    const linkTo = {
-      pathname: `/c/${this.props.slug}/thread/${data.id}`,
-      state: { data },
-    };
-    return (
-      <LinkContainer key={data.id} to={linkTo}>
-        <ListItem>
-          <ListItemText
-            primary={data.topic}
-            secondary={`Created: ${data.createdAt}, Active: ${data.activeAt}`}
-          />
-        </ListItem>
-      </LinkContainer>
-    );
+  componentDidMount() {
+    this.discussionsFetcher.index()
+      .then(discussions => this.setState({ discussions }));
+  }
+
+  createDiscussion = async(topic) => {
+    if (!topic) return;
+    const { error, ...created } = await this.discussionsFetcher.create(topic)
+      || { error: 'undefined resolution' };
+    if (error) return console.log(`discussion create error: ${error}`);
+    this.state.discussions.unshift(created);
+    this.forceUpdate();
   }
 
   render() {
-    const { discussions } = this.props;
+    const { props: { slug }, state: { discussions } } = this;
     return (
       <div>
-        <List>
-          {discussions.map(this.Thread)}
-        </List>
+        <DataGrid title="All Threads" newLabel="New Thread" handleSubmit={this.createDiscussion}>
+          {discussions.map(({ id, ...rest }) => <Preview key={id} {...{ slug, id, ...rest }} />)}
+        </DataGrid>
       </div>
     );
   }

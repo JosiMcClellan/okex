@@ -15,3 +15,7 @@
 
 # Ignore application configuration
 /config/application.yml
+
+# /public is just for production build,
+# Actual public files go in /client/public
+/public

@@ -1,3 +1,3 @@
-class WorldSerializer < ActiveModel::Serializer
+class WorldSerializer < ApplicationSerializer
   attributes :hello
 end

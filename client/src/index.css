@@ -2,18 +2,21 @@ body {
   margin: 0;
   padding: 0;
 }
-
 html, body, .public {
-  min-height: 100vh;
+  min-height: 100%;
 }
 .public {
   display: flex;
   flex-direction: column;
 }
+.big {
+  min-height: 83vh;
+}
 main {
+  background-color: 'black';
   flex: 1 0 auto;
-  background-color: black;
 }
 footer {
+  background-color: black;
   flex-shrink: 0;
 }

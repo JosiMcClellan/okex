@@ -1,74 +1,79 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Switch, Route } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
-import Paper from 'material-ui/Paper';
 import Tabs, { Tab } from 'material-ui/Tabs';
 
-import DashboardIcon from 'material-ui-icons/Home';
+// import DashboardIcon from 'material-ui-icons/Home';
 import ProfileIcon from 'material-ui-icons/Face';
-import MessagesIcon from 'material-ui-icons/QuestionAnswer';
-import QuestionsIcon from 'material-ui-icons/AssignmentTurnedIn';
-import MatchesIcon from 'material-ui-icons/Star';
+// import MessagesIcon from 'material-ui-icons/QuestionAnswer';
+// import QuestionsIcon from 'material-ui-icons/AssignmentTurnedIn';
+// import MatchesIcon from 'material-ui-icons/Star';
 import ForumIcon from 'material-ui-icons/AccountBalance';
-import SettingsIcon from 'material-ui-icons/Settings';
+// import SettingsIcon from 'material-ui-icons/Settings';
 
+import Banner from './Banner';
 import Forum from './MemberArea/Forum';
-import fetchDiscussons from '../../../fetchers/discussions';
+import Profile from './MemberArea/Profile';
+import Discussion from '../Community/MemberArea/Discussion';
+import { shape, communityShape, profileShape } from '../propShapes';
 
 class MemberArea extends React.Component {
   static propTypes = {
-    community: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      slug: PropTypes.string.isRequired,
-    }).isRequired,
+    community: shape(communityShape).isRequired,
+    profile: shape(profileShape).isRequired,
   };
+
+  static tabs = [
+    // ['Dashboard', DashboardIcon],
+    ['Profile', ProfileIcon],
+    // ['Messages', MessagesIcon],
+    // ['Matches', MatchesIcon],
+    // ['Questions', QuestionsIcon],
+    ['Forum', ForumIcon],
+    // ['Settings', SettingsIcon],
+  ]
 
   constructor(props) {
     super(props);
-    this.state = { discussions: [], value: 'Dashboard' };
-  }
-
-  componentDidMount() {
-    const { slug } = this.props.community;
-    fetchDiscussons.index(slug).then(discussions => this.setState({ discussions }));
+    this.state = { tab: 'Profile' };
+    this.slug = props.community.slug;
   }
 
   OpenTab = () => {
-    const { value, discussions } = this.state;
-    const { slug } = this.props.community;
-    switch (value) {
-      case 'Forum': return <Forum {...{ discussions, slug }} />;
-      default: return `It's your ${value}!  Yay!`;
+    const {
+      slug, handleCreateTopic,
+      state: { tab, discussions },
+      props: { profile },
+    } = this;
+
+    switch (tab) {
+      case 'Forum': return <Forum {...{ slug, discussions, handleCreateTopic }} />;
+      case 'Profile': return <Profile {...{ slug, ...profile }} />;
+      default: return `It's your ${tab}!  Yay!`;
     }
   }
 
-  tabs = [
-    ['Dashboard', DashboardIcon],
-    ['Profile', ProfileIcon],
-    ['Messages', MessagesIcon],
-    ['Matches', MatchesIcon],
-    ['Questions', QuestionsIcon],
-    ['Forum', ForumIcon],
-    ['Settings', SettingsIcon],
-  ]
-
-  handleChange = (e, value) => {
-    this.setState({ value });
+  handleChange = (event, tab) => {
+    this.setState({ tab });
   };
 
   render() {
-    const { slug } = this.props.community;
     return (
-      <Paper>
-        <LinkContainer to={`/c/${slug}`}>
-          <Tabs centered value={this.state.value} onChange={this.handleChange}>
-            {this.tabs.map(([name, Icon]) => (
-              <Tab key={name} label={name} value={name} icon={<Icon />} />
-            ))}
-          </Tabs>
+      <div>
+        <LinkContainer to={`/c/${this.slug}`}>
+          <Banner>
+            <Tabs centered value={this.state.tab} onChange={this.handleChange}>
+              {MemberArea.tabs.map(([name, Icon]) => (
+                <Tab key={name} label={name} value={name} icon={<Icon />} />
+              ))}
+            </Tabs>
+          </Banner>
         </LinkContainer>
-        <this.OpenTab />
-      </Paper>
+        <Switch>
+          <Route path="/c/:slug/thread/:id" component={Discussion} />
+          <Route component={this.OpenTab} />
+        </Switch>
+      </div>
     );
   }
 }

@@ -11,13 +11,28 @@
     - plugin:react/recommended
     - airbnb
   rules:
-
     # personal preference
     space-before-function-paren:
       - error
       - never
-
-    # for react-router
+    consistent-return:
+      - off
+    default-case:
+      - error
+      - commentPattern: ^no default$
+    # leads to similar methods being confusingly seperated
+    class-methods-use-this:
+      - off
+    # for `#reduce` and such
+    no-param-reassign:
+      - error
+      - ignorePropertyModificationsFor:
+        - memo
+    # react-router
+    jsx-a11y/anchor-is-valid:
+      - error
+      - specialLink:
+        - to
     react/prop-types:
       - warn #TEMP
       - ignore:
@@ -25,26 +40,18 @@
         - location
         - history
         - match
-
-    # https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
+    # Dan Abramov says so: https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
     react/jsx-filename-extension:
       - error
       - extensions:
         - .js
-
-    # for react-router
-    jsx-a11y/anchor-is-valid:
-      - error
-      - specialLink:
-        - to
-
-    # sometimes it's really optional
-    react/require-default-props:
-      - off
-
-    # slow to conform in early development
+    # no big deal, but switching back/forth is slow early on
     react/prefer-stateless-function:
       - off #TEMP
+    #love it EXCEPT that I'm not gonna start importing classes
+      # just to proptype their instances
+    react/forbid-prop-types:
+      - off
 
   overrides:
     - files:

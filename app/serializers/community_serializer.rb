@@ -1,13 +1,25 @@
-class CommunitySerializer < ActiveModel::Serializer
+class CommunitySerializer < ApplicationSerializer
 
-  attributes  :id,
-              :name,
-              :slug,
-              :description,
-              :image_url,
-              :created_at,
-              :updated_at
+  attributes(
+    :id,
+    :name,
+    :slug,
+    :description,
+    :image,
+    :founded,
+    :active
+  )
 
-  # has_many :profile_prompts
-  # has_many :match_prompts
+  def image
+    object.image_url
+  end
+
+  def founded
+    formatted_time(:created_at)
+  end
+
+  def active
+    formatted_time(:updated_at)
+  end
+
 end

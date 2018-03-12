@@ -1,80 +1,83 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Switch, Route } from 'react-router-dom';
-import Paper from 'material-ui/Paper';
+import Typography from 'material-ui/Typography';
 
+import CommunitiesFetcher from '../../fetchers/CommunitiesFetcher';
+import ProfileFetcher from '../../fetchers/ProfileFetcher';
+import SimpleDialog from './Widgets/SimpleDialog';
+import Banner from './Community/Banner';
 import Header from './Community/Header';
-import Join from './Community/Join';
 import MemberArea from './Community/MemberArea';
-import Discussion from './Community/MemberArea/Discussion';
-import communitiesFetcher from '../../fetchers/communities';
-import PropsRoute from '../PropsRoute';
-import profileFetcher from '../../fetchers/profile';
+import { shape, accountShape } from './propShapes';
+
+const LoginPrompt = community => (
+  <Banner>
+    <Typography variant="body2">
+      Sign in to join {community.name}
+    </Typography>
+  </Banner>
+);
+const JoinButton = createProfile => (
+  <SimpleDialog
+    label="Pick a handle to join!"
+    handleSubmit={createProfile}
+  />
+);
 
 class Community extends React.Component {
   static propTypes = {
-    account: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      email: PropTypes.string.isRequired,
-      token: PropTypes.string.isRequired,
-    }),
+    account: shape(accountShape).isRequired,
   }
+  static defaultProps = { account: null }
 
   constructor(props) {
     super(props);
-    this.slug = props.match.params.slug;
+    const { slug } = props.match.params;
+    this.profileFetcher = new ProfileFetcher(slug);
+    this.communitiesFetcher = new CommunitiesFetcher();
     this.state = {
-      community: props.location.state,
+      community: props.location.state && props.location.state.data,
       profile: null,
     };
   }
 
   componentDidMount() {
-    this.getProfile();
-    this.getCommunity();
+    if (this.props.account) this.getProfile();
+    if (!this.state.community) this.getCommunity();
   }
 
-  componentWillReceiveProps() {
-    this.getProfile();
-  }
-
-  setProfile = profile => this.setState({ profile })
-  getProfile() {
-    if (!this.props.account) return;
-    profileFetcher.get(this.slug).then(this.setProfile);
+  componentWillReceiveProps({ account }) {
+    const oldAccount = this.props.account;
+    if (account && !oldAccount) this.getProfile();
+    if (oldAccount && !account) this.setState({ profile: null });
   }
 
   setCommunity = community => this.setState({ community })
-  getCommunity() {
-    if (this.state.community) return;
-    communitiesFetcher.get(this.slug).then(this.setCommunity);
-  }
+  getCommunity = () => this.communitiesFetcher.get(this.props.match.params.slug)
+    .then(this.setCommunity);
 
-  Main = () => {
-    const {
-      slug, setProfile,
-      props: { account },
-      state: { community, profile },
-    } = this;
-
-    if (!account) return <p>Sign in to join {community.name}</p>;
-    if (!profile) return <Join slug={slug} onJoin={setProfile} />;
-    return (
-      <Switch>
-        <Route path="/c/:slug/thread/:id" component={Discussion} />
-        <PropsRoute Component={MemberArea} props={{ community, profile }} />
-      </Switch>
-    );
-  }
+  setProfile = profile => this.setState({ profile });
+  getProfile = () => this.profileFetcher.get()
+    .then(this.setProfile);
+  createProfile = handle => this.profileFetcher.create(handle)
+    .then(this.setProfile);
 
   render() {
-    const { community } = this.state;
-    if (!community.name) console.log(this);
+    const {
+      state: { community, profile },
+      props: { account },
+      createProfile,
+    } = this;
+
+    if (!community) return null;
     return (
-      <Paper>
-        <Header community={community} />
-        <this.Main />
-      </Paper>
+      <div>
+        <Header {...{ community }} />
+        {
+          (profile && <MemberArea {...{ community, profile }} />)
+          || (account && JoinButton(createProfile))
+          || LoginPrompt(community)
+        }
+      </div>
     );
   }
 }
