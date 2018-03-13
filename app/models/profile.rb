@@ -12,7 +12,6 @@ class Profile < ApplicationRecord
   # has_one :suspension
 
   validates_presence_of :handle, :slug
-  validates_uniqueness_of :account_id, scope: :community_id
 
   def set_handle_and_slug
     self.handle ||= "drone##{SecureRandom.hex}"

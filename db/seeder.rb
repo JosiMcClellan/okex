@@ -4,12 +4,13 @@ class Seeder
   def seed_communities
     community_fixtures.each do |fixture|
       community = create(:community, **fixture)
-      seed_community_profile_prompts(community)
+      seed_community_prompts(community)
     end
   end
 
-  def seed_community_profile_prompts(community)
-    rand(4..10).times { create(:profile_prompt, community: community) }
+  def seed_community_prompts(community)
+    rand(5..10).times { create(:profile_prompt, community: community) }
+    rand(10..30).times { create(:match_prompt, community: community) }
   end
 
   def seed_accounts
@@ -23,6 +24,7 @@ class Seeder
     communities.each do |community|
       profile = create(:profile, community: community, account: account)
       seed_profile_responses(profile)
+      seed_match_responses(profile)
     end
   end
 
@@ -31,6 +33,14 @@ class Seeder
     answered = pick_random(prompts.count, prompts)
     answered.each do |prompt|
       create(:profile_response, profile: profile, profile_prompt: prompt)
+    end
+  end
+
+  def seed_match_responses(profile)
+    prompts = profile.community.match_prompts
+    answered = pick_random(prompts.count, prompts)
+    answered.each do |prompt|
+      create(:match_response, profile: profile, match_prompt: prompt)
     end
   end
 
@@ -98,11 +108,6 @@ class Seeder
         name: 'Queer Rights',
         image_url: '/communities/queerRights.png',
         description: 'We support all those under the Queer umbrella (LGBTQA+), and their right to life, love, and happiness.'
-        # image_url: 'https://78.media.tumblr.com/9f128d28bd7cb2104de83c96aae354cd/tumblr_od7bq205cT1rxif0no5_400.gif'
-        # 'https://blog.animationstudies.org/wp-content/uploads/2017/04/Garnetop.png'
-        # 'https://cdn2.desu-usergeneratedcontent.xyz/co/image/1446/00/1446006960475.jpg'
-        # 'https://cdn2.desu-usergeneratedcontent.xyz/co/image/1478/05/1478054525204.png'
-
       },
       {
         name: 'Pahlka Posse',
@@ -112,7 +117,6 @@ class Seeder
       {
         name: 'Animal Rights',
         image_url: '/communities/animalRights.jpg'
-        # description:
       },
       {
         name: 'Free Speech',
