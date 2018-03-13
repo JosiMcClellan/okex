@@ -20,6 +20,8 @@
     default-case:
       - error
       - commentPattern: ^no default$
+    react/no-children-prop:
+      - off
     # leads to similar methods being confusingly seperated
     class-methods-use-this:
       - off
@@ -34,7 +36,7 @@
       - specialLink:
         - to
     react/prop-types:
-      - warn #TEMP
+      - error
       - ignore:
         - children
         - location

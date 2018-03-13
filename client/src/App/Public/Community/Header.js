@@ -1,22 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography from 'material-ui/Typography';
-import BreakpointVersions from '../Widgets/BreakpointVersions';
-
+import { TextVariants } from '../Widgets/BreakProps';
 
 const CommunityHeader = ({ community: { name, description } }) => (
   <div>
-    <BreakpointVersions
-      Component={Typography}
+    <TextVariants
+      keyBase="community-name"
       children={name}
-      breaks={[
-        [{               smUp: true },  { key: 'xshea', variant: 'title'    }],
-        [{ xsDown: true, mdUp: true },  { key: 'smhea', variant: 'display2' }],
-        [{ smDown: true },              { key: 'mdhea', variant: 'display3' }],
-      ]}
+      breaks={{
+        xs: 'title',
+        sm: 'display2',
+        'md lg xl': 'display3',
+      }}
     />
-
-    <Typography variant="caption" style={{ width: '80%', margin: 'auto' }}>{description}</Typography>
+    <TextVariants
+      keyBase="community-description"
+      style={{ width: '80%', margin: 'auto' }}
+      children={description}
+      breaks={{
+        xs: 'caption',
+        sm: 'body1',
+        'md lg': 'subheading',
+        xl: 'title',
+      }}
+    />
   </div>
 );
 CommunityHeader.propTypes = {

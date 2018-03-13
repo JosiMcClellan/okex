@@ -7,41 +7,47 @@ const {
   shape,
 } = PropTypes;
 const id = number.isRequired;
+const reqStr = string.isRequired;
+
 
 const accountShape = {
   id,
-  token: string.isRequired,
-  email: string.isRequired,
+  token: reqStr,
+  email: reqStr,
 };
 
 const communityShape = {
   id,
-  slug: string.isRequired,
-  name: string.isRequired,
-  description: string.isRequired,
-  founded: string.isRequired,
-  active: string.isRequired,
-  image: string.isRequired,
+  slug: reqStr,
+  name: reqStr,
+  description: reqStr,
+  founded: reqStr,
+  active: reqStr,
+  image: reqStr,
 };
 
 const profileShape = {
-  handle: string.isRequired,
+  id,
+  handle: reqStr,
 };
 
 const fieldShape = {
-  prompt: string.isRequired,
-  response: string.isRequired,
+  id,
+  prompt: reqStr,
+  response: reqStr,
 };
 
 const postShape = {
-  body: string.isRequired,
-  posted: string.isRequired,
+  id,
+  body: reqStr,
+  posted: reqStr,
 };
 
 const discussionShape = {
-  topic: string.isRequired,
-  started: string.isRequired,
-  active: string.isRequired,
+  id,
+  topic: reqStr,
+  started: reqStr,
+  active: reqStr,
   posts: arrayOf(shape(postShape)),
 };
 

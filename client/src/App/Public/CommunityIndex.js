@@ -1,21 +1,9 @@
 import React from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
+import GridList from 'material-ui/GridList';
 import CommunitiesFetcher from '../../fetchers/CommunitiesFetcher';
+import Preview from './Community/Preview';
 
 class CommunityIndex extends React.Component {
-  static Preview = preview => (
-    <LinkContainer key={preview.slug} to={{ state: preview, pathname: `c/${preview.slug}` }}>
-      <GridListTile>
-        <img alt={preview.name} src={preview.image} />
-        <GridListTileBar
-          title={preview.name}
-          subtitle={preview.description}
-        />
-      </GridListTile>
-    </LinkContainer>
-  )
-
   constructor(props) {
     super(props);
     this.state = { communities: null };
@@ -30,8 +18,8 @@ class CommunityIndex extends React.Component {
     const { communities } = this.state;
     if (!communities) return 'Loading';
     return (
-      <GridList cols={2} spacing={2}>
-        {communities.map(CommunityIndex.Preview)}
+      <GridList cols={3} spacing={2}>
+        {communities.map(Preview)}
       </GridList>
     );
   }
