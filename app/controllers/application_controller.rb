@@ -2,7 +2,8 @@ class ApplicationController < ActionController::API
   include ResponseHelpers
 
   after_action { general_error unless performed? }
-  rescue_from Exception, with: :general_error unless Rails.env.production?
+  # rescue_from Exception, with: :general_error unless Rails.env.production?
+  rescue_from PG::NotNullViolation, with: :unprocessable
 
   def require_community
     @community ||= Community.find_by_slug(params[:slug])

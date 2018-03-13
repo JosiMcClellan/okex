@@ -25,7 +25,11 @@ module ResponseHelpers
   end
 
   def failed_to_create(resource)
-    send_error 422, resource.errors.full_messages
+    unprocessable resource.errors.full_messages
+  end
+
+  def unprocessable(message)
+    send_error 422, message
   end
 
   def bad_request

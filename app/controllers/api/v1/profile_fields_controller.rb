@@ -8,7 +8,6 @@ class Api::V1::ProfileFieldsController < ApplicationController
     if response.update(body: params[:body]) && response.save
       send_updated_field
     else
-      require "pry"; binding.pry
       send_error(422, 'response update failed')
     end
   end
