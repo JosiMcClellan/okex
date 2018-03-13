@@ -8,7 +8,7 @@ import Paper from 'material-ui/Paper';
 
 import AccountFetcher from '../fetchers/AccountFetcher';
 import localAccount from './localAccount';
-import PropsRoute from './PropsRoute';
+import PropsRoute from './Public/Widgets/PropsRoute';
 
 import PublicThemeProvider from './Public/PublicThemeProvider';
 import GoogleLoginButton from './Public/GoogleLoginButton';
