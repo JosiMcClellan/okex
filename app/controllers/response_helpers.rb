@@ -7,7 +7,7 @@ module ResponseHelpers
 
   def try_created(resource)
     return created resource if resource.save
-    failed_to_create(resource)
+    failed_to_save(resource)
   end
 
   def okay(resource)
@@ -24,8 +24,8 @@ module ResponseHelpers
     false
   end
 
-  def failed_to_create(resource)
-    unprocessable resource.errors.full_messages
+  def failed_to_save(resource)
+    send_error 422, resource.errors.full_messages
   end
 
   def unprocessable(message)

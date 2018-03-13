@@ -5,10 +5,10 @@ class Api::V1::ProfileFieldsController < ApplicationController
   def update
     response = find_response
 
-    if response.update(body: params[:body]) && response.save
+    if response.update(body: params[:body])
       send_updated_field
     else
-      send_error(422, 'response update failed')
+      failed_to_save response
     end
   end
 
