@@ -7,20 +7,22 @@ import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
 import { LinkContainer } from 'react-router-bootstrap';
 import SimpleDialog from '../../../Widgets/SimpleDialog';
-import BreakpointVersions from '../../../Widgets/BreakpointVersions';
+import { TextVariants } from '../../../Widgets/BreakProps';
 
-const DataGrid = ({ children, title, newLabel, handleSubmit }) => (
+const DataGrid = ({
+  children, title, newLabel, handleSubmit,
+}) => (
   <div>
     {title &&
-      <BreakpointVersions
-        Component={Typography}
-        props={{ noWrap: true }}
-        breaks={[
-          [{               smUp: true }, { key: 'xsthr', variant: 'title'    }],
-          [{ xsDown: true, mdUp: true }, { key: 'smthr', variant: 'display1' }],
-          [{ smDown: true             }, { key: 'mdthr', variant: 'display2' }],
-        ]}
+      <TextVariants
+        noWrap
+        keyBase={newLabel}
         children={title}
+        breaks={{
+          xs: 'headline',
+          sm: 'display1',
+          'md lg xl': 'display2',
+        }}
       />
     }
     <SimpleDialog label={newLabel} {...{ handleSubmit }} />
@@ -29,7 +31,11 @@ const DataGrid = ({ children, title, newLabel, handleSubmit }) => (
     </Grid>
   </div>
 );
-DataGrid.propTypes = { title: PropTypes.string, newLabel: PropTypes.string.isRequired };
+DataGrid.propTypes = {
+  title: PropTypes.string,
+  newLabel: PropTypes.string.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+};
 DataGrid.defaultProps = { title: null };
 
 DataGrid.Link = ({ to, children }) => {
@@ -62,7 +68,11 @@ DataGrid.Item = withStyles(theme => ({
         </Typography>
         <div>
           <Hidden xsDown>
-            {captions.map((caption, key) => <DataGrid.Caption {...{ caption, key }} />)}
+            {captions.map((caption, key) => (
+              <Typography variant="caption" {...{ key }}>
+                {caption}
+              </Typography>
+            ))}
           </Hidden>
         </div>
       </ButtonBase>
@@ -73,17 +83,10 @@ DataGrid.Item = withStyles(theme => ({
 DataGrid.Item.propTypes = {
   primary: PropTypes.string.isRequired,
   captions: PropTypes.arrayOf(PropTypes.string),
-  // to: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
-};
-
-DataGrid.Caption = ({ caption, key }) => (
-  <Typography noWrap variant="caption" {...{ key }}>
-    {caption}
-  </Typography>
-);
-DataGrid.Caption.propTypes = {
-  caption: PropTypes.string.isRequired,
-  key: PropTypes.number.isRequired,
+  to: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+    state: PropTypes.any.isRequired,
+  })]),
 };
 
 export default DataGrid;
