@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import List from 'material-ui/List';
-import Typography from 'material-ui/Typography';
 
 import { idMap } from '../../../../utils';
 import QuestionsFetcher from '../../../../fetchers/QuestionsFetcher';
@@ -63,7 +62,7 @@ class Questions extends React.Component {
         <H2>Questions</H2>
         <List>
           {Array.from(questions, ([id, field]) => (
-            console.log(field) || <Question
+            <Question
               key={id}
               open={id === openFieldId}
               {...{

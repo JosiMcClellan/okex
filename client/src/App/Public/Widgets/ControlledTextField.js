@@ -19,7 +19,7 @@ const CancelButton = withStyles(theme => ({
 class ControlledTextField extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
-    initialValue: PropTypes.string,
+    initialValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     width: PropTypes.string,
     buttons: PropTypes.oneOf(['left', 'right', 'none']),
     // rest spread to TextField
@@ -32,7 +32,7 @@ class ControlledTextField extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { value: props.initialValue };
+    this.state = { value: String(props.initialValue) };
   }
 
   submit = (event) => {

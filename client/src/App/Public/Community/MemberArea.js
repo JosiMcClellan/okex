@@ -47,8 +47,6 @@ class MemberArea extends React.Component {
       props: { profile },
     } = this;
 
-    console.log(profile)
-
     switch (tab) {
       case 'Forum': return <Forum {...{ slug, discussions, handleCreateTopic }} />;
       case 'Profile': return <Profile {...{ slug, ...profile }} />;
