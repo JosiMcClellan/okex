@@ -6,15 +6,16 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 // import DashboardIcon from 'material-ui-icons/Home';
 import ProfileIcon from 'material-ui-icons/Face';
 // import MessagesIcon from 'material-ui-icons/QuestionAnswer';
-// import QuestionsIcon from 'material-ui-icons/AssignmentTurnedIn';
+import QuestionsIcon from 'material-ui-icons/AssignmentTurnedIn';
 // import MatchesIcon from 'material-ui-icons/Star';
 import ForumIcon from 'material-ui-icons/AccountBalance';
-// import SettingsIcon from 'material-ui-icons/Settings';
+import SettingsIcon from 'material-ui-icons/Settings';
 
 import Banner from './Banner';
 import Forum from './MemberArea/Forum';
 import Profile from './MemberArea/Profile';
 import Discussion from '../Community/MemberArea/Discussion';
+import Questions from '../Community/MemberArea/Questions';
 import { shape, communityShape, profileShape } from '../propShapes';
 
 class MemberArea extends React.Component {
@@ -28,9 +29,9 @@ class MemberArea extends React.Component {
     ['Profile', ProfileIcon],
     // ['Messages', MessagesIcon],
     // ['Matches', MatchesIcon],
-    // ['Questions', QuestionsIcon],
+    ['Questions', QuestionsIcon],
     ['Forum', ForumIcon],
-    // ['Settings', SettingsIcon],
+    ['Settings', SettingsIcon],
   ]
 
   constructor(props) {
@@ -46,9 +47,12 @@ class MemberArea extends React.Component {
       props: { profile },
     } = this;
 
+    console.log(profile)
+
     switch (tab) {
       case 'Forum': return <Forum {...{ slug, discussions, handleCreateTopic }} />;
       case 'Profile': return <Profile {...{ slug, ...profile }} />;
+      case 'Questions': return <Questions {...{ slug, questions: profile.questions }} />;
       default: return `It's your ${tab}!  Yay!`;
     }
   }
