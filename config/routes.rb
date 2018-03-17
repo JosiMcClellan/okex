@@ -13,7 +13,7 @@ Rails.application.routes.draw do
           resources :posts, only: :create
         end
         resources :profile_fields, only: :update
-        resources :questions, only: :update
+        resources :questions, only: [:index, :update]
       end
 
     end

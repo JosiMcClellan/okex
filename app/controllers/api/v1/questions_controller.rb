@@ -1,6 +1,11 @@
 class Api::V1::QuestionsController < ApplicationController
 
-  before_action :require_profile, :require_prompt
+  before_action :require_profile
+  before_action :require_prompt, only: :update
+
+  def index
+    okay PromptResponseZipper.zip_match_questions(@profile)
+  end
 
   def update
     response = find_response
@@ -32,14 +37,14 @@ class Api::V1::QuestionsController < ApplicationController
 
     # it'll be weird, but we can do this AM::S
     def send_updated_question(response)
-      created({
+      created(
         id: @prompt.id,
         prompt: @prompt.text,
         answer: response.answer,
         weight: response.weight,
         ideal: response.ideal,
         explanation: response.explanation
-      })
+      )
     end
 
 end

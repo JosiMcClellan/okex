@@ -7,7 +7,7 @@ class Profile < ApplicationRecord
   has_many :discussions
   has_many :posts
   has_many :profile_responses
-  # has_many :match_responses
+  has_many :match_responses
   # has_many :flags
   # has_one :suspension
 
