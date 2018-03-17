@@ -4,12 +4,6 @@ import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 
-const styleContainer = withStyles(theme => ({
-  root: {
-    // color: theme.palette.error.A400,
-  },
-}));
-
 const SubmitButton = withStyles(theme => ({
   root: {
     backgroundColor: theme.palette.action.A200,
@@ -22,18 +16,19 @@ const CancelButton = withStyles(theme => ({
   },
 }))(Button);
 
-const TextArea = withStyles(theme => ({
-  root: {
-    color: theme.palette.error.A700,
-  },
-}))(TextField);
-
 class ControlledTextField extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     initialValue: PropTypes.string,
+    width: PropTypes.string,
+    buttons: PropTypes.oneOf(['left', 'right', 'none']),
+    // rest spread to TextField
   };
-  static defaultProps = { initialValue: '' }
+  static defaultProps = {
+    initialValue: '',
+    buttons: 'right',
+    width: '100%',
+  }
 
   constructor(props) {
     super(props);
@@ -64,31 +59,45 @@ class ControlledTextField extends React.Component {
     }
   }
 
+  renderButtons = () => (
+    <span style={{ display: 'flex' }}>
+      <CancelButton variant="fab" mini onClick={this.cancel}>x</CancelButton>
+      <SubmitButton variant="fab" mini onClick={this.submit}>✔</SubmitButton>
+    </span>
+  )
+
   render() {
     const {
-      props: { initialValue, handleSubmit, ...childProps },
-      state: { value },
+      renderButtons,
       handleChange: onChange,
       handleKeyDown: onKeyDown,
-      cancel, submit,
+      state: { value },
+      props: {
+        initialValue,
+        handleSubmit,
+        buttons,
+        width,
+        ...childProps
+      },
     } = this;
 
     return (
-      <div>
-        <TextArea
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {buttons === 'left' && renderButtons()}
+        <TextField
           autoFocus
           {...{
             value,
             onChange,
             onKeyDown,
             ...childProps,
+            style: { width },
           }}
         />
-        <CancelButton variant="fab" mini onClick={cancel}>x</CancelButton>
-        <SubmitButton variant="fab" mini onClick={submit}>✔</SubmitButton>
+        {buttons === 'right' && renderButtons()}
       </div>
     );
   }
 }
 
-export default styleContainer(ControlledTextField);
+export default ControlledTextField;

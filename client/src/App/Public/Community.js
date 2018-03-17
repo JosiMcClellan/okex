@@ -5,9 +5,9 @@ import CommunitiesFetcher from '../../fetchers/CommunitiesFetcher';
 import ProfileFetcher from '../../fetchers/ProfileFetcher';
 import SimpleDialog from './Widgets/SimpleDialog';
 import Banner from './Community/Banner';
-import Header from './Community/Header';
 import MemberArea from './Community/MemberArea';
 import { shape, accountShape } from './propShapes';
+import { H1, Caption } from './Widgets/Text';
 
 const LoginPrompt = community => (
   <Banner>
@@ -71,7 +71,10 @@ class Community extends React.Component {
     if (!community) return null;
     return (
       <div>
-        <Header {...{ community }} />
+        <H1>{community.name}</H1>
+        <Caption style={{ width: '80%', margin: 'auto' }}>
+          {community.description}
+        </Caption>
         {
           (profile && <MemberArea {...{ community, profile }} />)
           || (account && JoinButton(createProfile))
