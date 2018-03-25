@@ -3,11 +3,11 @@ class Api::V1::ProfilesController < ApplicationController
   before_action :require_community, :require_account
 
   def show
-    require_profile && okay(@profile)
+    halt found: require_profile
   end
 
   def create
-    try_created @community.profiles.create(
+    halt saves: @community.profiles.build(
       account: @account,
       handle: params[:handle]
     )

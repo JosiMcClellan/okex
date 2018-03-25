@@ -1,20 +1,15 @@
 class Api::V1::QuestionsController < ApplicationController
 
   before_action :require_profile
-  before_action :require_prompt, only: :update
 
   def index
-    okay PromptResponseZipper.zip_match_questions(@profile)
+    halt found: PromptResponseZipper.zip_match_questions(@profile)
   end
 
   def update
     response = find_response
-    if response.update(response_params)
-      response.save
-      send_updated_question(response)
-    else
-      failed_to_save response
-    end
+    halt cant_save: response unless response.update(response_params)
+    send_updated_question(response)
   end
 
   private
@@ -23,28 +18,24 @@ class Api::V1::QuestionsController < ApplicationController
       params.permit(:answer, :weight, :ideal, :explanation)
     end
 
-    def require_prompt
-      no_record unless @prompt = find_prompt
-    end
-
-    def find_prompt
-      @community.match_prompts.find_by_id(params[:id])
-    end
-
     def find_response
-      @prompt.match_responses.find_or_initialize_by(profile: @profile)
+      require_prompt.match_responses.find_or_initialize_by(profile: @profile)
     end
 
-    # it'll be weird, but we can do this AM::S
+    def require_prompt
+      halt :no_record unless @prompt =
+        @community.match_prompts.find_by_id(params[:id])
+    end
+
     def send_updated_question(response)
-      created(
+      render status: 201, json: {
         id: @prompt.id,
         prompt: @prompt.text,
         answer: response.answer,
         weight: response.weight,
         ideal: response.ideal,
         explanation: response.explanation
-      )
+      }
     end
 
 end

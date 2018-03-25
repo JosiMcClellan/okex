@@ -3,15 +3,15 @@ class Api::V1::DiscussionsController < ApplicationController
   before_action :require_profile
 
   def index
-    okay @community.discussions.eager_load(:posts)
+    halt found: @community.discussions.eager_load(:posts)
   end
 
   def show
-    try_okay @community.discussions.find_by_id(params[:id])
+    halt found: @community.discussions.find_by_id(params[:id])
   end
 
   def create
-    try_created @community.discussions.create(
+    halt saved: @community.discussions.build(
       profile: @profile,
       topic: params[:topic]
     )
