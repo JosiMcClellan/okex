@@ -32,7 +32,7 @@ class ControlledTextField extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { value: String(props.initialValue) };
+    this.state = { value: String(props.initialValue || '') };
   }
 
   submit = (event) => {
@@ -85,7 +85,6 @@ class ControlledTextField extends React.Component {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {buttons === 'left' && renderButtons()}
         <TextField
-          autoFocus
           {...{
             value,
             onChange,

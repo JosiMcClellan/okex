@@ -7,7 +7,7 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def create
-    halt saves: @community.profiles.build(
+    halt saved: @community.profiles.build(
       account: @account,
       handle: params[:handle]
     )

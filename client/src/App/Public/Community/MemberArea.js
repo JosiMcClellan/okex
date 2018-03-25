@@ -7,9 +7,9 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 import ProfileIcon from 'material-ui-icons/Face';
 // import MessagesIcon from 'material-ui-icons/QuestionAnswer';
 import QuestionsIcon from 'material-ui-icons/AssignmentTurnedIn';
-// import MatchesIcon from 'material-ui-icons/Star';
+import MatchesIcon from 'material-ui-icons/Star';
 import ForumIcon from 'material-ui-icons/AccountBalance';
-import SettingsIcon from 'material-ui-icons/Settings';
+// import SettingsIcon from 'material-ui-icons/Settings';
 
 import Banner from './Banner';
 import Forum from './MemberArea/Forum';
@@ -28,10 +28,10 @@ class MemberArea extends React.Component {
     // ['Dashboard', DashboardIcon],
     ['Profile', ProfileIcon],
     // ['Messages', MessagesIcon],
-    // ['Matches', MatchesIcon],
+    ['Matches', MatchesIcon],
     ['Questions', QuestionsIcon],
     ['Forum', ForumIcon],
-    ['Settings', SettingsIcon],
+    // ['Settings', SettingsIcon],
   ]
 
   constructor(props) {

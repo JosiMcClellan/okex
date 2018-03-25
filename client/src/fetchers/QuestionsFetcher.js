@@ -7,7 +7,7 @@ export default class {
   index = () => (
     account.authorizedFetch(this.path)
   );
-  update = (id, params) => (
-    account.authorizedPut(this.path + id, params)
+  update = (id, updates) => (
+    account.authorizedPut(this.path + id, updates)
   );
 }

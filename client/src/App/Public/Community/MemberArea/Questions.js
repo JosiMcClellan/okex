@@ -34,26 +34,24 @@ class Questions extends React.Component {
   setOpenField = id => this.setState({ openFieldId: id });
   closeField = () => this.setOpenField(null);
 
-  handleResponse = async(questionId, value) => {
-    if (value === false) return this.closeField();
+  handleResponse = async(questionId, updates) => {
+    if (!updates) return this.closeField();
 
     const { id, error, ...updated }
-      = await this.questionsFetcher.update(questionId, value)
+      = await this.questionsFetcher.update(questionId, updates)
       || { error: 'undefined resolution' };
-
     if (error) {
-      console.log(`field update error: ${error}`);
-      this.closeField();
-    } else {
-      this.state.questions.set(questionId, updated);
-      this.state.openFieldId = null;
-      this.forceUpdate();
+      console.log('question update error:', error);
+      return this.closeField();
     }
+    this.state.questions.set(questionId, updated);
+    this.state.openFieldId = null;
+    this.forceUpdate();
   }
 
   render() {
     const {
-      handleResponse, setOpenField,
+      handleResponse, setOpenField, closeField,
       state: { questions, openFieldId },
     } = this;
 
@@ -65,8 +63,10 @@ class Questions extends React.Component {
             <Question
               key={id}
               open={id === openFieldId}
+              // onClick={() => (id)}
               {...{
                 id,
+                closeField,
                 setOpenField,
                 handleResponse,
                 ...field,

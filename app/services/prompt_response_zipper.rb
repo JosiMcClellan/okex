@@ -12,7 +12,7 @@ module PromptResponseZipper
     private
 
       def zip(profile, type, attributes)
-        profile.community.association("#{type}_prompts").scope.find_by_sql("
+        "#{type}_prompts".classify.constantize.find_by_sql("
             SELECT
               prompts.id AS id,
               prompts.text AS prompt,
@@ -25,6 +25,8 @@ module PromptResponseZipper
               responses.#{type}_prompt_id = prompts.id
                 AND
               responses.profile_id = #{profile.id}
+            WHERE
+              prompts.community_id = #{profile.community_id}
           ")
       end
 

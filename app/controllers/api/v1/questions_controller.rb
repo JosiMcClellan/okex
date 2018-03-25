@@ -19,7 +19,8 @@ class Api::V1::QuestionsController < ApplicationController
     end
 
     def find_response
-      require_prompt.match_responses.find_or_initialize_by(profile: @profile)
+      require_prompt
+      @prompt.match_responses.find_or_initialize_by(profile: @profile)
     end
 
     def require_prompt

@@ -1,6 +1,14 @@
 class Seeder
   include FactoryBot::Syntax::Methods
 
+  ACCOUNTS = 60
+  ACCOUNT_PROFILES = 1..5
+  COMMUNITY_PROFILE_PROMPTS = 4..8
+  COMMUNITY_MATCH_PROMPTS = 5..20
+  COMMUNITY_DISCUSSIONS = 5..25
+  DISCUSSION_POSTS = 5..50
+
+
   def seed_communities
     community_fixtures.each do |fixture|
       community = create(:community, **fixture)
@@ -10,7 +18,7 @@ class Seeder
 
   def seed_community_prompts(community)
     rand(5..10).times { create(:profile_prompt, community: community) }
-    rand(10..30).times { create(:match_prompt, community: community) }
+    rand(5..25).times { create(:match_prompt, community: community) }
   end
 
   def seed_accounts
