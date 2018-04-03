@@ -20,6 +20,7 @@ const JoinButton = createProfile => (
   <SimpleDialog
     label="Pick a handle to join!"
     handleSubmit={createProfile}
+    autofocus
   />
 );
 

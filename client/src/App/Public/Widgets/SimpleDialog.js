@@ -42,13 +42,9 @@ class SimpleDialog extends React.Component {
       <DialogContentText id={`${label}-dialog-text`}>
         If you haven&#39;t yet, please read our <Link to="/terms">terms</Link>.
       </DialogContentText>
-      <ControlledTextField multiline fullWidth {...{ label, handleSubmit }} />
+      <ControlledTextField multiline fullWidth autoFocus {...{ label, handleSubmit }} />
     </DialogContent>
   )
-  static labelProps = {
-    margin: '100px',
-    error: true,
-  }
 
   constructor(props) {
     super(props);

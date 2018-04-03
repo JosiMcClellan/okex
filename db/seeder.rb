@@ -17,18 +17,20 @@ class Seeder
   end
 
   def seed_community_prompts(community)
-    rand(5..10).times { create(:profile_prompt, community: community) }
-    rand(5..25).times { create(:match_prompt, community: community) }
+    rand(COMMUNITY_PROFILE_PROMPTS)
+      .times { create(:profile_prompt, community: community) }
+    rand(COMMUNITY_MATCH_PROMPTS)
+      .times { create(:match_prompt, community: community) }
   end
 
   def seed_accounts
-    create_list(:account, 60) do |account|
+    create_list(:account, ACCOUNTS) do |account|
       seed_account_profiles(account)
     end
   end
 
   def seed_account_profiles(account)
-    communities = pick_random(rand(2..5), Community)
+    communities = pick_random(rand(ACCOUNT_PROFILES), Community)
     communities.each do |community|
       profile = create(:profile, community: community, account: account)
       seed_profile_responses(profile)
@@ -54,7 +56,7 @@ class Seeder
 
   def seed_discussions
     Community.all.each do |community|
-      rand(10..25).times do
+      rand(COMMUNITY_DISCUSSIONS).times do
         create(:discussion,
           community: community,
           profile: pick_random(community.profiles).first || create(:profile, community: community)
@@ -66,7 +68,7 @@ class Seeder
   end
 
   def seed_discussion_posts(discussion)
-    rand(5..50).times do
+    rand(DISCUSSION_POSTS).times do
       create(:post,
         discussion: discussion,
         profile: pick_random(discussion.community.profiles).first
