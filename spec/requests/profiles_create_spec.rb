@@ -36,8 +36,11 @@ describe 'profiles#show' do
         handle: String,
         fields: [
           id: Integer,
-          prompt: String,
-          response: ShapeExpecter.optional(String)
+          prompt: String
+        ],
+        questions: [
+          id: Integer,
+          prompt: String
         ]
       }
     end

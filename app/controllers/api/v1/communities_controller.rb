@@ -1,11 +1,11 @@
 class Api::V1::CommunitiesController < ApplicationController
 
   def index
-    okay Community.all
+    Halts.found Community.all
   end
 
   def show
-    okay @community if require_community
+    Halts.found requires_community
   end
 
 end

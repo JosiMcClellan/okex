@@ -7,7 +7,8 @@ const PropsRoute = ({ Component, props, ...spread }) => (
 );
 PropsRoute.propTypes = {
   Component: PropTypes.func.isRequired,
-  props: PropTypes.object.isRequired,
+  props: PropTypes.object.isRequired, // spread to Component
+  // rest spread to Route
 };
 
 export default PropsRoute;

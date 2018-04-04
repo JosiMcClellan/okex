@@ -7,24 +7,13 @@ import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
 import { LinkContainer } from 'react-router-bootstrap';
 import SimpleDialog from '../../../Widgets/SimpleDialog';
-import { TextVariants } from '../../../Widgets/BreakProps';
+import { H2 } from '../../../Widgets/Text';
 
 const DataGrid = ({
   children, title, newLabel, handleSubmit,
 }) => (
   <div>
-    {title &&
-      <TextVariants
-        noWrap
-        keyBase={newLabel}
-        children={title}
-        breaks={{
-          xs: 'headline',
-          sm: 'display1',
-          'md lg xl': 'display2',
-        }}
-      />
-    }
+    {title && <H2>{title}</H2>}
     <SimpleDialog label={newLabel} {...{ handleSubmit }} />
     <Grid container spacing={0}>
       {children}
@@ -42,7 +31,6 @@ DataGrid.Link = ({ to, children }) => {
   if (!to) return children;
   return <LinkContainer to={to}>{children}</LinkContainer>;
 }
-
 DataGrid.Item = withStyles(theme => ({
   root: {
     width: '95%',

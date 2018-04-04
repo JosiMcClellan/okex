@@ -1,22 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import List from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 
 import { idMap } from '../../../../utils';
-import FieldsFetcher from '../../../../fetchers/ProfileFieldsFetcher';
+import FieldsFetcher from '../../../../fetchers/FieldsFetcher';
+import { fieldShape, profileShape, string, shape, arrayOf } from '../../propShapes';
 import Field from './Profile/Field';
 
 class Profile extends React.Component {
   static propTypes = {
-    slug: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    handle: PropTypes.string.isRequired,
-    fields: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      prompt: PropTypes.string.isRequired,
-      response: PropTypes.string,
-    })).isRequired,
+    ...profileShape,
+    slug: string.isRequired,
+    fields: arrayOf(shape(fieldShape)).isRequired,
   }
 
   constructor(props) {

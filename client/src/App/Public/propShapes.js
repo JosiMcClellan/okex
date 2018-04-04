@@ -1,13 +1,7 @@
 import PropTypes from 'prop-types';
 
-const {
-  number,
-  string,
-  arrayOf,
-  shape,
-} = PropTypes;
-const id = number.isRequired;
-const reqStr = string.isRequired;
+const id = PropTypes.number.isRequired;
+const reqStr = PropTypes.string.isRequired;
 
 
 const accountShape = {
@@ -34,7 +28,7 @@ const profileShape = {
 const fieldShape = {
   id,
   prompt: reqStr,
-  response: reqStr,
+  response: PropTypes.string,
 };
 
 const postShape = {
@@ -48,7 +42,7 @@ const discussionShape = {
   topic: reqStr,
   started: reqStr,
   active: reqStr,
-  posts: arrayOf(shape(postShape)),
+  posts: PropTypes.arrayOf(PropTypes.shape(postShape)),
 };
 
 export * from 'prop-types';

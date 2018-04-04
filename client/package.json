@@ -11,6 +11,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "pretest": "eslint **/*.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts dont_do_this_by_accident eject"
   },

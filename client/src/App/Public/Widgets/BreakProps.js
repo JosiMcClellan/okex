@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Hidden from 'material-ui/Hidden';
-// for singles
-import Typography from 'material-ui/Typography';
 
 class BreakProps extends React.Component {
   static Shown = ({ only, ...rest }) => {
@@ -24,7 +22,7 @@ class BreakProps extends React.Component {
       Component, breaks, keyBase, ...propsForAllSizes
     } = this.props;
     return Object.entries(breaks).map(([sizes, propsForThisSize]) => (
-      <BreakProps.Shown only={sizes.split(' ')} key={keyBase + sizes}>
+      <BreakProps.Shown only={sizes.split(' ')} key={`${keyBase}:${sizes}`}>
         <Component {...propsForThisSize} {...propsForAllSizes} />
       </BreakProps.Shown>
     ));
@@ -37,6 +35,7 @@ BreakProps.propTypes = {
   Component: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   breaks: PropTypes.objectOf(PropTypes.object).isRequired,
   keyBase: PropTypes.string.isRequired,
+  // rest spread to Component
 };
 
 // EXAMPLES:
@@ -57,16 +56,7 @@ BreakProps.propTypes = {
 //   xl:      { variant: 'flat', children: "Cancel Order" },
 // }}></BreakProps>
 
-// const BreakText = BreakProps.singleProp('variant', { component: Typography });
-//
-// <BreakText keyBase="headline" breaks={{
-//   xs: 'title',
-//   'sm md': 'display1',
-//   lg: 'display2',
-//   xl: display4,
-// }}>Hello, World!</BreakText>
-
-// const MyGridList = BreakProps.singleProp('cols', GridList, { spacing: 10 });
+// const MyGridList = BreakProps.singleProp('cols', { Component: GridList, spacing: 10 });
 //
 // <MyGridList keyBase="cats" cellHeight={180} breaks={{
 //   xs: 1,
@@ -97,5 +87,3 @@ BreakProps.propTypes = {
 // }>
 
 export default BreakProps;
-export const { Shown, singleProp } = BreakProps.Shown;
-export const TextVariants = BreakProps.singleProp('variant', { Component: Typography });

@@ -8,7 +8,7 @@ const Preview = (community) => {
     slug, name, image, description,
   } = community;
   return (
-    <LinkContainer to={{ state: community, pathname: `c/${slug}` }}>
+    <LinkContainer key={slug} to={{ state: community, pathname: `c/${slug}` }}>
       <GridListTile>
         <img alt={name} src={image} />
         <GridListTileBar

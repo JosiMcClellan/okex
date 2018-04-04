@@ -1,26 +1,19 @@
 class Api::V1::ProfileFieldsController < ApplicationController
 
-  before_action :require_profile, :require_prompt
+  before_action :requires_prompt
 
   def update
     response = find_response
-
-    if response.update(body: params[:body]) && response.save
-      send_updated_field
-    else
-      require "pry"; binding.pry
-      send_error(422, 'response update failed')
-    end
+    Halts.invalid(response) unless response.update(body: params[:body])
+    send_updated_field
   end
 
   private
 
-    def require_prompt
-      no_record unless @prompt = find_prompt
-    end
-
-    def find_prompt
-      @community.profile_prompts.find_by_id(params[:id])
+    def requires_prompt
+      requires_profile
+      @prompt = @community.profile_prompts.find_by_id(params[:id])
+      @prompt || halt(:no_record)
     end
 
     def find_response
@@ -28,11 +21,11 @@ class Api::V1::ProfileFieldsController < ApplicationController
     end
 
     def send_updated_field
-      created({
+      json 201, {
         id: @prompt.id,
         prompt: @prompt.text,
         response: params[:body]
-      })
+      }
     end
 
 end

@@ -38,6 +38,14 @@ describe 'profiles#show' do
           id: Integer,
           prompt: String,
           response: ShapeExpecter.optional(String)
+        ],
+        questions: [
+          id: Integer,
+          prompt: String,
+          answer: ShapeExpecter.optional(Integer),
+          weight: ShapeExpecter.optional(Integer),
+          ideal: ShapeExpecter.optional(Integer),
+          explanation: ShapeExpecter.optional(String)
         ]
       }
     end

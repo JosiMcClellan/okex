@@ -1,28 +1,40 @@
 class Seeder
   include FactoryBot::Syntax::Methods
 
+  ACCOUNTS = 60
+  ACCOUNT_PROFILES = 1..5
+  COMMUNITY_PROFILE_PROMPTS = 4..8
+  COMMUNITY_MATCH_PROMPTS = 5..20
+  COMMUNITY_DISCUSSIONS = 5..25
+  DISCUSSION_POSTS = 5..50
+
+
   def seed_communities
     community_fixtures.each do |fixture|
       community = create(:community, **fixture)
-      seed_community_profile_prompts(community)
+      seed_community_prompts(community)
     end
   end
 
-  def seed_community_profile_prompts(community)
-    rand(4..10).times { create(:profile_prompt, community: community) }
+  def seed_community_prompts(community)
+    rand(COMMUNITY_PROFILE_PROMPTS)
+      .times { create(:profile_prompt, community: community) }
+    rand(COMMUNITY_MATCH_PROMPTS)
+      .times { create(:match_prompt, community: community) }
   end
 
   def seed_accounts
-    create_list(:account, 60) do |account|
+    create_list(:account, ACCOUNTS) do |account|
       seed_account_profiles(account)
     end
   end
 
   def seed_account_profiles(account)
-    communities = pick_random(rand(2..5), Community)
+    communities = pick_random(rand(ACCOUNT_PROFILES), Community)
     communities.each do |community|
       profile = create(:profile, community: community, account: account)
       seed_profile_responses(profile)
+      seed_match_responses(profile)
     end
   end
 
@@ -34,9 +46,17 @@ class Seeder
     end
   end
 
+  def seed_match_responses(profile)
+    prompts = profile.community.match_prompts
+    answered = pick_random(prompts.count, prompts)
+    answered.each do |prompt|
+      create(:match_response, profile: profile, match_prompt: prompt)
+    end
+  end
+
   def seed_discussions
     Community.all.each do |community|
-      rand(10..25).times do
+      rand(COMMUNITY_DISCUSSIONS).times do
         create(:discussion,
           community: community,
           profile: pick_random(community.profiles).first || create(:profile, community: community)
@@ -48,7 +68,7 @@ class Seeder
   end
 
   def seed_discussion_posts(discussion)
-    rand(5..50).times do
+    rand(DISCUSSION_POSTS).times do
       create(:post,
         discussion: discussion,
         profile: pick_random(discussion.community.profiles).first
@@ -98,11 +118,6 @@ class Seeder
         name: 'Queer Rights',
         image_url: '/communities/queerRights.png',
         description: 'We support all those under the Queer umbrella (LGBTQA+), and their right to life, love, and happiness.'
-        # image_url: 'https://78.media.tumblr.com/9f128d28bd7cb2104de83c96aae354cd/tumblr_od7bq205cT1rxif0no5_400.gif'
-        # 'https://blog.animationstudies.org/wp-content/uploads/2017/04/Garnetop.png'
-        # 'https://cdn2.desu-usergeneratedcontent.xyz/co/image/1446/00/1446006960475.jpg'
-        # 'https://cdn2.desu-usergeneratedcontent.xyz/co/image/1478/05/1478054525204.png'
-
       },
       {
         name: 'Pahlka Posse',
@@ -112,7 +127,6 @@ class Seeder
       {
         name: 'Animal Rights',
         image_url: '/communities/animalRights.jpg'
-        # description:
       },
       {
         name: 'Free Speech',
