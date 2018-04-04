@@ -6,11 +6,11 @@ git_source(:github) do |repo_name|
 end
 
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
+    # gem 'redis', '~> 4.0'
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+  # gem 'capistrano-rails', group: :development
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem 'rack-cors'
+  # gem 'rack-cors'
 
 gem 'rails', '~> 5.1.5'
 gem 'pg', '>= 0.18', '< 2.0'
@@ -18,6 +18,7 @@ gem 'puma', '~> 3.7'
 
 gem "active_model_serializers", "~> 0.10.7"
 gem "factory_bot_rails", "~> 4.8"
+gem "database_cleaner", "~> 1.6"
 gem "faker", "~> 1.8"
 
 group :development, :production do
@@ -27,10 +28,8 @@ group :development, :production do
 end
 
 group :development, :test do
-  # gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem "foreman", "~> 0.64.0"
   gem "pry", "~> 0.11.3"
-  gem "database_cleaner", "~> 1.6"
 end
 
 group :development do
