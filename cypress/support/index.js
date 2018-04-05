@@ -20,3 +20,4 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 })
 
 beforeEach(cy.seed)
+// beforeEach(() => cy.visit('/'))

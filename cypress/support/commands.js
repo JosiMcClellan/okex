@@ -7,5 +7,12 @@ Cypress.Commands.add('dataGet', { prevSubject: 'optional' }, function(subject, n
   receiver.get(`[data-cy=${name}]`);
 });
 
+Cypress.Commands.add('login', function() {
+  localStorage.setItem('account', JSON.stringify({
+    email: 'default@okx.herokuapp.com',
+    token: 'totesLegit',
+  }))
+})
+
 
 // .should('have.attr', 'href', '#/register')

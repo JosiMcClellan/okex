@@ -3,15 +3,15 @@ class TestSeeder
 
   ACCOUNTS = [{
     email: 'default@okx.herokuapp.com',
-    password: 'password'
+    token: 'totesLegit'
   }]
 
   COMMUNITIES = [{
     name: 'Community1',
-    description: 'first community',
+    description: 'this is the first community',
   }, {
     name: 'Community2',
-    description: 'second community',
+    description: 'this is the second community',
   }]
 
   PROFILE_PROMPTS = [{
@@ -26,12 +26,12 @@ class TestSeeder
     list.map { |data| create(type, defaults.merge(data), &block) }
   end
 
-
   def seed
     create_from_list(:community, COMMUNITIES) do |community|
       create_from_list(:profile_prompt, PROFILE_PROMPTS, community: community)
       create_from_list(:match_prompt, MATCH_PROMPTS, community: community)
     end
+    create_from_list(:account, ACCOUNTS)
   end
   #
   # def seed_accounts
