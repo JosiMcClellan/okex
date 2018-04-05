@@ -8,6 +8,7 @@
     "e2e": "foreman start -p 3000 --procfile TestProcfile",
     "setup": "bundle && rake db:setup && cd client && yarn",
     "build": "yarn clobber && cd client && yarn && yarn build && mv build ../public",
+    "heroku-postbuild": "yarn build",
     "clobber": "rm -rf public",
     "test": "$(npm bin)/cypress run --record"
   },
