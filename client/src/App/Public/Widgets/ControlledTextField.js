@@ -42,6 +42,7 @@ class ControlledTextField extends React.Component {
 
   cancel = (event) => {
     event.stopPropagation();
+    this.setState({ value: this.props.initialValue });
     this.props.handleSubmit(false);
   }
 
@@ -61,8 +62,8 @@ class ControlledTextField extends React.Component {
 
   renderButtons = () => (
     <span style={{ display: 'flex' }}>
-      <CancelButton variant="fab" mini onClick={this.cancel}>x</CancelButton>
-      <SubmitButton variant="fab" mini onClick={this.submit}>✔</SubmitButton>
+      <CancelButton variant="fab" aria-label="cancel" mini onClick={this.cancel}>x</CancelButton>
+      <SubmitButton variant="fab" aria-label="submit" mini onClick={this.submit}>✔</SubmitButton>
     </span>
   )
 

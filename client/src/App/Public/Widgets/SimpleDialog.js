@@ -37,12 +37,12 @@ class SimpleDialog extends React.Component {
       {label}
     </DialogTitle>
   )
-  static Content = ({ label, handleSubmit }) => (
+  static Content = props => (
     <DialogContent>
-      <DialogContentText id={`${label}-dialog-text`}>
+      <DialogContentText id={`${props.label}-dialog-text`}>
         If you haven&#39;t yet, please read our <Link to="/terms">terms</Link>.
       </DialogContentText>
-      <ControlledTextField multiline fullWidth autoFocus {...{ label, handleSubmit }} />
+      <ControlledTextField multiline fullWidth autoFocus {...props} />
     </DialogContent>
   )
 
@@ -55,8 +55,9 @@ class SimpleDialog extends React.Component {
   setClosed = () => this.setState({ open: false })
 
   handleSubmit = (value) => {
-    this.props.handleSubmit(value);
     this.setClosed();
+    if (value === false) return;
+    this.props.handleSubmit(value);
   }
 
   render() {
