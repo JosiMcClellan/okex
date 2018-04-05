@@ -10,7 +10,8 @@ export default {
       Authorization: `Token ${stored.token}`,
       'Content-Type': 'application/json',
     });
-    return fetchOKX(path, { headers, ...options });
+    return fetchOKX(path, { headers, ...options })
+      .catch(console.log);
   },
   authorizedPut(path, data) {
     const body = JSON.stringify(data);
@@ -34,6 +35,6 @@ export default {
     localStorage.setItem(KEY, JSON.stringify(account));
   },
   destroy() {
-    console.log(KEY) || localStorage.removeItem(KEY);
+    localStorage.removeItem(KEY);
   },
 };

@@ -11,11 +11,12 @@ import { H1, Caption } from './Widgets/Text';
 
 const LoginPrompt = community => (
   <Banner>
-    <Typography variant="body2">
+    <Typography variant="body2" data-cy="community-login-prompt">
       Sign in to join {community.name}
     </Typography>
   </Banner>
 );
+
 const JoinButton = createProfile => (
   <SimpleDialog
     label="Pick a handle to join!"
@@ -72,10 +73,12 @@ class Community extends React.Component {
     if (!community) return null;
     return (
       <div>
-        <H1>{community.name}</H1>
-        <Caption style={{ width: '80%', margin: 'auto' }}>
-          {community.description}
-        </Caption>
+        <header data-cy="community-header">
+          <H1>{community.name}</H1>
+          <Caption style={{ width: '80%', margin: 'auto' }}>
+            {community.description}
+          </Caption>
+        </header>
         {
           (profile && <MemberArea {...{ community, profile }} />)
           || (account && JoinButton(createProfile))
