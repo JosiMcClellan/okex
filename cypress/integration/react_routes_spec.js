@@ -6,7 +6,6 @@ describe('Client/API Routes', function() {
   function() {
     cy.visit('/not/even/a/real/route')
     cy.contains("We're sorry, we can't find what you're looking for.")
-
   });
 
   it(

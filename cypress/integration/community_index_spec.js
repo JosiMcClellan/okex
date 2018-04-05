@@ -1,0 +1,3 @@
+describe('Community Index', function() {
+
+})
