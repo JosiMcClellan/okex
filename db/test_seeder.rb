@@ -27,11 +27,17 @@ class TestSeeder
   end
 
   def seed
+    puts 'foo'
     create_from_list(:community, COMMUNITIES) do |community|
+      puts 'foo'
       create_from_list(:profile_prompt, PROFILE_PROMPTS, community: community)
+      puts 'foo'
       create_from_list(:match_prompt, MATCH_PROMPTS, community: community)
+      puts 'foo'
     end
+    puts 'foo'
     create_from_list(:account, ACCOUNTS)
+    puts 'foo'
   end
   #
   # def seed_accounts

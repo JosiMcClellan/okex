@@ -2,7 +2,6 @@
   "name": "OKX",
   "private": true,
   "license": "UNLICENSED",
-  "private": true,
   "scripts": {
     "start": "foreman start -p 3000 --procfile DevProcfile",
     "e2e": "foreman start -p 3000 --procfile TestProcfile",
