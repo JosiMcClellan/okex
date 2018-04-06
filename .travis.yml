@@ -29,9 +29,9 @@ matrix:
         - yarn && bundle # root yarn installs cypress and wait-on
       before_script:
         - yarn build
-        - rake db:setup
+        - rake db:create db:schema:load
         - rails s &
-        - wait-on http://localhost:3000
+        # - wait-on http://localhost:3000
       cache:
         bundler: true
         directories:
