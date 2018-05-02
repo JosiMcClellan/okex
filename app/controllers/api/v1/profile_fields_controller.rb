@@ -4,7 +4,7 @@ class Api::V1::ProfileFieldsController < ApplicationController
 
   def update
     response = find_response
-    Halts.invalid(response) unless response.update(body: params[:body])
+    Halt.invalid(response) unless response.update(body: params[:body])
     send_updated_field
   end
 

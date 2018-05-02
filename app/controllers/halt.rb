@@ -1,15 +1,18 @@
-module Halts
-
-  TAG = :halt_and_render
-
+module Halt
   class << self
+
+    TAG = :halt!
 
     def throw(*args)
       super(TAG, args)
     end
 
-    # No reason to make these static, except that
-    # I like to see `Halts.whatever` for clarity over `whatever`
+    def catch
+      super(TAG) do
+        yield
+        generic_error('server gave no response')
+      end
+    end
 
     def found(data)
       no_record unless data
@@ -33,8 +36,12 @@ module Halts
       throw 403, message
     end
 
-    def no_record(message = 'route matches, but nothing found')
+    def not_found(message = 'route matches, but nothing found')
       throw 404, message
+    end
+
+    def no_route
+      not_found('no route matches')
     end
 
     def unprocessable(message = 'unprocessable')
@@ -42,10 +49,10 @@ module Halts
     end
 
     def invalid(record)
-      throw 422, record.errors.full_messages
+      unprocessable(record.errors.full_messages)
     end
 
-    def generic(message = 'something went wrong')
+    def generic_error(message = 'something went wrong')
       throw 500, message
     end
 

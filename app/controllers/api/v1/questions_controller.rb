@@ -3,12 +3,12 @@ class Api::V1::QuestionsController < ApplicationController
   before_action :requires_profile
 
   def index
-    Halts.found PromptResponseZipper.zip_match_questions(@profile)
+    Halt.found PromptResponseZipper.zip_match_questions(@profile)
   end
 
   def update
     response = find_response
-    Halts.invalid(response) unless response.update(response_params)
+    Halt.invalid(response) unless response.update(response_params)
     send_updated_question(response)
   end
 
@@ -25,7 +25,7 @@ class Api::V1::QuestionsController < ApplicationController
 
     def requires_prompt
       @prompt = @community.match_prompts.find_by_id(params[:id])
-      @prompt || Halts.no_record
+      @prompt || Halt.no_record
     end
 
     def send_updated_question(response)
