@@ -18,5 +18,5 @@ Rails.application.routes.draw do
     end
   end
 
-  match '/api', anchor: false, via: :all, to: 'application#no_route'
+  match '/api', anchor: false, via: :all, to: 'no_route#show'
 end

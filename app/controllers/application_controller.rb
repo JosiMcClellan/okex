@@ -11,10 +11,6 @@ class ApplicationController < ActionController::API
     render status: status, json: jsonable
   end
 
-  def no_route
-    Halt.no_route
-  end
-
   def requires_community
     @community ||= Community.find_by_slug(params[:slug])
     @community || Halt.no_record
