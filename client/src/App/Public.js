@@ -18,7 +18,6 @@ import Community from './Public/Community';
 import Settings from './Public/Settings';
 
 import About from './Public/StaticPages/About';
-import HelloWorld from './Public/StaticPages/HelloWorld';
 import HomePage from './Public/StaticPages/HomePage';
 import Josi from './Public/StaticPages/Josi';
 import NotFound from './Public/StaticPages/NotFound';
@@ -76,7 +75,6 @@ class Public extends React.Component {
                 <Route exact path="/terms" component={Terms} />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/settings" component={Settings} />
-                <Route exact path="/hello_world" component={HelloWorld} />
                 <Route exact path="/josi" component={Josi} />
                 <Route exact path="/c" component={CommunityIndex} />
                 <PropsRoute path="/c/:slug" Component={Community} props={{ account }} />
@@ -93,7 +91,6 @@ class Public extends React.Component {
               </LinkContainer>
               <LinkContainer to="/terms"><Button>Terms</Button></LinkContainer>
               <LinkContainer to="/about"><Button>About</Button></LinkContainer>
-              <LinkContainer to="/hello_world"><Button>Hello World</Button></LinkContainer>
             </Toolbar>
           </footer>
         </div>

@@ -35,15 +35,15 @@ describe('When I visit the community show page', function() {
       cy.login();
       cy.visit('/c/community1');
     })
-    // it('submits with mouse flow', function() {
-    //   cy.dataGet('community-header')
-    //   cy.dataGet('login-prompt').should('not.exist')
-    //   cy.get('main button').click()
-    //   cy.get('textarea:focus').type('A. Clever Handle')
-    //   cy.get('[aria-label="submit"]').click()
-    //   cy.get('button[role="tab"][aria-selected="true"]').contains('Profile')
-    //   cy.contains('A. Clever Handle')
-    // });
+    it('submits with mouse flow', function() {
+      cy.dataGet('community-header')
+      cy.dataGet('login-prompt').should('not.exist')
+      cy.get('main button').click()
+      cy.get('textarea:focus').type('A. Clever Handle')
+      cy.get('[aria-label="submit"]').click()
+      cy.get('button[role="tab"][aria-selected="true"]').contains('Profile')
+      cy.contains('A. Clever Handle')
+    });
 
     it(`cancels with mouse flow`, function() {
       cy.get('main button').click()

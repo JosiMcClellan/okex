@@ -1,2 +1,0 @@
-class World < ApplicationRecord
-end

@@ -104,10 +104,6 @@ ActiveRecord::Schema.define(version: 20180313062717) do
     t.index ["community_id"], name: "index_profiles_on_community_id"
   end
 
-  create_table "worlds", force: :cascade do |t|
-    t.string "hello"
-  end
-
   add_foreign_key "discussions", "communities"
   add_foreign_key "discussions", "profiles"
   add_foreign_key "match_prompts", "communities"

@@ -18,12 +18,10 @@ describe('Layout', function() {
           links to public info pages, including
             site terms.
             about the site.
-            ye olde "hello world".
       `, function() {
         cy.visit('/');
         cy.get('footer a[href="/terms"]');
         cy.get('footer a[href="/about"]');
-        cy.get('footer a[href="/hello_world"]');
       });
     });
     // context('as a User', function() {
