@@ -14,6 +14,7 @@ gem 'rails', '~> 5.1.5'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.7'
 
+gem "figaro", "~> 1.1"
 gem "active_model_serializers", "~> 0.10.7"
 gem "factory_bot_rails", "~> 4.8"
 gem "database_cleaner", "~> 1.6"
@@ -31,7 +32,6 @@ group :development, :test do
 end
 
 group :development do
-  gem "figaro", "~> 1.1"
   gem 'listen', '>= 3.0.5', '< 3.2'
 end
 
