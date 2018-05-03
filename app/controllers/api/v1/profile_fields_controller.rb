@@ -21,7 +21,7 @@ class Api::V1::ProfileFieldsController < ApplicationController
     end
 
     def send_updated_field
-      json 201, {
+      Halt.throw 201, {
         id: @prompt.id,
         prompt: @prompt.text,
         response: params[:body]

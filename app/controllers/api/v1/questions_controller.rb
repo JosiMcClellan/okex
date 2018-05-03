@@ -25,11 +25,11 @@ class Api::V1::QuestionsController < ApplicationController
 
     def requires_prompt
       @prompt = @community.match_prompts.find_by_id(params[:id])
-      @prompt || Halt.no_record
+      @prompt || Halt.not_found
     end
 
     def send_updated_question(response)
-      json 201, {
+      Halt.throw 201, {
         id: @prompt.id,
         prompt: @prompt.text,
         answer: response.answer,

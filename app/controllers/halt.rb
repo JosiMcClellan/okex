@@ -10,18 +10,24 @@ module Halt
     def catch
       super(TAG) do
         yield
-        generic_error('server gave no response')
+        generic_error('no response')
+      rescue PG::Error, ActiveRecord::ActiveRecordError => error
+        unprocessable error.message
       end
     end
 
     def found(data)
-      no_record unless data
+      not_found unless data
       throw 200, data
     end
 
     def saved(record)
       invalid(record) unless record.save
       throw 201, record
+    end
+
+    def no_content
+      throw 204, {}
     end
 
     def bad_request(message = 'bad request')
@@ -54,6 +60,10 @@ module Halt
 
     def generic_error(message = 'something went wrong')
       throw 500, message
+    end
+
+    def no_response
+      generic_error('no response')
     end
 
   end

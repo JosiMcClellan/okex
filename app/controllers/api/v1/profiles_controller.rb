@@ -7,6 +7,7 @@ class Api::V1::ProfilesController < ApplicationController
   end
 
   def create
+    Halt.unprocessable unless params[:handle]
     Halt.saved @community.profiles.build(
       account: @account,
       handle: params[:handle]

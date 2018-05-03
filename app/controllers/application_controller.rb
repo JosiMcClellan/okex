@@ -1,19 +1,16 @@
 class ApplicationController < ActionController::API
-  rescue_from(PG::Error) { |error| json(422, error.message) }
-  around_action :handle_response
+  around_action :render_halt
 
-  def handle_response(&block)
-    json *Halt.catch(&block)
-  end
-
-  def json(status, jsonable)
+  def render_halt(&block)
+    status, jsonable = Halt.catch(&block)
+    return if performed?
     jsonable = { error: jsonable } if status >= 400
     render status: status, json: jsonable
   end
 
   def requires_community
     @community ||= Community.find_by_slug(params[:slug])
-    @community || Halt.no_record
+    @community || Halt.not_found
   end
 
   def requires_account
@@ -22,8 +19,8 @@ class ApplicationController < ActionController::API
   end
 
   def requires_profile
-    query = { community: requires_community, account: requires_account }
-    @profile ||= Profile.find_by(query)
+    parents = { community: requires_community, account: requires_account }
+    @profile ||= Profile.find_by(parents)
     @profile || Halt.forbidden
   end
 

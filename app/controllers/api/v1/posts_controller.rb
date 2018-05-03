@@ -13,7 +13,7 @@ class Api::V1::PostsController < ApplicationController
 
     def requires_discussion
       @discussion = @community.discussions.find_by_id(params[:discussion_id])
-      @discussion || Halt.no_record
+      @discussion || Halt.not_found
     end
 
 end
