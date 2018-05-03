@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::API
   rescue_from(PG::Error) { |error| json(422, error.message) }
-  around_action handle_response
+  around_action :handle_response
 
-  def handle_response
-    respond *Halt.catch(&block)
+  def handle_response(&block)
+    json *Halt.catch(&block)
   end
 
   def json(status, jsonable)
@@ -22,9 +22,8 @@ class ApplicationController < ActionController::API
   end
 
   def requires_profile
-    requires_community
-    requires_account
-    @profile ||= Profile.find_by(community: @community, account: @account)
+    query = { community: requires_community, account: requires_account }
+    @profile ||= Profile.find_by(query)
     @profile || Halt.forbidden
   end
 

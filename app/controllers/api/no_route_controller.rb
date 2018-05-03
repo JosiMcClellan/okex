@@ -1,4 +1,4 @@
-class NoRouteController < ApplicationController
+class Api::NoRouteController < ApplicationController
   def show
     Halt.no_route
   end

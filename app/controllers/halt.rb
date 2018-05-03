@@ -41,7 +41,7 @@ module Halt
     end
 
     def no_route
-      not_found('no route matches')
+      not_found('no route matches, check your URL')
     end
 
     def unprocessable(message = 'unprocessable')

@@ -5,12 +5,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-# Use Redis adapter to run Action Cable in production
-    # gem 'redis', '~> 4.0'
-# Use Capistrano for deployment
-  # gem 'capistrano-rails', group: :development
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-  # gem 'rack-cors'
+# off-omakase, might use
+# gem 'capistrano-rails', group: :development
+# gem 'redis', '~> 4.0'
+# gem 'rack-cors'
 
 gem 'rails', '~> 5.1.5'
 gem 'pg', '>= 0.18', '< 2.0'
