@@ -3,13 +3,13 @@ notifications:
 matrix:
   include:
 
-    # - env: NAME=API
-    #   language: ruby
-    #   rvm: 2.5.0
-    #   services: postgresql
-    #   cache: bundler
-    #   before_script: rake db:setup
-    #
+    - env: NAME=API
+      language: ruby
+      rvm: 2.5.0
+      services: postgresql
+      cache: bundler
+      before_script: rake db:create db:schema:load
+
     # - env: NAME=CLIENT
     #   language: node_js
     #   node_js: lts/*
@@ -21,7 +21,7 @@ matrix:
     #       - client/packages/create-react-app/node_modules
     #       - client/packages/react-scripts/node_modules
 
-    - env: NAME=PRODUCTION
+    - env: NAME=END_TO_END
       language: node_js
       node_js: lts/*
       services: postgresql
