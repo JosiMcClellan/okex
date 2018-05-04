@@ -4,8 +4,6 @@ class CreateAccounts < ActiveRecord::Migration[5.1]
       t.string :uid, index: { unique: true }, null: false
       t.string :email, index: { unique: true }, null: false
       t.boolean :email_verified, null: false
-      # t.string :refresh, null: false
-      # t.integer :good_until, null: false
       t.string :token, null: false
       t.integer :role, default: 0, null: false
       t.timestamps

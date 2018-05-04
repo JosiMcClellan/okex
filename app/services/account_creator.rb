@@ -21,7 +21,7 @@ class AccountCreator
 
     def populate
       account.update(
-        token: @tokens['access_token'],
+        token: SecureRandom.uuid,
         email: profile['email'],
         email_verified: profile['email_verified']
       )
@@ -32,7 +32,7 @@ class AccountCreator
     end
 
     def account
-      @account ||= Account.find_or_initialize_by(uid: profile['sub'])
+      @account ||= Account.find_or_initialize_by(google_sub: profile['sub'])
     end
 
     def profile

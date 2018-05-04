@@ -10,21 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180313062717) do
+ActiveRecord::Schema.define(version: 20180503160338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
-    t.string "uid", null: false
+    t.string "google_sub", null: false
     t.string "email", null: false
-    t.boolean "email_verified", null: false
+    t.string "email_verified", null: false
     t.string "token", null: false
     t.integer "role", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_accounts_on_email", unique: true
-    t.index ["uid"], name: "index_accounts_on_uid", unique: true
+    t.index ["google_sub"], name: "index_accounts_on_google_sub", unique: true
   end
 
   create_table "communities", force: :cascade do |t|

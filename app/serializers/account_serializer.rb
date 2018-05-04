@@ -1,5 +1,3 @@
 class AccountSerializer < ApplicationSerializer
-  attributes :id, :email, :token
-
-  # has_many :profiles
+  attributes :email, :token
 end

@@ -9,10 +9,12 @@ module Halt
 
     def catch
       super(TAG) do
-        yield
-        generic_error('no response')
-      rescue PG::Error, ActiveRecord::ActiveRecordError => error
-        unprocessable error.message
+        begin
+          yield
+          generic_error('no response')
+        rescue ActiveRecord::ActiveRecordError => error
+          unprocessable error.message
+        end
       end
     end
 
