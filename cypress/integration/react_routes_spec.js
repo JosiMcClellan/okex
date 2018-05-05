@@ -1,5 +1,4 @@
 describe('Client/API Routes', function() {
-
   it(
   `When I visit a bad non-API path,
     I receive the react app.`,
