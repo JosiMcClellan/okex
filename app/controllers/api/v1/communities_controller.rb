@@ -1,11 +1,11 @@
 class Api::V1::CommunitiesController < ApplicationController
 
   def index
-    Halts.found Community.all
+    Halt.found Community.all
   end
 
   def show
-    Halts.found requires_community
+    Halt.found requires_community
   end
 
 end

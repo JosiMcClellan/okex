@@ -1,6 +1,6 @@
 class Profile < ApplicationRecord
 
-  before_validation :set_handle_and_slug
+  before_validation :set_slug
 
   belongs_to :account, touch: true
   belongs_to :community, touch: true
@@ -8,16 +8,12 @@ class Profile < ApplicationRecord
   has_many :posts
   has_many :profile_responses
   has_many :match_responses
-  # has_many :flags
-  # has_one :suspension
 
   validates_presence_of :handle, :slug
+  enum role: ['default', 'moderator']
 
-  def set_handle_and_slug
-    self.handle ||= "drone##{SecureRandom.hex}"
-    self.slug = handle
+  def set_slug
+    self.slug ||= handle.parameterize
   end
-
-  # enum role: ['default', 'moderator']
 
 end

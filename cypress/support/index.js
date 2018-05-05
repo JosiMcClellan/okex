@@ -15,9 +15,6 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
-Cypress.on('uncaught:exception', (err, runnable) => {
-  return false
-})
 
-beforeEach(cy.seed)
-// beforeEach(() => cy.visit('/'))
+beforeEach(cy.seed);
+beforeEach(() => localStorage.clear());

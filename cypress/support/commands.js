@@ -3,8 +3,7 @@ Cypress.Commands.add('seed', function(email, password) {
 });
 
 Cypress.Commands.add('dataGet', { prevSubject: 'optional' }, function(subject, name) {
-  const receiver = subject || cy
-  receiver.get(`[data-cy=${name}]`);
+  (subject || cy).get(`[data-cy=${name}]`);
 });
 
 Cypress.Commands.add('login', function() {
@@ -13,6 +12,3 @@ Cypress.Commands.add('login', function() {
     token: 'totesLegit',
   }))
 })
-
-
-// .should('have.attr', 'href', '#/register')

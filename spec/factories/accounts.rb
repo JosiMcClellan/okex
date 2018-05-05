@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :account do
-    uid { Faker::Number.number(9) }
-    email { "#{Faker::Zelda.location}#{uid}@turing.io" }
-    email_verified { true }
-    token { Faker::Crypto.md5 }
+    google_sub { Faker::Number.unique.number(9) }
+    token { SecureRandom.uuid }
+    email { "#{Faker::Zelda.location}#{google_sub}@turing.io" }
+    email_verified { [true, false].sample }
   end
 end

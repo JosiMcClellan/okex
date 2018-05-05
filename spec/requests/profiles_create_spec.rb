@@ -28,9 +28,18 @@ describe 'profiles#show' do
     end
   end
 
+  context 'if the community already has an profile with that handle' do
+    specify 'it sends an unprocessable error' do
+      create(:profile, community: community, handle: 'duplicate')
+      post(path, headers: header, params: { handle: 'duplicate' })
+      expect_error 422
+    end
+  end
+
+
   context 'if the account has no profile for that community' do
     specify 'it creates and sends a profile with id, handle, and fields' do
-      post(path, headers: header)
+      post(path, headers: header, params: { handle: 'unique' })
       expect_response 201, {
         id: Integer,
         handle: String,

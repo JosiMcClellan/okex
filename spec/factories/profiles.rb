@@ -2,6 +2,12 @@ FactoryBot.define do
   factory :profile do
     community
     account
-    handle { Faker::Internet.user_name + Faker::Business.credit_card_number + Faker::Zelda.location }
+    handle {
+      [
+        community.slug,
+        Faker::Internet.user_name,
+        account.google_sub
+      ].join('.').gsub(/[^a-z0-9]/, '.')
+    }
   end
 end

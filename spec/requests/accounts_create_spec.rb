@@ -20,7 +20,6 @@ describe 'accounts#create' do
       header = { 'Authorization' => 'Bearer abc123' }
       post('/api/v1/account', headers: header)
       expect_response(201,
-        id: Integer,
         email: String,
         token: String
       )

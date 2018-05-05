@@ -8,20 +8,20 @@ matrix:
       rvm: 2.5.0
       services: postgresql
       cache: bundler
-      before_script: rake db:setup
+      before_script: rake db:create db:schema:load
 
-    - env: NAME=CLIENT
-      language: node_js
-      node_js: lts/*
-      before_install:
-        - cd client
-      cache:
-        directories:
-          - client/node_modules
-          - client/packages/create-react-app/node_modules
-          - client/packages/react-scripts/node_modules
+    # - env: NAME=CLIENT
+    #   language: node_js
+    #   node_js: lts/*
+    #   before_install:
+    #     - cd client
+    #   cache:
+    #     directories:
+    #       - client/node_modules
+    #       - client/packages/create-react-app/node_modules
+    #       - client/packages/react-scripts/node_modules
 
-    - env: NAME=PRODUCTION
+    - env: NAME=END_TO_END
       language: node_js
       node_js: lts/*
       services: postgresql
@@ -29,9 +29,9 @@ matrix:
         - yarn && bundle # root yarn installs cypress and wait-on
       before_script:
         - yarn build
-        - rake db:setup
+        - rake db:create db:schema:load
         - rails s &
-        - wait-on http://localhost:3000
+        # - wait-on http://localhost:3000
       cache:
         bundler: true
         directories:

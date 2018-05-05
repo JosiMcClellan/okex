@@ -5,7 +5,6 @@ const reqStr = PropTypes.string.isRequired;
 
 
 const accountShape = {
-  id,
   token: reqStr,
   email: reqStr,
 };
