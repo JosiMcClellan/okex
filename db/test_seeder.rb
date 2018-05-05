@@ -8,10 +8,12 @@ class TestSeeder
 
   COMMUNITIES = [{
     name: 'Community1',
+    image_url: '/communities/queerRights.png',
     description: 'this is the first community',
 
   }, {
     name: 'Community2',
+    image_url: '/communities/pahlka.jpg',
     description: 'this is the second community',
   }]
 
