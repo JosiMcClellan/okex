@@ -16,7 +16,8 @@ class Field extends React.Component {
   static defaultProps = { open: false, response: '' };
 
   ClosedResponse = () => (
-    <Typography variant="body1">{this.props.response}</Typography>
+    this.props.response &&
+    <Typography variant="body1" data-cy="closed-profile-response">{this.props.response}</Typography>
   );
 
   OpenResponse = () => (
@@ -25,6 +26,7 @@ class Field extends React.Component {
       multiline
       initialValue={this.props.response || ''}
       handleSubmit={this.handleSubmit}
+      data-cy="open-profile-response"
     />
   );
 
@@ -39,11 +41,11 @@ class Field extends React.Component {
   }
 
   render() {
-    const { prompt, open } = this.props;
+    const { id, prompt, open } = this.props;
     const Response = open ? this.OpenResponse : this.ClosedResponse;
     return (
-      <Paper onClick={this.handleClick}>
-        <Typography variant="body2">{prompt}</Typography>
+      <Paper onClick={this.handleClick} data-cy={`field-${id}`}>
+        <Typography variant="body2" data-cy="profile-prompt">{prompt}</Typography>
         <Response />
       </Paper>
     );
