@@ -7,7 +7,6 @@ class Account < ApplicationRecord
   validates_presence_of(
     :google_sub,
     :email,
-    :email_verified,
     :token
   )
 

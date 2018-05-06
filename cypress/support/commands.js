@@ -8,7 +8,7 @@ Cypress.Commands.add('dataGet', { prevSubject: 'optional' }, function(subject, n
 
 Cypress.Commands.add('login', function() {
   localStorage.setItem('account', JSON.stringify({
-    email: 'default@okx.herokuapp.com',
-    token: 'totesLegit',
+    email: 'member@okx.herokuapp.com',
+    token: 'legitMember',
   }))
 })

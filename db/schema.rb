@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20180503160338) do
   create_table "accounts", force: :cascade do |t|
     t.string "google_sub", null: false
     t.string "email", null: false
-    t.string "email_verified", null: false
+    t.string "email_verified", default: "f", null: false
     t.string "token", null: false
     t.integer "role", default: 0, null: false
     t.datetime "created_at", null: false

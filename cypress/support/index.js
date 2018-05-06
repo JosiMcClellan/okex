@@ -17,4 +17,3 @@
 import './commands'
 
 beforeEach(cy.seed);
-beforeEach(() => localStorage.clear());
