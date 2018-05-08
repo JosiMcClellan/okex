@@ -28,8 +28,8 @@ class MemberArea extends React.Component {
     // ['Dashboard', DashboardIcon],
     ['Profile', ProfileIcon],
     // ['Messages', MessagesIcon],
-    ['Matches', MatchesIcon],
     ['Questions', QuestionsIcon],
+    ['Matches', MatchesIcon],
     ['Forum', ForumIcon],
     // ['Settings', SettingsIcon],
   ]
@@ -66,7 +66,13 @@ class MemberArea extends React.Component {
           <Banner>
             <Tabs centered value={this.state.tab} onChange={this.handleChange}>
               {MemberArea.tabs.map(([name, Icon]) => (
-                <Tab key={name} label={name} value={name} icon={<Icon />} />
+                <Tab
+                  key={name}
+                  label={name}
+                  value={name}
+                  data-cy={`tab:${name}`}
+                  icon={<Icon />}
+                />
               ))}
             </Tabs>
           </Banner>

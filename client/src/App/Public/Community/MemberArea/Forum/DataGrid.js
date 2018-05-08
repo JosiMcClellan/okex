@@ -30,7 +30,7 @@ DataGrid.defaultProps = { title: null };
 DataGrid.Link = ({ to, children }) => {
   if (!to) return children;
   return <LinkContainer to={to}>{children}</LinkContainer>;
-}
+};
 DataGrid.Item = withStyles(theme => ({
   root: {
     width: '95%',
@@ -50,7 +50,7 @@ DataGrid.Item = withStyles(theme => ({
 }) => (
   <DataGrid.Link to={to}>
     <Grid item xs={12} xl={6}>
-      <ButtonBase variant="raised" {...{ classes }}>
+      <ButtonBase variant="raised" {...{ classes }} data-cy="grid-button">
         <Typography variant="subheading">
           {primary}
         </Typography>
