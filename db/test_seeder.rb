@@ -40,18 +40,18 @@ class TestSeeder
       community: joined,
       handle: 'Cool Handle Uke'
     )
-    # high_match =
-    # create(
-    # :profile,
-    #   community: joined,
-    #   handle: 'good4u'
-    # )
-    # low_match =
-    # create(
-    # :profile,
-    #   community: joined,
-    #   handle: 'bad4u'
-    # )
+    high_match =
+    create(
+    :profile,
+      community: joined,
+      handle: 'good4u'
+    )
+    low_match =
+    create(
+    :profile,
+      community: joined,
+      handle: 'bad4u'
+    )
 
     ##### Profile Prompts #####
     create(
@@ -84,36 +84,54 @@ class TestSeeder
     create(
       :match_prompt,
       community: joined,
-      text: 'answered match prompt'
+      text: 'minimally answered match prompt'
     )
     fully_answered_match_prompt =
     create(
-      :profile_prompt,
+      :match_prompt,
       community: joined,
-      text: 'cared profile prompt'
+      text: ' fully answered profile prompt'
     )
 
     ##### Match Responses #####
     create(
       :match_response,
+      match_prompt: minimally_answered_match_prompt,
       profile: profile,
-      profile_prompt: minimally_answered_match_prompt,
-      body: 'the old answer'
-    )
-    create(
-      :match_response,
-      profile: profile,
-      profile_prompt: minimally_answered_match_prompt,
       answer: 3
     )
     create(
       :match_response,
+      match_prompt: fully_answered_match_prompt,
       profile: profile,
-      profile_prompt: fully_answered_match_prompt,
       answer: 7,
       ideal: 7,
       weight: 4,
       explanation: 'good explanation, yo'
     )
+
+    ##### Discussions #####
+    recent_discussion =
+    create(
+      :discussion,
+      community: joined,
+      profile: profile,
+      topic: "recently active thread",
+      created_at: Date.new(2000,1,1),
+      updated_at: Date.new(2000,1,5)
+    )
+    distant_discussion =
+    create(
+      :discussion,
+      community: joined,
+      profile: profile,
+      topic: "distantly active thread",
+      created_at: Date.new(2000,1,2),
+      updated_at: Date.new(2000,1,3)
+    )
   end
+
+  ##### Posts #####
+
+
 end

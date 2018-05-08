@@ -1,19 +1,19 @@
 describe('As a member, when I visit my profile tab in a community', function() {
 
   it(`
+    I see the page title
     I see the profile prompts for that community
       where answered prompts show the answer
       where unanswered prompts show no answer
       and when I select an unanswered prompt
-        I see a blank text field
-          and when I fill it in and submit, I see the answer
+        I see a blank text field,
+        and when I fill it in and submit, I see the answer
       and when I select an answered prompt
-        I see a text field with the old answer
-          and when I alter the answer and submit, I see only the updated answer
+        I see a text field with the old answer,
+        and when I alter the answer and submit, I see the updated answer
   `, function() {
-    cy.login();
-    cy.visit('/c/joined-community');
-    cy.get('button[role="tab"][aria-selected="true"]').contains('Profile');
+
+    cy.visitMemberTab('Profile')
     cy.contains('Profile for Cool Handle Uke')
 
     cy.dataGet('field-1').within(function() {
