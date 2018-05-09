@@ -17,19 +17,19 @@ class ThreadPreview extends React.Component {
 
   render() {
     const {
-      slug, id, topic, started, active, posts: { length },
+      slug, id, topic, started, active, posts,
     } = this.props;
     return (
       <DataGrid.Item
         primary={topic}
         captions={[
-          `${length} posts`,
+          `${posts.length} posts`,
           `started ${started}`,
           `active ${active}`,
         ]}
         to={{
           pathname: `/c/${slug}/thread/${id}`,
-          state: { discussion: this.props },
+          state: { topic, posts },
         }}
       />
     );

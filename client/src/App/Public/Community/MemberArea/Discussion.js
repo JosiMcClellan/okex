@@ -9,24 +9,27 @@ class Discussion extends React.Component {
   constructor(props) {
     super(props);
     const { slug, id } = props.match.params;
-    this.id = id;
     this.discussionsFetcher = new DiscussionsFetcher(slug);
     this.postsFetcher = new PostsFetcher(slug, id);
-    this.state = props.location.state || { discussion: null };
+    this.state = props.location.state || { posts: [], topic: null };
   }
 
   componentDidMount() {
-    if (!this.state.discussion) this.getDiscussion();
+    if (this.state.topic) return;
+    this.discussionsFetcher.get(this.props.match.params.id)
+      .then(({ topic, posts }) => this.setState({ topic, posts }));
   }
 
-  setDiscussion = discussion => this.setState({ discussion })
-  getDiscussion = () => this.discussionsFetcher.get(this.id)
-    .then(this.setDiscussion);
+  createPost = (body) => {
+    this.postsFetcher.create(body).then(this.displayCreatedPost);
+  }
 
-  createPost = body => this.postsFetcher.create(body)
+  displayCreatedPost = (post) => {
+    this.setState(({ posts }) => ({ posts: [...posts, post] }));
+  }
 
   render() {
-    const { discussion: { posts, topic } } = this.state;
+    const { posts, topic } = this.state;
     return (
       <div>
         <DataGrid

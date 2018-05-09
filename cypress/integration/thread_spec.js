@@ -1,7 +1,7 @@
 describe('As a member, when I visit a specific thread page', function() {
   it(`
     I see the thread topic
-    I see all the posts, showing text and date posted, ascending by date
+    I see all the posts, showing text and date posted, ascending by date posted
     I see a button for to create a new post, and when I click it
       I see a form with, and when I fill out the text and submit it
         I see the new post at the top of the thread
@@ -26,7 +26,7 @@ describe('As a member, when I visit a specific thread page', function() {
 
     cy.contains(/new post/i).click();
     cy.get('textarea').not('[aria-hidden]').type('brand new post{enter}');
-    cy.contains('brand new post');
+    cy.contains('brand new post').not(':hidden');
     cy.dataGet('grid-button').last().contains('brand new post');
 
     cy.go('back');
