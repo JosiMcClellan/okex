@@ -111,27 +111,40 @@ class TestSeeder
     )
 
     ##### Discussions #####
-    recent_discussion =
-    create(
-      :discussion,
-      community: joined,
-      profile: profile,
-      topic: "recently active thread",
-      created_at: Date.new(2000,1,1),
-      updated_at: Date.new(2000,1,5)
-    )
     distant_discussion =
     create(
       :discussion,
       community: joined,
-      profile: profile,
+      # profile: ,
       topic: "distantly active thread",
       created_at: Date.new(2000,1,2),
       updated_at: Date.new(2000,1,3)
     )
+    recent_discussion =
+    create(
+      :discussion,
+      community: joined,
+      # profile: ,
+      topic: "recently active thread",
+      created_at: Date.new(2000,1,1),
+      updated_at: Date.new(2000,1,4)
+    )
+
+    ##### Posts #####
+    create(
+      :post,
+      discussion: distant_discussion,
+      body: "distant post",
+      created_at: Date.new(2000,1,1)
+    )
+    create(
+      :post,
+      discussion: distant_discussion,
+      body: "recent post",
+      created_at: Date.new(2000,1,2)
+    )
+
+    distant_discussion.update(updated_at: Date.new(2000,1,3))
   end
-
-  ##### Posts #####
-
 
 end

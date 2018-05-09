@@ -23,11 +23,11 @@ describe('As a member, when I visit the forum tab', function() {
         cy.contains('recently active thread');
         cy.contains('0 posts');
         cy.contains('started Jan  1, 2000');
-        cy.contains('active Jan  5, 2000');
+        cy.contains('active Jan  4, 2000');
       });
       cy.wrap(older).within(function() {
         cy.contains('distantly active thread');
-        cy.contains('0 posts');
+        cy.contains('2 posts');
         cy.contains('started Jan  2, 2000');
         cy.contains('active Jan  3, 2000');
       });
