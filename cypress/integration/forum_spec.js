@@ -32,11 +32,9 @@ describe('As a member, when I visit the forum tab', function() {
         cy.contains('active Jan  3, 2000');
       });
     });
-
     cy.contains(/new thread/i).click();
     cy.get('textarea').not('[aria-hidden]').type('brand new thread{enter}');
-    cy.contains('brand new thread');
+    cy.wait(5000)
     cy.dataGet('grid-button').first().contains('brand new thread');
-
   });
 });
