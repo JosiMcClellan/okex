@@ -35,20 +35,21 @@ class AccountMenu extends React.Component {
       <div>
         <Button
           onClick={handleOpen}
-          aria-owns={anchorEl && 'login-dropdown'}
+          aria-owns={anchorEl && 'account-menu'}
           aria-haspopup="true"
+          data-cy="account-menu-open"
         >
           {account.email}&nbsp;&#9660;
         </Button>
         <Menu
-          id="login-dropdown"
+          id="account-menu"
           anchorEl={anchorEl}
           open={!!anchorEl}
           onClose={handleClose}
         >
           <LinkContainer to="/settings"><MenuItem dense>Settings</MenuItem></LinkContainer>
           <LinkContainer to="/profiles"><MenuItem dense>My Profiles</MenuItem></LinkContainer>
-          <MenuItem onClick={handleLogout} dense>Logout</MenuItem>
+          <MenuItem data-cy="logout" onClick={handleLogout} dense>Logout</MenuItem>
         </Menu>
       </div>
     );

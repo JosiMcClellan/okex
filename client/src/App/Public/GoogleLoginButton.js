@@ -15,7 +15,11 @@ const GoogleLoginButton = ({ handleLogin }) => (
     tag="div"
   >
     <Button style={{ padding: 0 }}>
-      <img alt="Sign In with Google" src="../google_sign_in.png" />
+      <img
+        alt="Sign In with Google"
+        src="../google_sign_in.png"
+        data-cy="login"
+      />
     </Button>
   </GoogleLogin>
 );
