@@ -26,7 +26,7 @@ describe('As a member, when I visit a specific thread page', function() {
 
     cy.contains(/new post/i).click();
     cy.get('textarea').not('[aria-hidden]').type('brand new post{enter}');
-    cy.contains('brand new post').not(':hidden');
+    cy.wait(5000)
     cy.dataGet('grid-button').last().contains('brand new post');
 
     cy.go('back');
